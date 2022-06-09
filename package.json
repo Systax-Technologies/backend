@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "dev": "remix dev",
+    "start:dev": "NODE_ENV=development node ./build/index.js",
+    "build": "NODE_ENV=production remix build",
+    "start": "remix-serve build",
+    "db:seed": "node --require esbuild-register prisma/seed.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "db:push": "prisma db push",
+    "prisma-studio": "prisma studio",
+    "type-check": "tsc --pretty --noEmit",
+    "format": "prettier --write .",
+    "generate:prisma": "prisma generate && prisma migrate"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.15.0",
+    "@remix-run/node": "^1.5.1",
+    "@remix-run/react": "^1.5.1",
+    "@remix-run/serve": "^1.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^1.5.1",
+    "@remix-run/eslint-config": "^1.5.1",
+    "@types/react": "^17.0.45",
+    "@types/react-dom": "^17.0.17",
+    "eslint": "^8.15.0",
+    "prisma": "^3.15.0",
+    "typescript": "^4.6.4"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  database:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - "database:/var/lib/postgresql/data"
+    env_file:
+      - .env
+  remix:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    container_name: remix
+
+volumes:
+  database:
