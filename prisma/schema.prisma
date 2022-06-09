@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductType {
+  SmartWatch
+  RepairKit
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  price       Float
+  description String
+  productType ProductType
+}
+
+model Employee {
+  id        String @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+}
