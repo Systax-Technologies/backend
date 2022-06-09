@@ -3,6 +3,8 @@
   "sideEffects": false,
   "scripts": {
     "dev": "remix dev",
+    "dev:docker": "docker compose up -d",
+    "dev:docker:stop": "docker compose down",
     "start:dev": "NODE_ENV=development node ./build/index.js",
     "build": "NODE_ENV=production remix build",
     "start": "remix-serve build",
