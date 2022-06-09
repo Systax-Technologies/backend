@@ -9,13 +9,5 @@ services:
       - "database:/var/lib/postgresql/data"
     env_file:
       - .env
-  remix:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - PORT=3000
-    container_name: remix
-
 volumes:
   database:
