@@ -7,17 +7,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ProductType {
-  SmartWatch
-  RepairKit
+enum ProductStatus {
+  InStock
+  Sold
+  Active
+  Removed
+  Damaged
 }
 
 model Product {
-  id          String      @id @default(cuid())
-  name        String
-  price       Float
+  id            String        @id @default(cuid())
+  userId        String?
+  code          String        @unique
+  productStatus ProductStatus
+
+  productTypeId String
+  productType   ProductType @relation(fields: [productTypeId], references: [id])
+}
+
+model ProductType {
+  id          String   @id @default(cuid())
+  model       String
   description String
-  productType ProductType
+  color       String
+  size        String
+  price       Float
+  addedAt     DateTime
+
+  Product Product[]
 }
 
 model Employee {
