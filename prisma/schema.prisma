@@ -7,46 +7,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Employee Employee[]
+  Customer Customer[]
+}
+
+enum Role {
+  ADMIN
+  WORKER
+}
+
+model Employee {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  user User @relation(fields: [userId], references: [id])
+  role Role @default(WORKER)
+}
+
+model Customer {
+  id String @id @default(cuid())
+
+  order         Order[]
+  userId        String          @unique
+  user          User            @relation(fields: [userId], references: [id])
+  activeProduct ActiveProduct[]
+}
+
+enum OrderStatus {
+  ORDERED
+  IN_PROGRESS
+  SHIPPED
+  IN_TRANSIT
+  DELIVERING
+  DELIVERED
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  status      OrderStatus @default(ORDERED)
+  orderedAt   DateTime    @default(now())
+  shippedAt   DateTime?
+  deliveredAt DateTime?
+
+  Product    Product[]
+  customerId String
+  customer   Customer  @relation(fields: [customerId], references: [id])
+}
+
 enum ProductStatus {
-  InStock
-  Sold
-  Active
-  Removed
-  Damaged
+  IN_STOCK
+  SOLD
 }
 
 model Product {
-  id            String        @id @default(cuid())
-  userId        String?
-  code          String        @unique
-  productStatus ProductStatus
+  id            String         @id @default(cuid())
+  status        ProductStatus  @default(IN_STOCK)
+  ActiveProduct ActiveProduct?
 
+  orderId       String?
+  order         Order?      @relation(fields: [orderId], references: [id])
   productTypeId String
   productType   ProductType @relation(fields: [productTypeId], references: [id])
 }
 
 model ProductType {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   model       String
+  imageUrl    String
   description String
   color       String
   size        String
   price       Float
-  addedAt     DateTime
-
-  Product Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Product     Product[]
 }
 
-enum Role {
-  Admin
-  Worker
+enum ActiveProductStatus {
+  ACTIVE
+  REMOVED
+  DAMAGED
 }
 
-model Employee {
-  id        String @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
-  role      Role
+model ActiveProduct {
+  id     String              @id @default(cuid())
+  status ActiveProductStatus @default(ACTIVE)
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  product    Product  @relation(fields: [id], references: [id])
 }
