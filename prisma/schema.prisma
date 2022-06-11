@@ -15,8 +15,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Employee Employee[]
-  Customer Customer[]
+  employee Employee[]
+  customer Customer[]
 }
 
 enum Role {
@@ -57,7 +57,7 @@ model Order {
   shippedAt   DateTime?
   deliveredAt DateTime?
 
-  Product    Product[]
+  products   Product[]
   customerId String
   customer   Customer  @relation(fields: [customerId], references: [id])
 }
@@ -68,14 +68,14 @@ enum ProductStatus {
 }
 
 model Product {
-  id            String         @id @default(cuid())
-  status        ProductStatus  @default(IN_STOCK)
-  ActiveProduct ActiveProduct?
+  id     String        @id @default(cuid())
+  status ProductStatus @default(IN_STOCK)
 
   orderId       String?
-  order         Order?      @relation(fields: [orderId], references: [id])
+  order         Order?         @relation(fields: [orderId], references: [id])
   productTypeId String
-  productType   ProductType @relation(fields: [productTypeId], references: [id])
+  productType   ProductType    @relation(fields: [productTypeId], references: [id])
+  activeProduct ActiveProduct?
 }
 
 model ProductType {
@@ -88,7 +88,7 @@ model ProductType {
   price       Float
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  Product     Product[]
+  products    Product[]
 }
 
 enum ActiveProductStatus {
