@@ -3,7 +3,7 @@ import { database } from "~/helpers/db-helper.server";
 
 export const findUserByLogin = async (
   email: string,
-  password: string,
+  password: string
 ): Promise<User | null> => {
   return database.user.findFirst({
     where: {
