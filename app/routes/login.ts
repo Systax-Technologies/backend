@@ -10,6 +10,13 @@ type ActionData = {
 export const action: ActionFunction = async ({
   request,
 }): Promise<ActionData> => {
+  if (request.method.toLowerCase() !== "post") {
+    throw new Response(null, {
+      status: 405,
+      statusText: "Method Not Allowed",
+    });
+  }
+
   verifyRequest(request);
 
   let body: any;
