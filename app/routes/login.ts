@@ -19,7 +19,8 @@ export const action: ActionFunction = async ({
 
     const loginSchema = z.object({
       email: z.string().email(),
-      password: z.string().min(1),
+      // the password is hashed, so it must be at least 64 chars
+      password: z.string().min(64),
     });
 
     const parsedData = loginSchema.safeParse(body);
