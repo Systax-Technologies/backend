@@ -70,7 +70,7 @@ enum ProductStatus {
 model Product {
   id            String         @id @default(cuid())
   status        ProductStatus  @default(IN_STOCK)
-  ActiveProduct ActiveProduct?
+  activeProduct ActiveProduct?
 
   orderId       String?
   order         Order?      @relation(fields: [orderId], references: [id])
