@@ -38,7 +38,7 @@ export const createManyProduct = async (
  */
 export const updateProduct = async (
   id: string,
-  data: Product
+  data: Omit<Product, "id">
 ): Promise<Product | null> => {
   return database.product.update({
     where: { id },
