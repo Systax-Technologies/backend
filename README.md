@@ -11,12 +11,12 @@ All requests to the API routes **must** have the `authorization` header set with
 ```ts
 const headers = {
   authorization: `Bearer ${getAccessToken()}`,
-}
+};
 ```
 
 All API routes accept only `application/json` as `Content-Type` in body request and return `application/json` as `Content-Type` in response body.
 
-> ⚠️ please note that the `null` value can also be returned as body response of a 200 or 204 response 
+> ⚠️ please note that the `null` value can also be returned as body response of a 200 or 204 response
 
 ### start dev database server
 
