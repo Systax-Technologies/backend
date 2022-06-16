@@ -11,4 +11,4 @@ export const verifyRequest = (request: Request) => {
       statusText: "Unauthorized",
     });
   }
-}
+};
