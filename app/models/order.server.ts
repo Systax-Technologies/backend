@@ -65,3 +65,45 @@ export const findOrdersByStatus = async (
     },
   });
 };
+
+export const findOrdersWithinOrderedDates = async (
+  startDate: Date,
+  endDate: Date
+): Promise<Order[] | null> => {
+  return database.order.findMany({
+    where: {
+      orderedAt: {
+        lte: endDate,
+        gte: startDate,
+      },
+    },
+  });
+};
+
+export const findOrdersWithinShippedDates = async (
+  startDate: Date,
+  endDate: Date
+): Promise<Order[] | null> => {
+  return database.order.findMany({
+    where: {
+      shippedAt: {
+        lte: endDate,
+        gte: startDate,
+      },
+    },
+  });
+};
+
+export const findOrdersWithinDeliveredDates = async (
+  startDate: Date,
+  endDate: Date
+): Promise<Order[] | null> => {
+  return database.order.findMany({
+    where: {
+      deliveredAt: {
+        lte: endDate,
+        gte: startDate,
+      },
+    },
+  });
+};
