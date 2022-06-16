@@ -22,9 +22,8 @@ export const findActiveProduct = async (
 export const createActiveProduct = async (
   customerId: string
 ): Promise<ActiveProduct | null> => {
-  let data: Omit<ActiveProduct, "id" | "status"> = { customerId };
   return database.activeProduct.create({
-    data,
+    data: { customerId },
   });
 };
 
@@ -43,8 +42,6 @@ export const updateActiveProductStatus = async (
     data: { status },
   });
 };
-
-// export const updateActiveProductCustomer
 
 /**
  * Function to delete and Active Product
