@@ -1,16 +1,14 @@
 import * as jwtLib from "jsonwebtoken";
+import { EnvSchema } from "~/config/EnvSchema.server";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (JWT_SECRET === undefined) {
-  throw Error("Environment variable JWT_SECRET is not set!");
-}
+const JWT_SECRET = EnvSchema.get("JWT_SECRET");
 
 export const verifyJwt = (jwt: string) => {
-  var decoded;
+  let decoded;
   try {
     decoded = jwtLib.verify(jwt, JWT_SECRET);
   } catch (err) {
-    return false;
+    throw new Response(null, { status: 401, statusText: "Unauthenticated" });
   }
   return decoded.toString();
 };
