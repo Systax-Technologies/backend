@@ -35,17 +35,17 @@ model Employee {
 
 model Customer {
   id                String       @id @default(cuid())
-  billingAddressId  String
-  billingAddress    Address?     @relation(name: "billingAddresses", fields: [billingAddressId], references: [id])
-  shippingAddressId String
-  shippingAddress   Address      @relation(name: "shippingAddresses", fields: [shippingAddressId], references: [id])
+  billingAddressId  String?
+  billingAddress    Address?     @relation(name: "billingAddresses", fields: [billingAddressId], references: [id], onDelete: Cascade)
+  shippingAddressId String?
+  shippingAddress   Address?     @relation(name: "shippingAddresses", fields: [shippingAddressId], references: [id], onDelete: Cascade)
   creditCard        CreditCard[]
 
   order         Order[]
   userId        String          @unique
-  user          User            @relation(fields: [userId], references: [id])
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   activeProduct ActiveProduct[]
-  Address       Address[]
+  address       Address[]
 }
 
 model Address {
@@ -64,7 +64,7 @@ model Address {
 
 model CreditCard {
   id           String     @id @default(cuid())
-  number       Int
+  number       Int        @unique
   expMonthDate Int
   expYearDate  Int
   secretCode   Int
