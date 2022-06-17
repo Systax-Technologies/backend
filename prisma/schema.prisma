@@ -56,10 +56,10 @@ model Address {
   province          String
   state             String
   postalCode        Int
+  customerId        String?
   customer          Customer?  @relation(fields: [customerId], references: [id])
   customersShipping Customer[] @relation(name: "shippingAddresses")
   customersBilling  Customer[] @relation(name: "billingAddresses")
-  customerId        String?
 }
 
 model CreditCard {
