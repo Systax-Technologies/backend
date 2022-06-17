@@ -27,14 +27,14 @@ export class Env<EnvMap extends BaseEnvMap> {
   }, z.number());
 
   static readonly literal = <LiteralType extends string | number | boolean>(
-    lit: LiteralType,
+    lit: LiteralType
   ) => {
     return z.literal(lit);
   };
 
   static readonly default = <Type extends ZodType>(
     type: Type,
-    def: z.infer<typeof type>,
+    def: z.infer<typeof type>
   ): z.ZodType<z.infer<typeof type>> => {
     return type.default(def);
   };
@@ -64,7 +64,7 @@ export class Env<EnvMap extends BaseEnvMap> {
    * @return A new `Env` instance with the defined schemas.
    */
   static define<EnvMap extends BaseEnvMap>(
-    validationMap: ValidationMap<EnvMap>,
+    validationMap: ValidationMap<EnvMap>
   ): Env<EnvMap> {
     const map: any = {};
     const keys = Object.keys(validationMap);
