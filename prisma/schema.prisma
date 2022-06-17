@@ -13,6 +13,8 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  firstName String
+  lastName  String
 
   employee Employee?
   customer Customer?
@@ -32,12 +34,41 @@ model Employee {
 }
 
 model Customer {
-  id String @id @default(cuid())
+  id                String       @id @default(cuid())
+  billingAddressId  String
+  billingAddress    Address?     @relation(name: "billingAddresses", fields: [billingAddressId], references: [id])
+  shippingAddressId String
+  shippingAddress   Address      @relation(name: "shippingAddresses", fields: [shippingAddressId], references: [id])
+  creditCard        CreditCard[]
 
   order         Order[]
   userId        String          @unique
   user          User            @relation(fields: [userId], references: [id])
   activeProduct ActiveProduct[]
+  Address       Address[]
+}
+
+model Address {
+  id                String     @id @default(cuid())
+  street            String
+  number            String
+  city              String
+  province          String
+  state             String
+  postalCode        Int
+  customerId        String?
+  customer          Customer?  @relation(fields: [customerId], references: [id])
+  customersShipping Customer[] @relation(name: "shippingAddresses")
+  customersBilling  Customer[] @relation(name: "billingAddresses")
+}
+
+model CreditCard {
+  id           String     @id @default(cuid())
+  number       Int
+  expMonthDate Int
+  expYearDate  Int
+  secretCode   Int
+  customer     Customer[]
 }
 
 enum OrderStatus {
@@ -78,16 +109,17 @@ model Product {
 }
 
 model ProductType {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   model       String
   imageUrl    String
   description String
   color       String
   size        String
   price       Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
 }
 
 enum ActiveProductStatus {
