@@ -6,17 +6,17 @@ This repo contains a [Remix.run](https://remix.run) project with a [Postgresql](
 
 The backend also exposes API routes in the [/api](./app/routes/api) folder.
 
-All requests to the API routes **must** have the `authorization` header set with the token in the form:
+All requests to the API routes, except for the `/login` API route , **must** have the `authorization` header set with the token in the form:
 
 ```ts
 const headers = {
-  authorization: `Bearer ${getAccessToken()}`,
+  authorization: `Bearer <jwt>`,
 };
 ```
 
 All API routes accept only `application/json` as `Content-Type` in body request and return `application/json` as `Content-Type` in response body.
 
-> ⚠️ please note that the `null` value can also be returned as body response of a 200 or 204 response
+> ⚠️ please note that the `null` value could possibly be returned as body response of a 200 or 204 response
 
 ### start dev database server
 
@@ -65,14 +65,16 @@ database.user.create({
 
 A great utility is the `prisma studio` package that should be already installed.
 
-In order to run the `prisma studio`, run:
+In order to run the `prisma studio` utility, run:
 
-```sh
-$ npx prisma studio
-```
+- Linux/MacOS
 
-If you got a connection error, try the following:
+  ```sh
+  $ npm run dev:prisma
+  ```
 
-```sh
-$ DATABASE_URL="postresql://<user>:<password>@<host>:<port>/<db>" npx prisma studio
-```
+- Windows
+
+  ```sh
+  $ DATABASE_URL="postresql://<user>:<password>@<host>:<port>/<db>" npx prisma studio
+  ```
