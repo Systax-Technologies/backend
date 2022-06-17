@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 
 export const findUserByLogin = async (

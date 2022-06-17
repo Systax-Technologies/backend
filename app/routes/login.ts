@@ -1,7 +1,7 @@
-import { ActionFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import { verifyRequest } from "~/lib/verify-request.server";
-import { findUserByLogin } from "~/models/user.server";
+import { findUserByLogin } from "~/models/user/user.server";
 
 type ActionData = {
   id: string;
