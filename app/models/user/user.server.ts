@@ -20,3 +20,20 @@ export const findUser = async (id: string): Promise<User | null> => {
     },
   });
 };
+
+export const createUser = async (
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string
+): Promise<User | null> => {
+  const data: Omit<User, "id" | "createdAt" | "updatedAt"> = {
+    email,
+    password,
+    firstName,
+    lastName,
+  };
+  return database.user.create({
+    data,
+  });
+};
