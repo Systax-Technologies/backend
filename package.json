@@ -13,10 +13,10 @@
     "db:reset": "prisma migrate reset",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
+    "db:studio": "export $(cat .env | xargs) && DATABASE_URL=\"postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB\" prisma studio",
     "prisma-studio": "prisma studio",
     "type-check": "tsc --pretty --noEmit",
-    "format": "prettier --write .",
-    "generate:prisma": "prisma generate && prisma migrate"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@prisma/client": "^3.15.2",
@@ -32,11 +32,11 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@remix-run/dev": "^1.6.0",
     "@remix-run/eslint-config": "^1.6.0",
-    "@types/react": "^18.0.13",
+    "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
-    "eslint": "^8.15.0",
+    "eslint": "^8.18.0",
     "prisma": "^3.15.2",
-    "typescript": "^4.6.4"
+    "typescript": "^4.7.4"
   },
   "engines": {
     "node": ">=14"
