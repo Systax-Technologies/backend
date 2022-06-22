@@ -30,13 +30,13 @@ type EmployeeCreateInput = {
   role: Role;
 };
 
-export const createEmployee = async (
-  email: string,
-  password: string,
-  firstName: string,
-  lastName: string,
-  role: Role
-) => {
+export const createEmployee = async ({
+  email,
+  password,
+  firstName,
+  lastName,
+  role,
+}: EmployeeCreateInput) => {
   return database.employee.create({
     data: {
       role,
