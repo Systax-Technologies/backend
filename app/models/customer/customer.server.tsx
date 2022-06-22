@@ -1,5 +1,6 @@
 import type { Address, CreditCard, Customer, User } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
+import { LoginDto } from "../dto";
 
 /**
  * Function to find a specific Customer
@@ -9,6 +10,15 @@ import { database } from "~/helpers/db-helper.server";
 export const findCustomer = async (id: string): Promise<Customer | null> => {
   return database.customer.findUnique({
     where: { id },
+  });
+};
+
+export const findCustomerByLogin = async ({ email, password }: LoginDto) => {
+  return database.customer.findFirst({
+    where: {
+      email,
+      password,
+    },
   });
 };
 
@@ -57,7 +67,7 @@ type UpdateCustomerDto = {
 
 export const updateCustomer = async (
   id: string,
-  customer: UpdateCustomerDto
+  customer: UpdateCustomerDto,
 ) => {
   return database.customer.update({
     where: { id },
