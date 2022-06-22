@@ -12,6 +12,10 @@ export const findProduct = async (id: string): Promise<Product | null> => {
   });
 };
 
+export const findManyProducts = async () => {
+  return database.product.findMany();
+};
+
 /**
  * Function to create one or more Products given the Product Type
  * @param productTypeId ID of the Product Type
