@@ -1,7 +1,6 @@
 import { Customer, Employee } from "@prisma/client";
 import { z } from "zod";
 import { LoginDto } from "~/models/dto";
-import { verifyRequest } from "./verify-request.server";
 
 export const postAuthenticationHandler = async <
   ReturnHandlerLogin extends Employee | Customer | null,
@@ -10,8 +9,6 @@ export const postAuthenticationHandler = async <
   request: Request,
   handlerLogin: HandlerLogin,
 ) => {
-  verifyRequest(request);
-
   let body: any;
   try {
     body = await request.json();
