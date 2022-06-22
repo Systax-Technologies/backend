@@ -22,14 +22,13 @@ export const findManyProducts = async () => {
  * @param quantity Quantity of single Products to create
  * @returns The count of the number of records created
  */
-export const createManyProduct = async (
+export const createManyProducts = async (
   productTypeId: string,
   quantity: number
 ) => {
-  let data = new Array<any>(quantity).fill({ productTypeId });
   return (
     await database.product.createMany({
-      data,
+      data: [...Array(quantity)].map((_) => ({ productTypeId })),
     })
   ).count;
 };
@@ -57,7 +56,7 @@ export const updateProduct = async (
  * @param orderId The Order Id to add
  * @returns The count of the number of records updated
  */
-export const updateManyProductOrder = async (
+export const updateManyProductOrders = async (
   ids: string[],
   orderId: string
 ) => {
@@ -91,7 +90,7 @@ export const deleteProduct = async (id: string): Promise<Product | null> => {
  * @param status The status to count for
  * @returns The count of the matching records
  */
-export const countProductStatus = async (
+export const countProductByStatus = async (
   status: ProductStatus
 ): Promise<number | null> => {
   return database.product.count({
@@ -104,7 +103,7 @@ export const countProductStatus = async (
  * @param productTypeId The Id of the Product Type to count for
  * @returns The count of the matching records
  */
-export const countProductType = async (
+export const countProductByType = async (
   productTypeId: string
 ): Promise<number | null> => {
   return database.product.count({ where: { productTypeId } });
