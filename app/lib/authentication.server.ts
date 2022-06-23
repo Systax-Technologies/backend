@@ -4,10 +4,10 @@ import { LoginDto } from "~/models/dto";
 
 export const postAuthenticationHandler = async <
   ReturnHandlerLogin extends Employee | Customer | null,
-  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>,
+  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>
 >(
   request: Request,
-  handlerLogin: HandlerLogin,
+  handlerLogin: HandlerLogin
 ) => {
   let body: any;
   try {

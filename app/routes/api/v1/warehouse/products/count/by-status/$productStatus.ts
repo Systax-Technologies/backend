@@ -18,25 +18,21 @@ export const loader: LoaderFunction = async ({
   }
   const schema = z.nativeEnum(ProductStatus);
   const parsedData = schema.safeParse(productStatus);
-  if (parsedData.success){
-      const countedPoductsStatus = await countProductByStatus(parsedData.data);
-    
-      if (countedPoductsStatus == null) {
-        throw new Response(null, {
-          status: 404,
-          statusText: "Product Type Not Found",
-        });
-      }
-    
-      return countedPoductsStatus;
+  if (parsedData.success) {
+    const countedPoductsStatus = await countProductByStatus(parsedData.data);
 
-  
+    if (countedPoductsStatus == null) {
+      throw new Response(null, {
+        status: 404,
+        statusText: "Product Type Not Found",
+      });
+    }
+
+    return countedPoductsStatus;
   } else {
     throw new Response(null, {
-        status: 400,
-        statusText: "Invalid Request",
-      });
+      status: 400,
+      statusText: "Invalid Request",
+    });
   }
-
-
 };

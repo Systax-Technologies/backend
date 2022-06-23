@@ -30,7 +30,7 @@ export const findManyProducts = async (): Promise<Products> => {
  */
 export const createManyProducts = async (
   productTypeId: string,
-  quantity: number,
+  quantity: number
 ) => {
   return (
     await database.product.createMany({
@@ -47,7 +47,7 @@ export const createManyProducts = async (
  */
 export const updateProduct = async (
   id: string,
-  data: Omit<Product, "id">,
+  data: Omit<Product, "id">
 ): Promise<Product | null> => {
   return database.product.update({
     where: { id },
@@ -64,7 +64,7 @@ export const updateProduct = async (
  */
 export const updateManyProductOrders = async (
   ids: string[],
-  orderId: string,
+  orderId: string
 ) => {
   return (
     await database.product.updateMany({
@@ -97,7 +97,7 @@ export const deleteProduct = async (id: string): Promise<Product | null> => {
  * @returns The count of the matching records
  */
 export const countProductByStatus = async (
-  status: ProductStatus,
+  status: ProductStatus
 ): Promise<number | null> => {
   return database.product.count({
     where: { status },
@@ -110,7 +110,7 @@ export const countProductByStatus = async (
  * @returns The count of the matching records
  */
 export const countProductByType = async (
-  productTypeId: string,
+  productTypeId: string
 ): Promise<number | null> => {
   return database.product.count({ where: { productTypeId } });
 };

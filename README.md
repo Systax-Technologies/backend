@@ -122,7 +122,7 @@ The route will return a `Content-Type: application/json` and a body formatted as
 
 ```ts
 {
-  activeProducts: Products
+  activeProducts: Products;
 }
 ```
 
@@ -130,22 +130,22 @@ Where:
 
 ```ts
 type Products = {
-  id: string,
-  status: ProductStatus,
-  orderId: string | null,
-  productTypeId: string,
-  activeProduct: ActiveProduct | null
-}[]
+  id: string;
+  status: ProductStatus;
+  orderId: string | null;
+  productTypeId: string;
+  activeProduct: ActiveProduct | null;
+}[];
 
 type ProductStatus = "IN_STOCK" | "SOLD";
 
 type ActiveProduct = {
-  id: string,
-  status: ActiveProductStatus,
-  customerId: string
-}
+  id: string;
+  status: ActiveProductStatus;
+  customerId: string;
+};
 
-type ActiveProductStatus = "ACTIVE" | "REMOVED" | "DAMAGED"
+type ActiveProductStatus = "ACTIVE" | "REMOVED" | "DAMAGED";
 ```
 
 #### POST
@@ -178,7 +178,7 @@ Accepts a `PATCH` request with `Content-Type: application/json` and a body forma
   "id": "",
   "status": "",
   "productTypeId": "",
-  "orderId": "",
+  "orderId": ""
 }
 ```
 

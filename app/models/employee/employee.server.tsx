@@ -20,7 +20,7 @@ export const findEmployeeByLogin = async ({ email, password }: LoginDto) => {
 };
 
 export const findEmployeeById = async (
-  id: string,
+  id: string
 ): Promise<Employee | null> => {
   return database.employee.findUnique({
     where: {
@@ -64,7 +64,7 @@ export const createEmployee = async ({
 
 export const updateEmployee = async (
   id: string,
-  employee: Omit<User, "id">,
+  employee: Omit<User, "id">
 ) => {
   return database.employee.update({
     where: {
@@ -101,7 +101,7 @@ export const findEmployeeByRole = async (role: Role) => {
 
 export const findEmployeeByName = async (
   firstName: string,
-  lastName: string,
+  lastName: string
 ) => {
   return database.employee.findMany({
     where: {

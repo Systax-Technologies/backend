@@ -55,14 +55,14 @@ const postRequest = async (request: Request) => {
     const data = parsedData.data;
     const createdProducts = await createManyProducts(
       data.productTypeId,
-      data.quantity,
+      data.quantity
     );
     throw new Response(
       JSON.stringify({ numberOfCreatedProducts: createdProducts }),
       {
         status: 200,
         statusText: "OK",
-      },
+      }
     );
   } else {
     throw new Response(null, {
@@ -108,15 +108,14 @@ const deleteRequest = async (request: Request) => {
 
   const parsedData = await parseBody(request, schema);
 
-  if(parsedData.success) {
+  if (parsedData.success) {
     const data = parsedData.data;
     const deletedProduct = await deleteProduct(data.id);
 
-
-  throw new Response(JSON.stringify(deletedProduct), {
-    status: 200,
-    statusText: "Text",
-  });
+    throw new Response(JSON.stringify(deletedProduct), {
+      status: 200,
+      statusText: "Text",
+    });
   } else {
     throw new Response(null, {
       status: 400,

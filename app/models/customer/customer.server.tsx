@@ -67,7 +67,7 @@ type UpdateCustomerDto = {
 
 export const updateCustomer = async (
   id: string,
-  customer: UpdateCustomerDto,
+  customer: UpdateCustomerDto
 ) => {
   return database.customer.update({
     where: { id },
