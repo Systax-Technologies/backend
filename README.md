@@ -1,14 +1,17 @@
 # project work
 
+- [backend](#backend)
+- [dev database](#start-dev-database-server)
+- [prisma studio](#prisma-studio)
 - [api docs](#api-docs)
 
 ## backend
 
 This repo contains a [Remix.run](https://remix.run) project with a [Postgresql](https://postgresql.org) database queried with [Prisma.io](https://prisma.io).
 
-The backend also exposes API routes in the [/api](./app/routes/api) folder.
+The backend also exposes API routes in the [/api/v1](./app/routes/api/v1/) folder.
 
-All requests to the API routes, except for the `/login` API route , **must** have the `authorization` header set with the token in the form:
+All requests to the API routes, except for the `/api/v1/.../login` API route , **must** have the `authorization` header set with the token in the form:
 
 ```ts
 const headers = {
@@ -201,4 +204,3 @@ The route will return a `Content-Type: application/json` formatted as:
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
 ```
->>>>>>> Stashed changes
