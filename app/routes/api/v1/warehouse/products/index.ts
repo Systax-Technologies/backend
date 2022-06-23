@@ -2,13 +2,11 @@ import { ProductStatus } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import { parseBody } from "~/lib/parse-body.server";
+import type { Products } from "~/models/product/product.server";
 import {
-  countProductByStatus,
-  countProductByType,
   createManyProducts,
   deleteProduct,
   findManyProducts,
-  Products,
   updateProduct,
 } from "~/models/product/product.server";
 

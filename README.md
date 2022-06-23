@@ -194,6 +194,27 @@ Accepts a `DELETE` request with `Content-Type: application/json` and body format
 }
 ```
 
+- `/api/v1/warehouse/employee`
+
+Accepts only a `GET` request.
+
+The body of the response will be a json object that contains a `Employee` object:
+
+```ts
+type Employee = {
+  id: string
+  email: string
+  password: string
+  createdAt: Date
+  updatedAt: Date
+  firstName: string
+  lastName: string
+  role: Role
+};
+
+type Role = "ADMIN" | "WORKER";
+```
+
 ## ecommerce
 
 - `/api/v1/ecommerce/login`
