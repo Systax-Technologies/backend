@@ -1,7 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
 import { countProductByType } from "~/models/product/product.server";
 
-type LoaderData = number;
+type LoaderData = string;
 
 export const loader: LoaderFunction = async ({
   params,
@@ -15,14 +15,14 @@ export const loader: LoaderFunction = async ({
     });
   }
 
-  const countedPoducts = await countProductByType(productTypeId);
+  const countedProducts = await countProductByType(productTypeId);
 
-  if (countedPoducts == null) {
+  if (countedProducts == null) {
     throw new Response(null, {
       status: 404,
       statusText: "Product Type Not Found",
     });
   }
 
-  return countedPoducts;
+  return JSON.stringify({numberOfProducts: countedProducts});
 };

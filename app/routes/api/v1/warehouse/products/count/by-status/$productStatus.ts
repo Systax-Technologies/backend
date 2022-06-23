@@ -3,7 +3,7 @@ import { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import { countProductByStatus } from "~/models/product/product.server";
 
-type LoaderData = number;
+type LoaderData = string;
 
 export const loader: LoaderFunction = async ({
   params,
@@ -28,7 +28,7 @@ export const loader: LoaderFunction = async ({
       });
     }
 
-    return countedPoductsStatus;
+    return JSON.stringify({numberOfProducts: countedPoductsStatus});
   } else {
     throw new Response(null, {
       status: 400,
