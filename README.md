@@ -184,6 +184,16 @@ Accepts a `PATCH` request with `Content-Type: application/json` and a body forma
 
 Where `status: "IN_STOCK" | "SOLD"` and `orderId = null if status == "IN_STOCK"`
 
+### DELETE
+
+Accepts a `DELETE` request with `Content-Type: application/json` and body formatted as:
+
+```json
+{
+  "id": ""
+}
+```
+
 ## ecommerce
 
 - `/api/v1/ecommerce/login`
