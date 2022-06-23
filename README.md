@@ -194,7 +194,7 @@ Accepts a `DELETE` request with `Content-Type: application/json` and body format
 }
 ```
 
-- `/api/v1/warehouse/employees/$employeeId`
+- `/api/v1/warehouse/employee`
 
 Accepts only a `GET` request.
 
