@@ -1,14 +1,19 @@
 import { Customer, Employee } from "@prisma/client";
 import { z } from "zod";
+import { createJwt } from "~/helpers/jwt-helper.server";
 import { LoginDto } from "~/models/dto";
+
+type AccessToken = {
+  accessToken: string;
+};
 
 export const postAuthenticationHandler = async <
   ReturnHandlerLogin extends Employee | Customer | null,
-  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>
+  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>,
 >(
   request: Request,
-  handlerLogin: HandlerLogin
-) => {
+  handlerLogin: HandlerLogin,
+): Promise<AccessToken> => {
   let body: any;
   try {
     body = await request.json();
@@ -37,7 +42,7 @@ export const postAuthenticationHandler = async <
 
     if (user) {
       return {
-        id: user.id,
+        accessToken: createJwt({ id: user.id }),
       };
     } else {
       throw new Response(null, {

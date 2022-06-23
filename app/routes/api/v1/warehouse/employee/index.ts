@@ -1,14 +1,9 @@
 import { Role } from "@prisma/client";
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import { parseBody } from "~/lib/parse-body.server";
 import { verifyRequest } from "~/lib/verify-request.server";
-import {
-  createEmployee,
-  findEmployeeById,
-  updateEmployee,
-} from "~/models/employee/employee.server";
+import { createEmployee, findEmployeeById, updateEmployee } from "~/models/employee/employee.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   if (request.method.toLowerCase() !== "get") {
@@ -18,13 +13,15 @@ export const loader: LoaderFunction = async ({ request }) => {
     });
   }
 
-  const jwt = JSON.parse(verifyRequest(request));
+  const jwt = verifyRequest(request);
 
   const schema = z.object({
     id: z.string(),
   });
 
-  const parsedData = schema.safeParse(jwt);
+  const parsedData = schema.safeParse(
+    typeof jwt === "string" ? JSON.parse(jwt) : jwt,
+  );
 
   if (parsedData.success) {
     const employee = await findEmployeeById(parsedData.data.id);

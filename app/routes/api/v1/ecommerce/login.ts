@@ -10,5 +10,5 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
 
-  await postAuthenticationHandler(request, findCustomerByLogin);
+  return postAuthenticationHandler(request, findCustomerByLogin);
 };
