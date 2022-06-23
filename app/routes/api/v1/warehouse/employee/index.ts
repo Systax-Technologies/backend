@@ -16,6 +16,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const schema = z.object({
     id: z.string(),
   });
+
   const parsedData = schema.safeParse(
     typeof jwt === "string" ? JSON.parse(jwt) : jwt,
   );
