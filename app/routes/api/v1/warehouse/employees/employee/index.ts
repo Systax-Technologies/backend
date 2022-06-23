@@ -51,16 +51,16 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
     case "post":
-      postRequest(request);
-      break;
+      return postRequest(request);
     case "patch":
-      patchRequest(request);
-      break;
+      return patchRequest(request);
     case "delete":
-      deleteRequest(request);
-      break;
+      return deleteRequest(request);
     default:
-      break;
+      throw new Response(null, {
+        status: 405,
+        statusText: "Method Not Allowed",
+      });
   }
 };
 
