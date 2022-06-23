@@ -3,7 +3,9 @@ import { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import { countProductByStatus } from "~/models/product/product.server";
 
-type LoaderData = string;
+type LoaderData = {
+  numberOfProducts: number;
+};
 
 export const loader: LoaderFunction = async ({
   params,
@@ -13,22 +15,22 @@ export const loader: LoaderFunction = async ({
   if (productStatus == null) {
     throw new Response(null, {
       status: 400,
-      statusText: "Product Status Not Provided",
+      statusText: "Invalid Request",
     });
   }
   const schema = z.nativeEnum(ProductStatus);
   const parsedData = schema.safeParse(productStatus);
   if (parsedData.success) {
-    const countedPoductsStatus = await countProductByStatus(parsedData.data);
+    const countedProductsStatus = await countProductByStatus(parsedData.data);
 
-    if (countedPoductsStatus == null) {
+    if (countedProductsStatus == null) {
       throw new Response(null, {
         status: 404,
         statusText: "Product Type Not Found",
       });
     }
 
-    return JSON.stringify({numberOfProducts: countedPoductsStatus});
+    return { numberOfProducts: countedProductsStatus };
   } else {
     throw new Response(null, {
       status: 400,

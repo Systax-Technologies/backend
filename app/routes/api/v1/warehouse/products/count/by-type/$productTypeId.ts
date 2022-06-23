@@ -1,7 +1,9 @@
 import { LoaderFunction } from "@remix-run/node";
 import { countProductByType } from "~/models/product/product.server";
 
-type LoaderData = string;
+type LoaderData = {
+  numberOfProducts: number;
+};
 
 export const loader: LoaderFunction = async ({
   params,
@@ -24,5 +26,5 @@ export const loader: LoaderFunction = async ({
     });
   }
 
-  return JSON.stringify({numberOfProducts: countedProducts});
+  return { numberOfProducts: countedProducts };
 };
