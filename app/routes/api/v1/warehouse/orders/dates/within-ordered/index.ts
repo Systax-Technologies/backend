@@ -44,5 +44,10 @@ export const action: ActionFunction = async ({ request }) => {
       status: 200,
       statusText: "OK",
     });
+  } else {
+    throw new Response(null, {
+      status: 400,
+      statusText: "Bad Request",
+    });
   }
 };
