@@ -1,18 +1,23 @@
 import { ProductStatus } from "@prisma/client";
-import type { Product } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
+import { parseBody } from "~/lib/parse-body.server";
 import {
   createManyProducts,
   findManyProducts,
+  Products,
   updateProduct,
 } from "~/models/product/product.server";
-import { parseBody } from "~/lib/parse-body.server";
 
-type LoaderData = Product[];
+type LoaderData = {
+  products: Products;
+};
 
 export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  return await findManyProducts();
+  const products = await findManyProducts();
+  return {
+    products,
+  };
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -45,12 +50,15 @@ const postRequest = async (request: Request) => {
     const data = parsedData.data;
     const createdProducts = await createManyProducts(
       data.productTypeId,
-      data.quantity
+      data.quantity,
     );
-    throw new Response(JSON.stringify({ numberOfCreatedProducts: createdProducts} ), {
-      status: 200,
-      statusText: "OK",
-    });
+    throw new Response(
+      JSON.stringify({ numberOfCreatedProducts: createdProducts }),
+      {
+        status: 200,
+        statusText: "OK",
+      },
+    );
   } else {
     throw new Response(null, {
       status: 400,

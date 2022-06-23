@@ -109,7 +109,41 @@ The route will return a `Content-Type: application/json` formatted as:
 
 - `/api/v1/warehouse/products`
 
-Accepts a `POST` request and a `PATCH` request.
+Accepts a `GET` request, a `POST` request and a `PATCH` request.
+
+#### GET
+
+Accepts a `GET` request.
+
+The route will return a `Content-Type: application/json` and a body formatted as:
+
+```ts
+{
+  activeProducts: Products
+}
+```
+
+Where:
+
+```ts
+type Products = {
+  id: string,
+  status: ProductStatus,
+  orderId: string | null,
+  productTypeId: string,
+  activeProduct: ActiveProduct | null
+}[]
+
+type ProductStatus = "IN_STOCK" | "SOLD";
+
+type ActiveProduct = {
+  id: string,
+  status: ActiveProductStatus,
+  customerId: string
+}
+
+type ActiveProductStatus = "ACTIVE" | "REMOVED" | "DAMAGED"
+```
 
 #### POST
 
@@ -167,3 +201,4 @@ The route will return a `Content-Type: application/json` formatted as:
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
 ```
+>>>>>>> Stashed changes
