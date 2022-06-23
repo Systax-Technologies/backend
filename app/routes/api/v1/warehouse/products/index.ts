@@ -47,7 +47,7 @@ const postRequest = async (request: Request) => {
       data.productTypeId,
       data.quantity
     );
-    throw new Response(JSON.stringify(createdProducts), {
+    throw new Response(JSON.stringify({ numberOfCreatedProducts: createdProducts} ), {
       status: 200,
       statusText: "OK",
     });
@@ -78,7 +78,7 @@ const patchRequest = async (request: Request) => {
     });
     throw new Response(JSON.stringify(updatedProduct), {
       status: 200,
-      statusText: "Text",
+      statusText: "OK",
     });
   } else {
     throw new Response(null, {

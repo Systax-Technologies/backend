@@ -1,5 +1,7 @@
 # project work
 
+- [api docs](#api-docs)
+
 ## backend
 
 This repo contains a [Remix.run](https://remix.run) project with a [Postgresql](https://postgresql.org) database queried with [Prisma.io](https://prisma.io).
@@ -78,3 +80,90 @@ In order to run the `prisma studio` utility, run:
   ```sh
   $ DATABASE_URL="postresql://<user>:<password>@<host>:<port>/<db>" npx prisma studio
   ```
+
+# API docs
+
+- [warehouse APIs](#warehouse)
+- [ecommerce APIs](#ecommerce)
+
+## warehouse
+
+- `/api/v1/warehouse/login`
+
+Accepts only a `POST` request with `Content-Type: application/json` and a body formatted as:
+
+```json
+{
+  "email": "greghouse@princeton.com",
+  "password": "ED928470A9D684C0EE566BD84C7449FE6C03413F3BB61F527F04473B38F4EFD0"
+}
+```
+
+The route will return a `Content-Type: application/json` formatted as:
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+- `/api/v1/warehouse/products`
+
+Accepts a `POST` request and a `PATCH` request.
+
+#### POST
+
+Accepts a `POST` request with `Content-Type: application/json` and a body formatted as:
+
+```json
+{
+  "productTypeId": "1234-5678-9012",
+  "quantity": 3
+}
+```
+
+Where **quantity >= 1**
+
+The route will return a `Content-Type: application/json` and a body formatted as:
+
+```json
+{
+  "numberOfCreatedProducts": 3
+}
+```
+
+#### PATCH
+
+Accepts a `PATCH` request with `Content-Type: application/json` and a body formatted as:
+
+```json
+{
+  "id": "",
+  "status": "",
+  "productTypeId": "",
+  "orderId": "",
+}
+```
+
+Where `status: "IN_STOCK" | "SOLD"` and `orderId = null if status == "IN_STOCK"`
+
+## ecommerce
+
+- `/api/v1/ecommerce/login`
+
+Accepts only a `POST` request with `Content-Type: application/json` and a body formatted as:
+
+```json
+{
+  "email": "greghouse@princeton.com",
+  "password": "ED928470A9D684C0EE566BD84C7449FE6C03413F3BB61F527F04473B38F4EFD0"
+}
+```
+
+The route will return a `Content-Type: application/json` formatted as:
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
