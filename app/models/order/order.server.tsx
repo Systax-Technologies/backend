@@ -13,15 +13,19 @@ export const findOrderById = async (id: string): Promise<Order | null> => {
   });
 };
 
-export const createOrder = async (data: Order): Promise<Order | null> => {
+export const createOrder = async (
+  customerId: string
+): Promise<Order | null> => {
   return database.order.create({
-    data,
+    data: {
+      customerId,
+    },
   });
 };
 
 export const updateOrder = async (
   id: string,
-  data: Order
+  data: Omit<Order, "id">
 ): Promise<Order | null> => {
   return database.order.update({
     where: {
@@ -47,11 +51,7 @@ export const findOrdersByCustomer = async (
       customerId,
     },
     include: {
-      customer: {
-        include: {
-          user: true,
-        },
-      },
+      customer: true,
     },
   });
 };
