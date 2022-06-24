@@ -150,7 +150,7 @@ Content-Type: application/json
 
 ### GET `/api/v1/warehouse/products`
 
-Retrieve the complete list od products.
+Retrieve the complete list of products.
 
 #### Required Headers: <!-- omit in toc -->
 
