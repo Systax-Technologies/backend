@@ -10,7 +10,7 @@ export const parseBody = async <Output, Input>(
   try {
     requestBody = await request.json();
   } catch (e) {
-    return badRequest();
+    throw badRequest();
   }
 
   const parsedData = schema.safeParse(requestBody);
@@ -18,6 +18,6 @@ export const parseBody = async <Output, Input>(
   if (parsedData.success) {
     return parsedData.data;
   } else {
-    return badRequest();
+    throw badRequest();
   }
 };
