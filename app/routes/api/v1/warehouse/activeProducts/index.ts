@@ -8,10 +8,6 @@ import {
   updateActiveProductStatus,
 } from "~/models/activeProduct/activeProduct.server";
 
-type LoaderData = {};
-
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {};
-
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
     case "post":

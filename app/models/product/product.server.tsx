@@ -84,7 +84,7 @@ export const updateManyProductOrders = async (
  * Function to activate a product
  * @param customerId id of customer to associate an active product
  * @param productId id of product to activate
- * @returns The product activate
+ * @returns The Product
  */
 export const productActivation = async (
   customerId: string,
