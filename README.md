@@ -94,8 +94,6 @@ In order to run the `prisma studio` utility, run:
   - [DELETE `/api/v1/warehouse/products`](#delete-apiv1warehouseproducts)
   - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees)
   - [GET `/api/v1/warehouse/employees/employee`](#get-apiv1warehouseemployeesemployee)
-    - [Return: < !-- omit in toc -->](#return-----omit-in-toc---)
-    - [Possible errors: < !-- omit in toc -->](#possible-errors-----omit-in-toc---)
   - [POST `/api/v1/warehouse/employees/employee`](#post-apiv1warehouseemployeesemployee)
   - [PATCH `/api/v1/warehouse/employees/employee`](#patch-apiv1warehouseemployeesemployee)
   - [DELETE `/api/v1/warehouse/employees/employee`](#delete-apiv1warehouseemployeesemployee)
@@ -384,7 +382,7 @@ Authorization: Bearer <jwt>
 >
 > - The jwt must be valid and contain the id of the employee
 
-#### Return: < !-- omit in toc -->
+#### Return: <!-- omit in toc -->
 
 ```json
 {
@@ -401,7 +399,7 @@ Authorization: Bearer <jwt>
 }
 ```
 
-#### Possible errors: < !-- omit in toc -->
+#### Possible errors: <!-- omit in toc -->
 
 |               Error code | Description                         |
 | -----------------------: | :---------------------------------- |
