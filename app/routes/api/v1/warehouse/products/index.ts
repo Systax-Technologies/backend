@@ -114,7 +114,7 @@ const deleteRequest = async (request: Request) => {
 
     throw new Response(JSON.stringify(deletedProduct), {
       status: 200,
-      statusText: "Text",
+      statusText: "Ok",
     });
   } else {
     throw new Response(null, {
