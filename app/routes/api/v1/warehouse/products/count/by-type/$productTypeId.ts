@@ -12,13 +12,13 @@ export const loader: LoaderFunction = async ({
   const productTypeId = params.productTypeId;
 
   if (productTypeId == null) {
-    return badRequest();
+    throw badRequest();
   }
 
   const countedProducts = await countProductByType(productTypeId);
 
   if (countedProducts == null) {
-    return notFoundRequest();
+    throw notFoundRequest();
   }
 
   return { numberOfProducts: countedProducts };

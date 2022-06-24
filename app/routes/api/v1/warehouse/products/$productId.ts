@@ -11,13 +11,13 @@ export const loader: LoaderFunction = async ({
   const productId = params.productId;
 
   if (productId == null) {
-    return badRequest();
+    throw badRequest();
   }
 
   const product = await findProduct(productId);
 
   if (product == null) {
-    return notFoundRequest();
+    throw notFoundRequest();
   }
 
   return product;

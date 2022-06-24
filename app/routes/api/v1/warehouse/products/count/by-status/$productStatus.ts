@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({
   const productStatus = params.productStatus;
 
   if (productStatus == null) {
-    return badRequest();
+    badRequest();
   }
 
   const schema = z.nativeEnum(ProductStatus);
@@ -23,11 +23,11 @@ export const loader: LoaderFunction = async ({
     const countedProductsStatus = await countProductByStatus(parsedData.data);
 
     if (countedProductsStatus == null) {
-      return notFoundRequest();
+      throw notFoundRequest();
     }
 
     return { numberOfProducts: countedProductsStatus };
   } else {
-    return badRequest();
+    throw badRequest();
   }
 };
