@@ -37,7 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
       deleteRequest(request);
 
     default: {
-      return methodNotAllowed();
+      throw methodNotAllowed();
     }
   }
 };
@@ -81,7 +81,7 @@ const patchRequest = async (request: Request) => {
   });
 
   if (!updatedProduct) {
-    return notFoundRequest();
+    throw notFoundRequest();
   }
 
   throw new Response(JSON.stringify(updatedProduct), {
@@ -100,7 +100,7 @@ const deleteRequest = async (request: Request) => {
   const deletedProduct = await deleteProduct(data.id);
 
   if (deleteProduct == null) {
-    return notFoundRequest();
+    throw notFoundRequest();
   }
 
   throw new Response(JSON.stringify(deletedProduct), {
