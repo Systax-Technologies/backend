@@ -2,7 +2,7 @@ import type { Employee } from "@prisma/client";
 import { Role } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
-import { findEmployeeByRole } from "~/models/employee/employee.server";
+import { findEmployeesByRole } from "~/models/employee/employee.server";
 
 type LoaderData = Employee[];
 
@@ -30,7 +30,7 @@ export const loader: LoaderFunction = async ({
   const parsedData = schema.safeParse(role);
 
   if (parsedData.success) {
-    const employee = await findEmployeeByRole(parsedData.data);
+    const employee = await findEmployeesByRole(parsedData.data);
 
     if (employee == null) {
       throw new Response(null, {

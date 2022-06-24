@@ -7,7 +7,7 @@ import { verifyRequest } from "~/lib/verify-request.server";
 import {
   createEmployee,
   deleteEmployee,
-  findEmployeeById,
+  findEmployee,
   updateEmployee,
 } from "~/models/employee/employee.server";
 
@@ -30,7 +30,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   );
 
   if (parsedData.success) {
-    const employee = await findEmployeeById(parsedData.data.id);
+    const employee = await findEmployee(parsedData.data.id);
 
     if (employee == null) {
       throw new Response(null, {
