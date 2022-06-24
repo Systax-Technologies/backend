@@ -1,6 +1,7 @@
 import { ProductStatus } from "@prisma/client";
-import { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
+import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
 import { countProductByStatus } from "~/models/product/product.server";
 
 type LoaderData = {
@@ -13,28 +14,20 @@ export const loader: LoaderFunction = async ({
   const productStatus = params.productStatus;
 
   if (productStatus == null) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Invalid Request",
-    });
+    return badRequest();
   }
+
   const schema = z.nativeEnum(ProductStatus);
   const parsedData = schema.safeParse(productStatus);
   if (parsedData.success) {
     const countedProductsStatus = await countProductByStatus(parsedData.data);
 
     if (countedProductsStatus == null) {
-      throw new Response(null, {
-        status: 404,
-        statusText: "Product Type Not Found",
-      });
+      return notFoundRequest();
     }
 
     return { numberOfProducts: countedProductsStatus };
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Invalid Request",
-    });
+    return badRequest();
   }
 };
