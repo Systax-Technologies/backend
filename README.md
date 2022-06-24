@@ -95,6 +95,10 @@ In order to run the `prisma studio` utility, run:
   - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees)
   - [GET `/api/v1/warehouse/employees/employee`](#get-apiv1warehouseemployeesemployee)
   - [POST `/api/v1/warehouse/employees/employee`](#post-apiv1warehouseemployeesemployee)
+  - [PATCH `/api/v1/warehouse/employees/employee`](#patch-apiv1warehouseemployeesemployee)
+  - [DELETE `/api/v1/warehouse/employees/employee`](#delete-apiv1warehouseemployeesemployee)
+  - [POST `/api/v1/warehouse/employees/employee/name`](#post-apiv1warehouseemployeesemployeename)
+  - [GET `/api/v1/warehouse/employees/role/{role}`](#get-apiv1warehouseemployeesrolerole)
 - [Ecommerce](#ecommerce)
   - [POST `/api/v1/ecommerce/login`](#post-apiv1ecommercelogin)
 
@@ -120,6 +124,11 @@ Content-Type: application/json
   "password": "ED928470A9D684C0EE566BD84C7449FE6C03413F3BB61F527F04473B38F4EFD0"
 }
 ```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+> - `password` must be already hashed
 
 #### Return: <!-- omit in toc -->
 
@@ -155,17 +164,25 @@ Content-Type: application/json
 {
   "products": [
     "id": "ch72gsb320000udocl363eofy",
-    "status": "SOLD" | "IN_STOCK",
-    "orderId": "c00p6qup20000ckkzslahp5pn" | null,
+    "status": "SOLD",
+    "orderId": "c00p6qup20000ckkzslahp5pn",
     "productTypeId": "cl4rb193000002a66jmw17ri3",
     "activeProduct": {
       "id": "cl4rb2pdh00012a6640drwif0",
-      "status": "ACTIVE" | "REMOVED"| "DAMAGED",
+      "status": "ACTIVE",
       "customerId": "cl4rb3wvv00032a66audt0pbp"
-    } | null
+    }
   ]
 }
 ```
+
+> **Constraints:**
+>
+> - All the id fields must be a valid cuid
+> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
+> - `orderId` can be `null`
+> - `status` under `activeProduct` accepts only "ACTIVE", "REMOVED" or "DAMAGED" as valid values
+> - `activeProduct` can be `null`
 
 ---
 
@@ -190,7 +207,8 @@ Content-Type: application/json
 
 > **Constraints:**
 >
-> - The field `quantity` must be greater than `0`
+> - `productTypeId` must be a valid cuid
+> - `quantity` must be greater than `0`
 
 #### Return: <!-- omit in toc -->
 
@@ -211,7 +229,7 @@ Content-Type: application/json
 
 ### PATCH `/api/v1/warehouse/products`
 
-Update the field of a specific product
+Update the fields of a specific product
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -233,6 +251,9 @@ Content-Type: application/json
 > **Constraints:**
 >
 > - The `id` field is readonly, used only to query the product to update
+> - All the id fields must be a valid cuid
+> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
+> - `orderId` can be `null`
 
 #### Return: <!-- omit in toc -->
 
@@ -246,6 +267,11 @@ Content-Type: application/json
   }
 }
 ```
+
+> **Constraints:**
+>
+> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
+> - `orderId` can be `null`
 
 #### Possible errors: <!-- omit in toc -->
 
@@ -274,6 +300,10 @@ Content-Type: application/json
 }
 ```
 
+> **Constraints:**
+>
+> - The `id` field is readonly, used only to query the product to update, and must be a valid cuid
+
 #### Return: <!-- omit in toc -->
 
 ```json
@@ -286,6 +316,11 @@ Content-Type: application/json
   }
 }
 ```
+
+> **Constraints:**
+>
+> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
+> - `orderId` can be `null`
 
 #### Possible errors: <!-- omit in toc -->
 
@@ -319,12 +354,16 @@ Content-Type: application/json
       "updatedAt":"01-01-1970-00:00:00",
       "firstName":"John",
       "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+      "role":"ADMIN"
     },
     ...
   ]
 }
 ```
+
+> **Constraints:**
+>
+> - `role` can be only "ADMIN" or "WORKER"
 
 ---
 
@@ -358,6 +397,7 @@ Content-Type: application/json
 >
 > - `email` must have a valid email address syntax
 > - `password` must be already hashed
+> - `role` accepts only "ADMIN" and "WORKER" as valid values
 
 #### Return: <!-- omit in toc -->
 
@@ -376,12 +416,232 @@ Content-Type: application/json
 }
 ```
 
+> **Constraints:**
+>
+> - `role` can be only "ADMIN" or "WORKER"
+
 #### Possible errors: <!-- omit in toc -->
 
 |             Error code | Description                         |
 | ---------------------: | :---------------------------------- |
 |        400 Bad Request | The request body content is invalid |
 | 405 Method Not Allowed | The request method is not `POST`    |
+
+---
+
+### PATCH `/api/v1/warehouse/employees/employee`
+
+Update the fields of an employee
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "id":"ch72gsb320000udocl363eofy",
+  "employee":{
+      "email":"example@example.com",
+      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+      "firstName":"John",
+      "lastName":"Doe",
+      "role":"ADMIN" | "WORKER"
+  }
+}
+```
+
+> **Constraints:**
+>
+> - The `id` field is readonly, used only to query the product to update
+> - `email` must have a valid email address syntax
+> - `password` must be already hashed
+> - `role` accepts only "ADMIN" and "WORKER" as valid values
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "employee": {
+      "id":"ch72gsb320000udocl363eofy",
+      "email":"example@example.com",
+      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+      "createdAt":"01-01-1970-00:00:00",
+      "updatedAt":"01-01-1970-00:00:00",
+      "firstName":"John",
+      "lastName":"Doe",
+      "role":"ADMIN" | "WORKER"
+}
+```
+
+> **Constraints:**
+>
+> - `role` can be only "ADMIN" or "WORKER"
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+| `405` Method Not Allowed | The request method is not `PATCH`   |
+
+---
+
+### DELETE `/api/v1/warehouse/employees/employee`
+
+Delete a specific employee
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "id": "ch72gsb320000udocl363eofy"
+}
+```
+
+> **Constraints:**
+>
+> - `id` must be a valid cuid
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "employee": {
+      "id":"ch72gsb320000udocl363eofy",
+      "email":"example@example.com",
+      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+      "createdAt":"01-01-1970-00:00:00",
+      "updatedAt":"01-01-1970-00:00:00",
+      "firstName":"John",
+      "lastName":"Doe",
+      "role":"ADMIN" | "WORKER"
+}
+```
+
+> **Constraints:**
+>
+> - `role` can be only "ADMIN" or "WORKER"
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+| `405` Method Not Allowed | The request method is not `DELETE`  |
+
+---
+
+### POST `/api/v1/warehouse/employees/employee/name`
+
+Find an employee by its first name and last name
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe"
+}
+```
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "employee": {
+      "id":"ch72gsb320000udocl363eofy",
+      "email":"example@example.com",
+      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+      "createdAt":"01-01-1970-00:00:00",
+      "updatedAt":"01-01-1970-00:00:00",
+      "firstName":"John",
+      "lastName":"Doe",
+      "role":"ADMIN" | "WORKER"
+}
+```
+
+> **Constraints:**
+>
+> - `role` can be only "ADMIN" or "WORKER"
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+| `405` Method Not Allowed | The request method is not `POST`    |
+
+---
+
+### GET `/api/v1/warehouse/employees/role/{role}`
+
+Find a list of employee filtered by role
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "role": "ADMIN"
+}
+```
+
+> **Constraints:**
+>
+> - `role` only accepts `ADMIN` or `WORKER` as valid values
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "employees":[
+    {
+      "id":"ch72gsb320000udocl363eofy",
+      "email":"example@example.com",
+      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+      "createdAt":"01-01-1970-00:00:00",
+      "updatedAt":"01-01-1970-00:00:00",
+      "firstName":"John",
+      "lastName":"Doe",
+      "role":"ADMIN" | "WORKER"
+    },
+    ...
+  ]
+}
+```
+
+> **Constraints:**
+>
+> - `role` can be only "ADMIN" or "WORKER"
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                        |
+| -----------------------: | :------------------------------------------------- |
+|        `400` Bad Request | The request body content or parameters are invalid |
+|          `404` Not Found | No employees found with the specified role         |
+| `405` Method Not Allowed | The request method is not `GET`                    |
 
 ---
 
@@ -407,6 +667,11 @@ Content-Type: application/json
   "password": "ED928470A9D684C0EE566BD84C7449FE6C03413F3BB61F527F04473B38F4EFD0"
 }
 ```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+> - `password` must be already hashed
 
 #### Return: <!-- omit in toc -->
 
