@@ -11,7 +11,7 @@ import { database } from "~/helpers/db-helper.server";
  * @returns The `ActiveProduct` object found
  */
 export const findActiveProduct = async (
-  id: string
+  id: string,
 ): Promise<ActiveProduct | null> => {
   return database.activeProduct.findUnique({
     where: { id },
@@ -40,7 +40,7 @@ export const findActiveProductsByCustomerId = async (
  * @returns The `ActiveProduct` object created
  */
 export const createActiveProduct = async (
-  customerId: string
+  customerId: string,
 ): Promise<ActiveProduct | null> => {
   return database.activeProduct.create({
     data: { customerId },
@@ -55,7 +55,7 @@ export const createActiveProduct = async (
  */
 export const updateActiveProductStatus = async (
   id: string,
-  status: ActiveProductStatus
+  status: ActiveProductStatus,
 ): Promise<ActiveProduct | null> => {
   try {
     return database.activeProduct.update({
@@ -73,7 +73,7 @@ export const updateActiveProductStatus = async (
  * @returns The `ActiveProduct` object deleted
  */
 export const deleteActiveProduct = async (
-  id: string
+  id: string,
 ): Promise<ActiveProduct | null> => {
   try {
     return database.activeProduct.delete({

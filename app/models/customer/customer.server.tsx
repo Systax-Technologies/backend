@@ -1,6 +1,11 @@
-import type { Address, CreditCard, Customer, User } from "@prisma/client";
+import type { Customer } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
-import { LoginDto } from "../dto";
+import {
+  creditCardInput,
+  CustomerInput,
+  LoginDto,
+  UpdateCustomerDto,
+} from "../dto";
 
 /**
  * Function to find a specific Customer
@@ -13,7 +18,10 @@ export const findCustomer = async (id: string): Promise<Customer | null> => {
   });
 };
 
-export const findCustomerByLogin = async ({ email, password }: LoginDto) => {
+export const findCustomerByLogin = async ({
+  email,
+  password,
+}: LoginDto): Promise<Customer | null> => {
   return database.customer.findFirst({
     where: {
       email,
@@ -22,87 +30,51 @@ export const findCustomerByLogin = async ({ email, password }: LoginDto) => {
   });
 };
 
-type CustomerCreateInput = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  billingAddress?: Address;
-  shippingAddress?: Address;
-  creditCard?: CreditCard;
-};
-
 export const createCustomer = async ({
-  email,
-  password,
-  firstName,
-  lastName,
   billingAddress,
   shippingAddress,
   creditCard,
-}: CustomerCreateInput): Promise<Customer> => {
+  ...data
+}: CustomerInput): Promise<Customer> => {
   return database.customer.create({
     data: {
       billingAddress: { create: billingAddress },
       shippingAddress: { create: shippingAddress },
       creditCard: { create: creditCard },
-      user: {
-        create: {
-          email,
-          password,
-          firstName,
-          lastName,
-        },
-      },
+      ...data,
     },
   });
 };
 
-type UpdateCustomerDto = {
-  user: Omit<User, "id">;
-  billingAddres: Omit<Address, "id">;
-  shippingAddress: Omit<Address, "id">;
-  creditCard: Omit<CreditCard, "id">;
-};
-
-export const updateCustomer = async (
-  id: string,
-  customer: UpdateCustomerDto
-) => {
+export const updateCustomer = async (id: string, data: UpdateCustomerDto) => {
   return database.customer.update({
     where: { id },
+    data,
+  });
+};
+
+export const createCustomerCreditCard = async (
+  customerId: string,
+  data: creditCardInput,
+) => {
+  return database.creditCard.create({
     data: {
-      user: {
-        update: {
-          ...customer.user,
-        },
-      },
-      billingAddress: {
-        update: {
-          ...customer.billingAddres,
-        },
-      },
-      shippingAddress: {
-        update: {
-          ...customer.shippingAddress,
-        },
-      },
-      creditCard: {
-        update: {
-          where: {
-            number: customer.creditCard.number,
-          },
-          data: {
-            ...customer.creditCard,
-          },
+      ...data,
+      customer: {
+        connect: {
+          id: customerId,
         },
       },
     },
   });
 };
 
-export const deleteCustomer = async (id: string) => {
-  return database.customer.delete({
-    where: { id },
-  });
+export const deleteCustomer = async (id: string): Promise<Customer | null> => {
+  try {
+    return database.customer.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };

@@ -1,5 +1,6 @@
 import type { ProductType } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
+import { ProductTypeInput, ProductTypeUpdateInput } from "../dto";
 
 /**
  * Function to find a specific Product Type
@@ -14,15 +15,6 @@ export const findProductType = async (
   });
 };
 
-type ProductTypeInput = {
-  model: string;
-  imageUrl: string;
-  description: string;
-  color: string;
-  size: string;
-  price: number;
-};
-
 /**
  * Function to create a new Product Type
  * @param data The `ProductType` object to add
@@ -34,15 +26,6 @@ export const createProductType = async (
   return database.productType.create({
     data,
   });
-};
-
-type ProductTypeUpdateInput = {
-  model: string;
-  imageUrl: string;
-  description: string;
-  color: string;
-  size: string;
-  price: number;
 };
 
 /**

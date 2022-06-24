@@ -1,6 +1,10 @@
 import { ProductStatus } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
+import {
+  methodNotAllowed,
+  notFoundRequest,
+} from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import type { Products } from "~/models/product/product.server";
 import {
@@ -33,10 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
       deleteRequest(request);
 
     default: {
-      throw new Response(null, {
-        status: 405,
-        statusText: "Invalid Method",
-      });
+      throw methodNotAllowed();
     }
   }
 };
@@ -78,13 +79,11 @@ const patchRequest = async (request: Request) => {
     orderId: data.orderId,
     productTypeId: data.productTypeId,
   });
-
-  throw new Response(JSON.stringify(updatedProduct), {
-    status: 200,
-    statusText: "OK",
-  });
-};
-
+  
+  if (!updatedProduct) {
+    throw notFoundRequest();
+  }
+  
 const deleteRequest = async (request: Request) => {
   const schema = z.object({
     id: z.string().cuid(),
@@ -95,10 +94,7 @@ const deleteRequest = async (request: Request) => {
   const deletedProduct = await deleteProduct(data.id);
 
   if (deleteProduct == null) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Not Found",
-    });
+    throw notFoundRequest();
   }
 
   throw new Response(JSON.stringify(deletedProduct), {
