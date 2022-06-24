@@ -7,6 +7,12 @@
 
 ## backend <!-- omit in toc -->
 
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=remix,postgres,prisma,docker,github" />
+  </a>
+</p>
+
 This repo contains a [Remix.run](https://remix.run) project with a [Postgresql](https://postgresql.org) database queried with [Prisma.io](https://prisma.io).
 
 The backend also exposes API routes in the [/api/v1](./app/routes/api/v1/) folder.
