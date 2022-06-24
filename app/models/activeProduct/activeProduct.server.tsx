@@ -1,4 +1,8 @@
-import type { ActiveProduct, ActiveProductStatus } from "@prisma/client";
+import type {
+  ActiveProduct,
+  ActiveProductStatus,
+  ProductStatus,
+} from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 
 /**
@@ -11,6 +15,22 @@ export const findActiveProduct = async (
 ): Promise<ActiveProduct | null> => {
   return database.activeProduct.findUnique({
     where: { id },
+  });
+};
+
+export const findActiveProductsByStatus = async (
+  status: ActiveProductStatus
+): Promise<ActiveProduct[]> => {
+  return database.activeProduct.findMany({
+    where: { status },
+  });
+};
+
+export const findActiveProductsByCustomerId = async (
+  customerId: string
+): Promise<ActiveProduct[]> => {
+  return database.activeProduct.findMany({
+    where: { customerId },
   });
 };
 

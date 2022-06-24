@@ -1,4 +1,4 @@
-import type { ActiveProduct, Product, ProductStatus } from "@prisma/client";
+import { ActiveProduct, Product, ProductStatus } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 
 /**
@@ -78,6 +78,42 @@ export const updateManyProductOrders = async (
       status: "SOLD",
     },
   });
+};
+
+/**
+ * Function to activate a product
+ * @param customerId id of customer to associate an active product
+ * @param productId id of product to activate
+ * @returns The Product
+ */
+export const productActivation = async (
+  customerId: string,
+  productId: string
+): Promise<Product | null> => {
+  const result = await database.product.findFirst({
+    where: {
+      id: productId,
+      status: "SOLD",
+    },
+  });
+
+  if (result) {
+    return database.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        activeProduct: {
+          create: {
+            customerId,
+          },
+        },
+        status: "SOLD",
+      },
+    });
+  } else {
+    return null;
+  }
 };
 
 /**
