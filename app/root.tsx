@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
 } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
@@ -30,3 +31,4 @@ export default function App() {
     </html>
   );
 }
+

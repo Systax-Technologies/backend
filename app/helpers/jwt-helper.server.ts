@@ -10,13 +10,12 @@ export const verifyJwt = (jwt: string) => {
   } catch (err) {
     throw new Response(null, { status: 401, statusText: "Unauthenticated" });
   }
-  return decoded.toString();
+  return decoded;
 };
 
-export const createJwt = (payload: object) => {
-  payload = payload || {};
-  return jwtLib.sign(JSON.stringify(payload), JWT_SECRET, {
-    expiresIn: "1h",
+export const createJwt = (payload: Record<string, any>) => {
+  return jwtLib.sign(payload, JWT_SECRET, {
+    expiresIn: 3600,
     algorithm: "HS512",
   });
 };

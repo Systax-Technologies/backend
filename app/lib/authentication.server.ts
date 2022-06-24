@@ -1,24 +1,19 @@
-import { ActionFunction } from "@remix-run/node";
+import { Customer, Employee } from "@prisma/client";
 import { z } from "zod";
-import { verifyRequest } from "~/lib/verify-request.server";
-import { findUserByLogin } from "~/models/user.server";
+import { createJwt } from "~/helpers/jwt-helper.server";
+import { LoginDto } from "~/models/dto";
 
-type ActionData = {
-  id: string;
+type AccessToken = {
+  accessToken: string;
 };
 
-export const action: ActionFunction = async ({
-  request,
-}): Promise<ActionData> => {
-  if (request.method.toLowerCase() !== "post") {
-    throw new Response(null, {
-      status: 405,
-      statusText: "Method Not Allowed",
-    });
-  }
-
-  verifyRequest(request);
-
+export const postAuthenticationHandler = async <
+  ReturnHandlerLogin extends Employee | Customer | null,
+  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>,
+>(
+  request: Request,
+  handlerLogin: HandlerLogin,
+): Promise<AccessToken> => {
   let body: any;
   try {
     body = await request.json();
@@ -38,13 +33,16 @@ export const action: ActionFunction = async ({
   const parsedData = loginSchema.safeParse(body);
 
   if (parsedData.success) {
-    const data = parsedData.data;
+    const { email, password } = parsedData.data;
 
-    const user = await findUserByLogin(data.email, data.password);
+    const user = await handlerLogin({
+      email,
+      password,
+    });
 
     if (user) {
       return {
-        id: user.id,
+        accessToken: createJwt({ id: user.id }),
       };
     } else {
       throw new Response(null, {

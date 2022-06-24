@@ -1,4 +1,4 @@
-import type { Product, ProductStatus } from "@prisma/client";
+import { ActiveProduct, Product, ProductStatus } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 
 /**
@@ -12,22 +12,29 @@ export const findProduct = async (id: string): Promise<Product | null> => {
   });
 };
 
+export type Products = (Product & { activeProduct: ActiveProduct | null })[];
+
+export const findManyProducts = async (): Promise<Products> => {
+  return database.product.findMany({
+    include: {
+      activeProduct: true,
+    },
+  });
+};
+
 /**
  * Function to create one or more Products given the Product Type
  * @param productTypeId ID of the Product Type
  * @param quantity Quantity of single Products to create
  * @returns The count of the number of records created
  */
-export const createManyProduct = async (
+export const createManyProducts = async (
   productTypeId: string,
-  quantity: number
-) => {
-  let data = new Array<any>(quantity).fill({ productTypeId });
-  return (
-    await database.product.createMany({
-      data,
-    })
-  ).count;
+  quantity: number,
+): Promise<{ count: number }> => {
+  return database.product.createMany({
+    data: [...Array(quantity)].map((_) => ({ productTypeId })),
+  });
 };
 
 /**
@@ -38,12 +45,16 @@ export const createManyProduct = async (
  */
 export const updateProduct = async (
   id: string,
-  data: Omit<Product, "id">
+  data: Omit<Product, "id">,
 ): Promise<Product | null> => {
-  return database.product.update({
-    where: { id },
-    data,
-  });
+  try {
+    return database.product.update({
+      where: { id },
+      data,
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -53,22 +64,56 @@ export const updateProduct = async (
  * @param orderId The Order Id to add
  * @returns The count of the number of records updated
  */
-export const updateManyProductOrder = async (
+export const updateManyProductOrders = async (
   ids: string[],
-  orderId: string
-) => {
-  return (
-    await database.product.updateMany({
+  orderId: string,
+): Promise<{ count: number }> => {
+  return database.product.updateMany({
+    where: {
+      id: { in: ids },
+      status: "IN_STOCK",
+    },
+    data: {
+      orderId,
+      status: "SOLD",
+    },
+  });
+};
+
+/**
+ * Function to activate a product
+ * @param customerId id of customer to associate an active product
+ * @param productId id of product to activate
+ * @returns The Product
+ */
+export const productActivation = async (
+  customerId: string,
+  productId: string
+): Promise<Product | null> => {
+  const result = await database.product.findFirst({
+    where: {
+      id: productId,
+      status: "SOLD",
+    },
+  });
+
+  if (result) {
+    return database.product.update({
       where: {
-        id: { in: ids },
-        status: "IN_STOCK",
+        id: productId,
       },
       data: {
-        orderId,
+        activeProduct: {
+          create: {
+            customerId,
+          },
+        },
         status: "SOLD",
       },
-    })
-  ).count;
+    });
+  } else {
+    return null;
+  }
 };
 
 /**
@@ -77,9 +122,13 @@ export const updateManyProductOrder = async (
  * @returns The `Product` object deleted
  */
 export const deleteProduct = async (id: string): Promise<Product | null> => {
-  return database.product.delete({
-    where: { id },
-  });
+  try {
+    return database.product.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -87,8 +136,8 @@ export const deleteProduct = async (id: string): Promise<Product | null> => {
  * @param status The status to count for
  * @returns The count of the matching records
  */
-export const countProductStatus = async (
-  status: ProductStatus
+export const countProductByStatus = async (
+  status: ProductStatus,
 ): Promise<number | null> => {
   return database.product.count({
     where: { status },
@@ -100,8 +149,8 @@ export const countProductStatus = async (
  * @param productTypeId The Id of the Product Type to count for
  * @returns The count of the matching records
  */
-export const countProductType = async (
-  productTypeId: string
+export const countProductByType = async (
+  productTypeId: string,
 ): Promise<number | null> => {
   return database.product.count({ where: { productTypeId } });
 };

@@ -1,5 +1,6 @@
 import type { ProductType } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
+import { ProductTypeInput, ProductTypeUpdateInput } from "../dto";
 
 /**
  * Function to find a specific Product Type
@@ -7,7 +8,7 @@ import { database } from "~/helpers/db-helper.server";
  * @returns The `ProductType` found
  */
 export const findProductType = async (
-  id: string
+  id: string,
 ): Promise<ProductType | null> => {
   return database.productType.findUnique({
     where: { id },
@@ -20,7 +21,7 @@ export const findProductType = async (
  * @returns The `ProductType` object created
  */
 export const createProductType = async (
-  data: ProductType
+  data: ProductTypeInput,
 ): Promise<ProductType | null> => {
   return database.productType.create({
     data,
@@ -35,12 +36,16 @@ export const createProductType = async (
  */
 export const updateProductType = async (
   id: string,
-  data: Omit<ProductType, "id" | "createdAt" | "updatedAt">
+  data: ProductTypeUpdateInput,
 ): Promise<ProductType | null> => {
-  return database.productType.update({
-    where: { id },
-    data,
-  });
+  try {
+    return database.productType.update({
+      where: { id },
+      data,
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -49,9 +54,13 @@ export const updateProductType = async (
  * @returns The `ProductType` object deleted
  */
 export const deleteProductType = async (
-  id: string
+  id: string,
 ): Promise<ProductType | null> => {
-  return database.productType.delete({
-    where: { id },
-  });
+  try {
+    return database.productType.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };

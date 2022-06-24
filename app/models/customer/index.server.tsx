@@ -1,1 +1,1 @@
-export * from "./customer.server"
+export * from "./customer.server";
