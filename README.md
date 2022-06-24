@@ -94,6 +94,8 @@ In order to run the `prisma studio` utility, run:
   - [DELETE `/api/v1/warehouse/products`](#delete-apiv1warehouseproducts)
   - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees)
   - [GET `/api/v1/warehouse/employees/employee`](#get-apiv1warehouseemployeesemployee)
+    - [Return: < !-- omit in toc -->](#return-----omit-in-toc---)
+    - [Possible errors: < !-- omit in toc -->](#possible-errors-----omit-in-toc---)
   - [POST `/api/v1/warehouse/employees/employee`](#post-apiv1warehouseemployeesemployee)
   - [PATCH `/api/v1/warehouse/employees/employee`](#patch-apiv1warehouseemployeesemployee)
   - [DELETE `/api/v1/warehouse/employees/employee`](#delete-apiv1warehouseemployeesemployee)
@@ -241,10 +243,10 @@ Content-Type: application/json
 
 ```json
 {
-    "id": "ch72gsb320000udocl363eofy",
-    "status": "SOLD" | "IN_STOCK",
-    "orderId": "c00p6qup20000ckkzslahp5pn" | null,
-    "productTypeId": "cl4rb193000002a66jmw17ri3",
+  "id": "ch72gsb320000udocl363eofy",
+  "status": "SOLD",
+  "orderId": "c00p6qup20000ckkzslahp5pn",
+  "productTypeId": "cl4rb193000002a66jmw17ri3"
 }
 ```
 
@@ -261,9 +263,9 @@ Content-Type: application/json
 {
   "product": {
     "id": "ch72gsb320000udocl363eofy",
-    "status": "SOLD" | "IN_STOCK",
-    "orderId": "c00p6qup20000ckkzslahp5pn" | null,
-    "productTypeId": "cl4rb193000002a66jmw17ri3",
+    "status": "SOLD",
+    "orderId": "c00p6qup20000ckkzslahp5pn",
+    "productTypeId": "cl4rb193000002a66jmw17ri3"
   }
 }
 ```
@@ -310,9 +312,9 @@ Content-Type: application/json
 {
   "product": {
     "id": "ch72gsb320000udocl363eofy",
-    "status": "SOLD" | "IN_STOCK",
-    "orderId": "c00p6qup20000ckkzslahp5pn" | null,
-    "productTypeId": "cl4rb193000002a66jmw17ri3",
+    "status": "SOLD",
+    "orderId": "c00p6qup20000ckkzslahp5pn",
+    "productTypeId": "cl4rb193000002a66jmw17ri3"
   }
 }
 ```
@@ -369,7 +371,46 @@ Content-Type: application/json
 
 ### GET `/api/v1/warehouse/employees/employee`
 
-_TODO_
+Get an employee with the id written in the JWT
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The jwt must be valid and contain the id of the employee
+
+#### Return: < !-- omit in toc -->
+
+```json
+{
+  "employee": {
+    "id": "ch72gsb320000udocl363eofy",
+    "email": "example@example.com",
+    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+    "createdAt": "01-01-1970-00:00:00",
+    "updatedAt": "01-01-1970-00:00:00",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "ADMIN"
+  }
+}
+```
+
+#### Possible errors: < !-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+|       `401` Unauthorized | The JWT is not valid or not present |
+|          `404` Not Found | No matching employee were found     |
+| `405` Method Not Allowed | The request method is not `GET`     |
+
+---
 
 ### POST `/api/v1/warehouse/employees/employee`
 
@@ -385,11 +426,11 @@ Content-Type: application/json
 
 ```json
 {
-  "email":"example@example.com",
-  "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-  "firstName":"John",
-  "lastName":"Doe",
-  "role":"ADMIN" | "WORKER"
+  "email": "example@example.com",
+  "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+  "firstName": "John",
+  "lastName": "Doe",
+  "role": "ADMIN"
 }
 ```
 
@@ -404,14 +445,14 @@ Content-Type: application/json
 ```json
 {
   "employee": {
-      "id":"ch72gsb320000udocl363eofy",
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "createdAt":"01-01-1970-00:00:00",
-      "updatedAt":"01-01-1970-00:00:00",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+    "id": "ch72gsb320000udocl363eofy",
+    "email": "example@example.com",
+    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+    "createdAt": "01-01-1970-00:00:00",
+    "updatedAt": "01-01-1970-00:00:00",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "ADMIN"
   }
 }
 ```
@@ -443,13 +484,13 @@ Content-Type: application/json
 
 ```json
 {
-  "id":"ch72gsb320000udocl363eofy",
-  "employee":{
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+  "id": "ch72gsb320000udocl363eofy",
+  "employee": {
+    "email": "example@example.com",
+    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "ADMIN"
   }
 }
 ```
@@ -473,7 +514,7 @@ Content-Type: application/json
       "updatedAt":"01-01-1970-00:00:00",
       "firstName":"John",
       "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+      "role":"ADMIN"
 }
 ```
 
@@ -524,7 +565,7 @@ Content-Type: application/json
       "updatedAt":"01-01-1970-00:00:00",
       "firstName":"John",
       "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+      "role":"ADMIN"
 }
 ```
 
@@ -572,7 +613,7 @@ Content-Type: application/json
       "updatedAt":"01-01-1970-00:00:00",
       "firstName":"John",
       "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+      "role":"ADMIN"
 }
 ```
 
@@ -624,7 +665,7 @@ Content-Type: application/json
       "updatedAt":"01-01-1970-00:00:00",
       "firstName":"John",
       "lastName":"Doe",
-      "role":"ADMIN" | "WORKER"
+      "role":"ADMIN"
     },
     ...
   ]
