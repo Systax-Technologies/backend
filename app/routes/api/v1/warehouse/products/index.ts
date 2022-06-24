@@ -2,13 +2,11 @@ import { ProductStatus } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import { parseBody } from "~/lib/parse-body.server";
+import type { Products } from "~/models/product/product.server";
 import {
-  countProductByStatus,
-  countProductByType,
   createManyProducts,
   deleteProduct,
   findManyProducts,
-  Products,
   updateProduct,
 } from "~/models/product/product.server";
 
@@ -49,27 +47,20 @@ const postRequest = async (request: Request) => {
     quantity: z.number().min(1),
   });
 
-  const parsedData = await parseBody(request, schema);
+  const data = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const createdProducts = await createManyProducts(
-      data.productTypeId,
-      data.quantity
-    );
-    throw new Response(
-      JSON.stringify({ numberOfCreatedProducts: createdProducts }),
-      {
-        status: 200,
-        statusText: "OK",
-      }
-    );
-  } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
-  }
+  const createdProducts = await createManyProducts(
+    data.productTypeId,
+    data.quantity
+  );
+
+  throw new Response(
+    JSON.stringify({ numberOfCreatedProducts: createdProducts }),
+    {
+      status: 200,
+      statusText: "OK",
+    }
+  );
 };
 
 const patchRequest = async (request: Request) => {
@@ -80,25 +71,18 @@ const patchRequest = async (request: Request) => {
     productTypeId: z.string().cuid(),
   });
 
-  const parsedData = await parseBody(request, schema);
+  const data = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const updatedProduct = await updateProduct(data.id, {
-      status: data.status,
-      orderId: data.orderId,
-      productTypeId: data.productTypeId,
-    });
-    throw new Response(JSON.stringify(updatedProduct), {
-      status: 200,
-      statusText: "OK",
-    });
-  } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
-  }
+  const updatedProduct = await updateProduct(data.id, {
+    status: data.status,
+    orderId: data.orderId,
+    productTypeId: data.productTypeId,
+  });
+
+  throw new Response(JSON.stringify(updatedProduct), {
+    status: 200,
+    statusText: "OK",
+  });
 };
 
 const deleteRequest = async (request: Request) => {
@@ -106,20 +90,19 @@ const deleteRequest = async (request: Request) => {
     id: z.string().cuid(),
   });
 
-  const parsedData = await parseBody(request, schema);
+  const data = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const deletedProduct = await deleteProduct(data.id);
+  const deletedProduct = await deleteProduct(data.id);
 
-    throw new Response(JSON.stringify(deletedProduct), {
-      status: 200,
-      statusText: "Ok",
-    });
-  } else {
+  if (deleteProduct == null) {
     throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
+      status: 404,
+      statusText: "Not Found",
     });
   }
+
+  throw new Response(JSON.stringify(deletedProduct), {
+    status: 200,
+    statusText: "Text",
+  });
 };

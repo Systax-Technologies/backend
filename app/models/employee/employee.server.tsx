@@ -1,13 +1,9 @@
-import { Employee, Role, User } from "@prisma/client";
+import type { Employee, Role } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
-import { LoginDto } from "../dto";
+import type { LoginDto } from "../dto";
 
 export const findEmployees = async () => {
-  return database.employee.findMany({
-    include: {
-      user: true,
-    },
-  });
+  return database.employee.findMany();
 };
 
 export const findEmployeeByLogin = async ({ email, password }: LoginDto) => {
@@ -20,14 +16,11 @@ export const findEmployeeByLogin = async ({ email, password }: LoginDto) => {
 };
 
 export const findEmployeeById = async (
-  id: string
+  id: string,
 ): Promise<Employee | null> => {
   return database.employee.findUnique({
     where: {
       id,
-    },
-    include: {
-      user: true,
     },
   });
 };
@@ -40,42 +33,24 @@ type EmployeeCreateInput = {
   role: Role;
 };
 
-export const createEmployee = async ({
-  email,
-  password,
-  firstName,
-  lastName,
-  role,
-}: EmployeeCreateInput) => {
+export const createEmployee = async (employeeInput: EmployeeCreateInput) => {
   return database.employee.create({
     data: {
-      role,
-      user: {
-        create: {
-          email,
-          password,
-          firstName,
-          lastName,
-        },
-      },
+      ...employeeInput,
     },
   });
 };
 
 export const updateEmployee = async (
   id: string,
-  employee: Omit<User, "id">
+  employee: Omit<Employee, "id" | "updatedAt" | "createdAt">,
 ) => {
   return database.employee.update({
     where: {
       id,
     },
     data: {
-      user: {
-        update: {
-          ...employee,
-        },
-      },
+      ...employee,
     },
   });
 };
@@ -93,22 +68,17 @@ export const findEmployeeByRole = async (role: Role) => {
     where: {
       role,
     },
-    include: {
-      user: true,
-    },
   });
 };
 
 export const findEmployeeByName = async (
   firstName: string,
-  lastName: string
+  lastName: string,
 ) => {
   return database.employee.findMany({
     where: {
-      user: {
-        firstName,
-        lastName,
-      },
+      firstName,
+      lastName,
     },
   });
 };

@@ -7,11 +7,20 @@ import { database } from "~/helpers/db-helper.server";
  * @returns The `ProductType` found
  */
 export const findProductType = async (
-  id: string
+  id: string,
 ): Promise<ProductType | null> => {
   return database.productType.findUnique({
     where: { id },
   });
+};
+
+type ProductTypeInput = {
+  model: string;
+  imageUrl: string;
+  description: string;
+  color: string;
+  size: string;
+  price: number;
 };
 
 /**
@@ -20,11 +29,20 @@ export const findProductType = async (
  * @returns The `ProductType` object created
  */
 export const createProductType = async (
-  data: ProductType
+  data: ProductTypeInput,
 ): Promise<ProductType | null> => {
   return database.productType.create({
     data,
   });
+};
+
+type ProductTypeUpdateInput = {
+  model: string;
+  imageUrl: string;
+  description: string;
+  color: string;
+  size: string;
+  price: number;
 };
 
 /**
@@ -35,12 +53,16 @@ export const createProductType = async (
  */
 export const updateProductType = async (
   id: string,
-  data: Omit<ProductType, "id" | "createdAt" | "updatedAt">
+  data: ProductTypeUpdateInput,
 ): Promise<ProductType | null> => {
-  return database.productType.update({
-    where: { id },
-    data,
-  });
+  try {
+    return database.productType.update({
+      where: { id },
+      data,
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -49,9 +71,13 @@ export const updateProductType = async (
  * @returns The `ProductType` object deleted
  */
 export const deleteProductType = async (
-  id: string
+  id: string,
 ): Promise<ProductType | null> => {
-  return database.productType.delete({
-    where: { id },
-  });
+  try {
+    return database.productType.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };
