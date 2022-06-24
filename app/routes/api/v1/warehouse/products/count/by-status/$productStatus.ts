@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({
   const productStatus = params.productStatus;
 
   if (productStatus == null) {
-    badRequest();
+    throw badRequest();
   }
 
   const schema = z.nativeEnum(ProductStatus);
