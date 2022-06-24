@@ -1,12 +1,19 @@
 import type { Employee, Role } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
-import type { LoginDto } from "../dto";
+import type {
+  EmployeeCreateInput,
+  EmployeeUpdateInput,
+  LoginDto,
+} from "../dto";
 
-export const findEmployees = async () => {
+export const findEmployees = async (): Promise<Employee[]> => {
   return database.employee.findMany();
 };
 
-export const findEmployeeByLogin = async ({ email, password }: LoginDto) => {
+export const findEmployeeByLogin = async ({
+  email,
+  password,
+}: LoginDto): Promise<Employee | null> => {
   return database.employee.findFirst({
     where: {
       email,
@@ -15,9 +22,7 @@ export const findEmployeeByLogin = async ({ email, password }: LoginDto) => {
   });
 };
 
-export const findEmployeeById = async (
-  id: string,
-): Promise<Employee | null> => {
+export const findEmployee = async (id: string): Promise<Employee | null> => {
   return database.employee.findUnique({
     where: {
       id,
@@ -25,15 +30,9 @@ export const findEmployeeById = async (
   });
 };
 
-type EmployeeCreateInput = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  role: Role;
-};
-
-export const createEmployee = async (employeeInput: EmployeeCreateInput) => {
+export const createEmployee = async (
+  employeeInput: EmployeeCreateInput,
+): Promise<Employee> => {
   return database.employee.create({
     data: {
       ...employeeInput,
@@ -43,42 +42,38 @@ export const createEmployee = async (employeeInput: EmployeeCreateInput) => {
 
 export const updateEmployee = async (
   id: string,
-  employee: Omit<Employee, "id" | "updatedAt" | "createdAt">,
-) => {
-  return database.employee.update({
-    where: {
-      id,
-    },
-    data: {
-      ...employee,
-    },
-  });
+  employee: EmployeeUpdateInput,
+): Promise<Employee | null> => {
+  try {
+    return database.employee.update({
+      where: {
+        id,
+      },
+      data: {
+        ...employee,
+      },
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
-export const deleteEmployee = async (id: string) => {
-  return database.employee.delete({
-    where: {
-      id,
-    },
-  });
+export const deleteEmployee = async (id: string): Promise<Employee | null> => {
+  try {
+    return database.employee.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
-export const findEmployeeByRole = async (role: Role) => {
+export const findEmployeesByRole = async (role: Role): Promise<Employee[]> => {
   return database.employee.findMany({
     where: {
       role,
-    },
-  });
-};
-
-export const findEmployeeByName = async (
-  firstName: string,
-  lastName: string,
-) => {
-  return database.employee.findMany({
-    where: {
-      firstName,
-      lastName,
     },
   });
 };

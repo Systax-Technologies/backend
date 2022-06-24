@@ -30,13 +30,11 @@ export const findManyProducts = async (): Promise<Products> => {
  */
 export const createManyProducts = async (
   productTypeId: string,
-  quantity: number
-) => {
-  return (
-    await database.product.createMany({
-      data: [...Array(quantity)].map((_) => ({ productTypeId })),
-    })
-  ).count;
+  quantity: number,
+): Promise<{ count: number }> => {
+  return database.product.createMany({
+    data: [...Array(quantity)].map((_) => ({ productTypeId })),
+  });
 };
 
 /**
@@ -47,12 +45,16 @@ export const createManyProducts = async (
  */
 export const updateProduct = async (
   id: string,
-  data: Omit<Product, "id">
+  data: Omit<Product, "id">,
 ): Promise<Product | null> => {
-  return database.product.update({
-    where: { id },
-    data,
-  });
+  try {
+    return database.product.update({
+      where: { id },
+      data,
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -64,20 +66,18 @@ export const updateProduct = async (
  */
 export const updateManyProductOrders = async (
   ids: string[],
-  orderId: string
-) => {
-  return (
-    await database.product.updateMany({
-      where: {
-        id: { in: ids },
-        status: "IN_STOCK",
-      },
-      data: {
-        orderId,
-        status: "SOLD",
-      },
-    })
-  ).count;
+  orderId: string,
+): Promise<{ count: number }> => {
+  return database.product.updateMany({
+    where: {
+      id: { in: ids },
+      status: "IN_STOCK",
+    },
+    data: {
+      orderId,
+      status: "SOLD",
+    },
+  });
 };
 
 /**
@@ -86,9 +86,13 @@ export const updateManyProductOrders = async (
  * @returns The `Product` object deleted
  */
 export const deleteProduct = async (id: string): Promise<Product | null> => {
-  return database.product.delete({
-    where: { id },
-  });
+  try {
+    return database.product.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -97,7 +101,7 @@ export const deleteProduct = async (id: string): Promise<Product | null> => {
  * @returns The count of the matching records
  */
 export const countProductByStatus = async (
-  status: ProductStatus
+  status: ProductStatus,
 ): Promise<number | null> => {
   return database.product.count({
     where: { status },
@@ -110,7 +114,7 @@ export const countProductByStatus = async (
  * @returns The count of the matching records
  */
 export const countProductByType = async (
-  productTypeId: string
+  productTypeId: string,
 ): Promise<number | null> => {
   return database.product.count({ where: { productTypeId } });
 };
