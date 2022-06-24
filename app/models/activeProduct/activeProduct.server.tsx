@@ -20,7 +20,7 @@ export const findActiveProduct = async (
 
 export const findActiveProductsByStatus = async (
   status: ActiveProductStatus
-): Promise<ActiveProduct[] | null> => {
+): Promise<ActiveProduct[]> => {
   return database.activeProduct.findMany({
     where: { status },
   });
@@ -28,7 +28,7 @@ export const findActiveProductsByStatus = async (
 
 export const findActiveProductsByCustomerId = async (
   customerId: string
-): Promise<ActiveProduct[] | null> => {
+): Promise<ActiveProduct[]> => {
   return database.activeProduct.findMany({
     where: { customerId },
   });
@@ -57,10 +57,14 @@ export const updateActiveProductStatus = async (
   id: string,
   status: ActiveProductStatus
 ): Promise<ActiveProduct | null> => {
-  return database.activeProduct.update({
-    where: { id },
-    data: { status },
-  });
+  try {
+    return database.activeProduct.update({
+      where: { id },
+      data: { status },
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -71,7 +75,11 @@ export const updateActiveProductStatus = async (
 export const deleteActiveProduct = async (
   id: string
 ): Promise<ActiveProduct | null> => {
-  return database.activeProduct.delete({
-    where: { id },
-  });
+  try {
+    return database.activeProduct.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };

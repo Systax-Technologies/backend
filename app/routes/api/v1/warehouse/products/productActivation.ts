@@ -16,19 +16,10 @@ export const action: ActionFunction = async ({ request }): Promise<Product> => {
     productId: z.string().cuid(),
   });
 
-  const parsedData = await parseBody(request, schema);
-
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const productActivated = await productActivation(
-      data.customerId,
-      data.productId
-    );
-    return productActivated;
-  } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
-  }
+  const data = await parseBody(request, schema);
+  const productActivated = await productActivation(
+    data.customerId,
+    data.productId
+  );
+  return productActivated;
 };
