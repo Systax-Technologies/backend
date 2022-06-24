@@ -270,7 +270,7 @@ Content-Type: application/json
 
 > **Constraints:**
 >
-> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
+> - `status` can only be "SOLD" or "IN_STOCK"
 > - `orderId` can be `null`
 
 #### Possible errors: <!-- omit in toc -->
@@ -319,7 +319,7 @@ Content-Type: application/json
 
 > **Constraints:**
 >
-> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
+> - `status` can only be "SOLD" or "IN_STOCK"
 > - `orderId` can be `null`
 
 #### Possible errors: <!-- omit in toc -->
