@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 
   const parsedData = schema.safeParse(
-    typeof jwt === "string" ? JSON.parse(jwt) : jwt
+    typeof jwt === "string" ? JSON.parse(jwt) : jwt,
   );
 
   if (parsedData.success) {
@@ -73,18 +73,10 @@ const postRequest = async (request: Request): Promise<Response> => {
     role: z.nativeEnum(Role),
   });
 
-  const parsedData = await parseBody(request, schema);
+  const data = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const createdEmployee = await createEmployee(data);
-    return json(createdEmployee);
-  } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Invalid Request",
-    });
-  }
+  const createdEmployee = await createEmployee(data);
+  return json(createdEmployee);
 };
 
 const patchRequest = async (request: Request): Promise<Response> => {
@@ -99,33 +91,17 @@ const patchRequest = async (request: Request): Promise<Response> => {
     }),
   });
 
-  const parsedData = await parseBody(request, schema);
+  const data = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const updatedEmployee = await updateEmployee(data.id, data.employee);
-    return json(updatedEmployee);
-  } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Invalid Request",
-    });
-  }
+  const updatedEmployee = await updateEmployee(data.id, data.employee);
+  return json(updatedEmployee);
 };
 
 const deleteRequest = async (request: Request): Promise<Response> => {
   const schema = z.string();
 
-  const parsedData = schema.safeParse(schema);
+  const data = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-    const deletedEmployee = await deleteEmployee(data);
-    return json(deletedEmployee);
-  } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Invalid Request",
-    });
-  }
+  const deletedEmployee = await deleteEmployee(data);
+  return json(deletedEmployee);
 };
