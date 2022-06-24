@@ -1,18 +1,16 @@
 import type { z } from "zod";
+import { badRequest } from "~/helpers/app-helpers.server";
 
 export const parseBody = async <Output, Input>(
   request: Request,
-  schema: z.Schema<Output, any, Input>,
+  schema: z.Schema<Output, any, Input>
 ): Promise<Output> => {
   let requestBody: any;
 
   try {
     requestBody = await request.json();
   } catch (e) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Invalid Request",
-    });
+    throw badRequest();
   }
 
   const parsedData = schema.safeParse(requestBody);
@@ -20,9 +18,6 @@ export const parseBody = async <Output, Input>(
   if (parsedData.success) {
     return parsedData.data;
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    throw badRequest();
   }
 };
