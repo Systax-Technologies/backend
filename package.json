@@ -12,6 +12,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",
     "db:push": "prisma db push",
+    "db:seed": "node --require esbuild-register prisma/seed.ts",
     "db:generate": "prisma generate",
     "db:studio": "export $(cat .env | xargs) && DATABASE_URL=\"postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB\" prisma studio",
     "prisma-studio": "prisma studio",
