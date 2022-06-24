@@ -2,8 +2,8 @@ import type { z } from "zod";
 
 export const parseBody = async <Output, Input>(
   request: Request,
-  schema: z.Schema<Output, any, Input>
-): Promise<z.SafeParseReturnType<Input, Output>> => {
+  schema: z.Schema<Output, any, Input>,
+): Promise<Output> => {
   let requestBody: any;
 
   try {
@@ -15,5 +15,14 @@ export const parseBody = async <Output, Input>(
     });
   }
 
-  return schema.safeParse(requestBody);
+  const parsedData = schema.safeParse(requestBody);
+
+  if (parsedData.success) {
+    return parsedData.data;
+  } else {
+    throw new Response(null, {
+      status: 400,
+      statusText: "Bad Request",
+    });
+  }
 };
