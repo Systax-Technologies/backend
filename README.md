@@ -513,6 +513,7 @@ Content-Type: application/json
       "firstName":"John",
       "lastName":"Doe",
       "role":"ADMIN"
+   }
 }
 ```
 
