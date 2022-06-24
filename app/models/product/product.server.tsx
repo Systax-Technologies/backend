@@ -89,15 +89,16 @@ export const updateManyProductOrders = async (
 export const productActivation = async (
   customerId: string,
   productId: string
-): Promise<Product> => {
-  const result = database.product.findFirst({
+): Promise<Product | null> => {
+  const result = await database.product.findFirst({
     where: {
       id: productId,
       status: "SOLD",
     },
   });
-  if (!result) {
-    return await database.product.update({
+
+  if (result) {
+    return database.product.update({
       where: {
         id: productId,
       },
@@ -110,11 +111,9 @@ export const productActivation = async (
         status: "SOLD",
       },
     });
+  } else {
+    return null;
   }
-  throw new Response(null, {
-    status: 404,
-    statusText: "Not Found",
-  });
 };
 
 /**
