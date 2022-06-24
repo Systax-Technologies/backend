@@ -1,9 +1,15 @@
 import { Role } from "@prisma/client";
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { z } from "zod";
 import { parseBody } from "~/lib/parse-body.server";
 import { verifyRequest } from "~/lib/verify-request.server";
-import { createEmployee, findEmployeeById, updateEmployee } from "~/models/employee/employee.server";
+import {
+  createEmployee,
+  deleteEmployee,
+  findEmployeeById,
+  updateEmployee,
+} from "~/models/employee/employee.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   if (request.method.toLowerCase() !== "get") {
@@ -20,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 
   const parsedData = schema.safeParse(
-    typeof jwt === "string" ? JSON.parse(jwt) : jwt,
+    typeof jwt === "string" ? JSON.parse(jwt) : jwt
   );
 
   if (parsedData.success) {
@@ -45,17 +51,20 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
     case "post":
-      postRequest(request);
-      break;
+      return postRequest(request);
     case "patch":
-      patchRequest(request);
-      break;
+      return patchRequest(request);
+    case "delete":
+      return deleteRequest(request);
     default:
-      break;
+      throw new Response(null, {
+        status: 405,
+        statusText: "Method Not Allowed",
+      });
   }
 };
 
-const postRequest = async (request: Request) => {
+const postRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     email: z.string(),
     password: z.string(),
@@ -69,10 +78,7 @@ const postRequest = async (request: Request) => {
   if (parsedData.success) {
     const data = parsedData.data;
     const createdEmployee = await createEmployee(data);
-    throw new Response(JSON.stringify(createdEmployee), {
-      status: 200,
-      statusText: "Ok",
-    });
+    return json(createdEmployee);
   } else {
     throw new Response(null, {
       status: 400,
@@ -81,7 +87,7 @@ const postRequest = async (request: Request) => {
   }
 };
 
-const patchRequest = async (request: Request) => {
+const patchRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     id: z.string().cuid(),
     employee: z.object({
@@ -98,10 +104,24 @@ const patchRequest = async (request: Request) => {
   if (parsedData.success) {
     const data = parsedData.data;
     const updatedEmployee = await updateEmployee(data.id, data.employee);
-    throw new Response(JSON.stringify(updatedEmployee), {
-      status: 200,
-      statusText: "Ok",
+    return json(updatedEmployee);
+  } else {
+    throw new Response(null, {
+      status: 400,
+      statusText: "Invalid Request",
     });
+  }
+};
+
+const deleteRequest = async (request: Request): Promise<Response> => {
+  const schema = z.string();
+
+  const parsedData = schema.safeParse(schema);
+
+  if (parsedData.success) {
+    const data = parsedData.data;
+    const deletedEmployee = await deleteEmployee(data);
+    return json(deletedEmployee);
   } else {
     throw new Response(null, {
       status: 400,
