@@ -1,4 +1,8 @@
-import type { ActiveProduct, ActiveProductStatus } from "@prisma/client";
+import type {
+  ActiveProduct,
+  ActiveProductStatus,
+  ProductStatus,
+} from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 
 /**
@@ -7,10 +11,26 @@ import { database } from "~/helpers/db-helper.server";
  * @returns The `ActiveProduct` object found
  */
 export const findActiveProduct = async (
-  id: string
+  id: string,
 ): Promise<ActiveProduct | null> => {
   return database.activeProduct.findUnique({
     where: { id },
+  });
+};
+
+export const findActiveProductsByStatus = async (
+  status: ActiveProductStatus
+): Promise<ActiveProduct[]> => {
+  return database.activeProduct.findMany({
+    where: { status },
+  });
+};
+
+export const findActiveProductsByCustomerId = async (
+  customerId: string
+): Promise<ActiveProduct[]> => {
+  return database.activeProduct.findMany({
+    where: { customerId },
   });
 };
 
@@ -20,7 +40,7 @@ export const findActiveProduct = async (
  * @returns The `ActiveProduct` object created
  */
 export const createActiveProduct = async (
-  customerId: string
+  customerId: string,
 ): Promise<ActiveProduct | null> => {
   return database.activeProduct.create({
     data: { customerId },
@@ -35,12 +55,16 @@ export const createActiveProduct = async (
  */
 export const updateActiveProductStatus = async (
   id: string,
-  status: ActiveProductStatus
+  status: ActiveProductStatus,
 ): Promise<ActiveProduct | null> => {
-  return database.activeProduct.update({
-    where: { id },
-    data: { status },
-  });
+  try {
+    return database.activeProduct.update({
+      where: { id },
+      data: { status },
+    });
+  } catch (_) {
+    return null;
+  }
 };
 
 /**
@@ -49,9 +73,13 @@ export const updateActiveProductStatus = async (
  * @returns The `ActiveProduct` object deleted
  */
 export const deleteActiveProduct = async (
-  id: string
+  id: string,
 ): Promise<ActiveProduct | null> => {
-  return database.activeProduct.delete({
-    where: { id },
-  });
+  try {
+    return database.activeProduct.delete({
+      where: { id },
+    });
+  } catch (_) {
+    return null;
+  }
 };
