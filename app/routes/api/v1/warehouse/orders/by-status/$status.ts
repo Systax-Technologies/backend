@@ -20,17 +20,15 @@ export const loader: LoaderFunction = async ({
 
   const parsedData = schema.safeParse(orderStatus);
 
-  let orders;
-
   if (parsedData.success) {
-    orders = await findOrdersByStatus(parsedData.data);
+    const orders = await findOrdersByStatus(parsedData.data);
+
+    if (!orders || !orders.length) {
+      throw notFoundRequest();
+    }
+
+    return orders;
   } else {
     throw badRequest();
   }
-
-  if (!orders || !orders.length) {
-    throw notFoundRequest();
-  }
-
-  return orders;
 };
