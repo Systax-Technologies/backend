@@ -1,8 +1,6 @@
 import { LoaderFunction } from "@remix-run/node";
+import { badRequest } from "~/helpers/app-helpers.server";
 
 export const loader: LoaderFunction = async () => {
-  throw new Response(null, {
-    status: 400,
-    statusText: "Status Not Provided",
-  });
+  badRequest();
 };

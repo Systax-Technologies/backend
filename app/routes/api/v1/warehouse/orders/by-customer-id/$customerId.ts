@@ -1,6 +1,7 @@
 import { Order } from "@prisma/client";
 import { LoaderFunction } from "@remix-run/node";
-import { findOrdersByCustomer } from "~/models/order/order.server";
+import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
+import { findCustomerOrders } from "~/models/order/order.server";
 
 type LoaderData = Order[];
 
@@ -10,19 +11,13 @@ export const loader: LoaderFunction = async ({
   const customerId = params.customerId;
 
   if (!customerId) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Customer Id Not Provided",
-    });
+    badRequest();
   }
 
-  const orders = await findOrdersByCustomer(customerId);
+  const orders = await findCustomerOrders(customerId);
 
   if (!orders || !orders.length) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Order(s) Not Found",
-    });
+    notFoundRequest();
   }
 
   return orders;

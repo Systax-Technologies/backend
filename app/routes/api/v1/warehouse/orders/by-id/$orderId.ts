@@ -1,9 +1,14 @@
 import { Order, OrderStatus } from "@prisma/client";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
-import { methodNotAllowed } from "~/helpers/app-helpers.server";
+import {
+  badRequest,
+  methodNotAllowed,
+  notFoundRequest,
+} from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import {
+  createOrder,
   deleteOrder,
   findOrderById,
   updateOrder,
@@ -17,19 +22,13 @@ export const loader: LoaderFunction = async ({
   const orderId = params.orderId;
 
   if (!orderId) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    badRequest();
   }
 
   const order = await findOrderById(orderId);
 
   if (!order) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Order Not Found",
-    });
+    notFoundRequest();
   }
 
   return order;
@@ -39,13 +38,14 @@ export const action: ActionFunction = async ({ request, params }) => {
   const orderId = params.orderId;
 
   if (!orderId) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    badRequest();
   }
 
   switch (request.method.toLowerCase()) {
+    case "post": {
+      handlePOSTRequest(orderId);
+    }
+
     case "patch": {
       handlePATCHRequest(orderId, request);
     }
@@ -57,6 +57,19 @@ export const action: ActionFunction = async ({ request, params }) => {
     default: {
       methodNotAllowed();
     }
+  }
+};
+
+const handlePOSTRequest = async (customerId: string) => {
+  const createdOrder = await createOrder({ customerId });
+
+  if (!createdOrder) {
+    throw new Response(JSON.stringify(createdOrder), {
+      status: 200,
+      statusText: "OK",
+    });
+  } else {
+    badRequest();
   }
 };
 
@@ -85,10 +98,7 @@ const handlePATCHRequest = async (id: string, request: Request) => {
       statusText: "OK",
     });
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    badRequest();
   }
 };
 
@@ -101,9 +111,6 @@ const handleDELETERequest = async (id: string) => {
       statusText: "OK",
     });
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    badRequest();
   }
 };

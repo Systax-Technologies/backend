@@ -1,5 +1,6 @@
 import { Order, OrderStatus } from "@prisma/client";
 import { LoaderFunction } from "@remix-run/node";
+import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
 import { findOrdersByStatus } from "~/models/order/order.server";
 
 type LoaderData = Order[];
@@ -9,10 +10,7 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   let orderStatus = params.status;
   if (!orderStatus) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Status Not Provided",
-    });
+    badRequest();
   }
 
   orderStatus = orderStatus.toUpperCase();
@@ -24,17 +22,11 @@ export const loader: LoaderFunction = async ({
   if (keys.includes(orderStatus)) {
     orders = await findOrdersByStatus(orderStatus as unknown as OrderStatus);
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Non Existing Status Provided",
-    });
+    badRequest();
   }
 
   if (!orders || !orders.length) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Order(s) Not Found",
-    });
+    notFoundRequest();
   }
 
   return orders;

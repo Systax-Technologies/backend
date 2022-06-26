@@ -79,11 +79,12 @@ const patchRequest = async (request: Request) => {
     orderId: data.orderId,
     productTypeId: data.productTypeId,
   });
-  
+
   if (!updatedProduct) {
     throw notFoundRequest();
   }
-  
+};
+
 const deleteRequest = async (request: Request) => {
   const schema = z.object({
     id: z.string().cuid(),

@@ -1,14 +1,16 @@
 import { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
+import {
+  badRequest,
+  methodNotAllowed,
+  notFoundRequest,
+} from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { findOrdersWithinOrderedDates } from "~/models/order/order.server";
 
 export const action: ActionFunction = async ({ request }) => {
   if (request.method.toLowerCase() != "post") {
-    throw new Response(null, {
-      status: 405,
-      statusText: "Invalid Method",
-    });
+    methodNotAllowed();
   }
 
   const schema = z.object({
@@ -35,19 +37,13 @@ export const action: ActionFunction = async ({ request }) => {
     );
 
     if (!ordersWithinDates || !ordersWithinDates.length) {
-      throw new Response(null, {
-        status: 404,
-        statusText: "Order(s) Not Found",
-      });
+      notFoundRequest();
     }
     throw new Response(JSON.stringify({ ordersWithinDates }), {
       status: 200,
       statusText: "OK",
     });
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    badRequest();
   }
 };
