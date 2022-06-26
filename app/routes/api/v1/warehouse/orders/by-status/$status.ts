@@ -1,5 +1,6 @@
 import { Order, OrderStatus } from "@prisma/client";
 import { LoaderFunction } from "@remix-run/node";
+import { z } from "zod";
 import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
 import { findOrdersByStatus } from "~/models/order/order.server";
 
@@ -10,23 +11,25 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   let orderStatus = params.status;
   if (!orderStatus) {
-    badRequest();
+    throw badRequest();
   }
 
   orderStatus = orderStatus.toUpperCase();
 
-  const keys = Object.keys(OrderStatus).filter((v) => isNaN(Number(v)));
+  const schema = z.nativeEnum(OrderStatus);
+
+  const parsedData = schema.safeParse(orderStatus);
 
   let orders;
 
-  if (keys.includes(orderStatus)) {
-    orders = await findOrdersByStatus(orderStatus as unknown as OrderStatus);
+  if (parsedData.success) {
+    orders = await findOrdersByStatus(parsedData.data);
   } else {
-    badRequest();
+    throw badRequest();
   }
 
   if (!orders || !orders.length) {
-    notFoundRequest();
+    throw notFoundRequest();
   }
 
   return orders;

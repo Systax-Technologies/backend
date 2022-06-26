@@ -1,7 +1,6 @@
 import { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
-  badRequest,
   methodNotAllowed,
   notFoundRequest,
 } from "~/helpers/app-helpers.server";
@@ -10,7 +9,7 @@ import { findOrdersWithinDeliveredDates } from "~/models/order/order.server";
 
 export const action: ActionFunction = async ({ request }) => {
   if (request.method.toLowerCase() != "post") {
-    methodNotAllowed();
+    throw methodNotAllowed();
   }
 
   const schema = z.object({
@@ -20,30 +19,21 @@ export const action: ActionFunction = async ({ request }) => {
 
   const parsedData = await parseBody(request, schema);
 
-  if (parsedData.success) {
-    const data = parsedData.data;
-
-    if (!data.startDate) {
-      data.startDate = new Date("1970-01-01");
-    }
-
-    if (!data.endDate) {
-      data.endDate = new Date();
-    }
-
-    const ordersWithinDates = await findOrdersWithinDeliveredDates(
-      data.startDate,
-      data.endDate
-    );
-
-    if (!ordersWithinDates || !ordersWithinDates.length) {
-      notFoundRequest();
-    }
-    return new Response(JSON.stringify({ ordersWithinDates }), {
-      status: 200,
-      statusText: "OK",
-    });
-  } else {
-    badRequest();
+  if (!parsedData.startDate) {
+    parsedData.startDate = new Date("1970-01-01");
   }
+  if (!parsedData.endDate) {
+    parsedData.endDate = new Date();
+  }
+  const ordersWithinDates = await findOrdersWithinDeliveredDates(
+    parsedData.startDate,
+    parsedData.endDate
+  );
+  if (!ordersWithinDates || !ordersWithinDates.length) {
+    throw notFoundRequest();
+  }
+  return new Response(JSON.stringify({ ordersWithinDates }), {
+    status: 200,
+    statusText: "OK",
+  });
 };

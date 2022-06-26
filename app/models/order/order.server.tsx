@@ -16,7 +16,9 @@ export const findOrderById = async (id: string): Promise<Order | null> => {
 
 export const createOrder = async (data: OrderInput): Promise<Order> => {
   return database.order.create({
-    data,
+    data: {
+      ...data,
+    },
   });
 };
 
