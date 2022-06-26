@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
     if (!ordersWithinDates || !ordersWithinDates.length) {
       notFoundRequest();
     }
-    throw new Response(JSON.stringify({ ordersWithinDates }), {
+    return new Response(JSON.stringify({ ordersWithinDates }), {
       status: 200,
       statusText: "OK",
     });

@@ -8,7 +8,6 @@ import {
 } from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import {
-  createOrder,
   deleteOrder,
   findOrderById,
   updateOrder,
@@ -42,10 +41,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 
   switch (request.method.toLowerCase()) {
-    case "post": {
-      handlePOSTRequest(orderId);
-    }
-
     case "patch": {
       handlePATCHRequest(orderId, request);
     }
@@ -60,26 +55,11 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 };
 
-const handlePOSTRequest = async (customerId: string) => {
-  const createdOrder = await createOrder({ customerId });
-
-  if (!createdOrder) {
-    throw new Response(JSON.stringify(createdOrder), {
-      status: 200,
-      statusText: "OK",
-    });
-  } else {
-    badRequest();
-  }
-};
-
 const handlePATCHRequest = async (id: string, request: Request) => {
   const schema = z.object({
     status: z.nativeEnum(OrderStatus),
-    orderedAt: z.date(),
     shippedAt: z.nullable(z.date()),
     deliveredAt: z.nullable(z.date()),
-    customerId: z.string().cuid(),
   });
 
   const parsedData = await parseBody(request, schema);
@@ -88,12 +68,10 @@ const handlePATCHRequest = async (id: string, request: Request) => {
     const data = parsedData.data;
     const updatedOrder = await updateOrder(id, {
       status: data.status,
-      orderedAt: data.orderedAt,
       shippedAt: data.shippedAt,
       deliveredAt: data.deliveredAt,
-      customerId: data.customerId,
     });
-    throw new Response(JSON.stringify(updatedOrder), {
+    return new Response(JSON.stringify(updatedOrder), {
       status: 200,
       statusText: "OK",
     });
@@ -106,11 +84,10 @@ const handleDELETERequest = async (id: string) => {
   const deletedOrder = await deleteOrder(id);
 
   if (!deletedOrder) {
-    throw new Response(JSON.stringify(deletedOrder), {
-      status: 200,
-      statusText: "OK",
-    });
-  } else {
     badRequest();
   }
+  return new Response(JSON.stringify(deletedOrder), {
+    status: 200,
+    statusText: "OK",
+  });
 };
