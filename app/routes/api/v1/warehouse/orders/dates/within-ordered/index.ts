@@ -13,8 +13,14 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const schema = z.object({
-    startDate: z.nullable(z.date()),
-    endDate: z.nullable(z.date()),
+    startDate: z.preprocess(
+      (a) => (a == null ? null : new Date(z.string().parse(a))),
+      z.nullable(z.date())
+    ),
+    endDate: z.preprocess(
+      (a) => (a == null ? null : new Date(z.string().parse(a))),
+      z.nullable(z.date())
+    ),
   });
 
   const parsedData = await parseBody(request, schema);

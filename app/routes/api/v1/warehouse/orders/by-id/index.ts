@@ -16,15 +16,15 @@ export const loader: LoaderFunction = async () => {
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      await handlePOSTRequest(request);
+      throw handlePOSTRequest(request);
     }
 
     case "patch": {
-      await handlePATCHRequest(request);
+      throw handlePATCHRequest(request);
     }
 
     case "delete": {
-      await handleDELETERequest(request);
+      throw handleDELETERequest(request);
     }
 
     default: {
@@ -56,8 +56,14 @@ const handlePATCHRequest = async (request: Request) => {
   const schema = z.object({
     id: z.string().cuid(),
     status: z.nativeEnum(OrderStatus),
-    shippedAt: z.nullable(z.date()),
-    deliveredAt: z.nullable(z.date()),
+    shippedAt: z.preprocess(
+      (a) => (a == null ? null : new Date(z.string().parse(a))),
+      z.nullable(z.date())
+    ),
+    deliveredAt: z.preprocess(
+      (a) => (a == null ? null : new Date(z.string().parse(a))),
+      z.nullable(z.date())
+    ),
   });
 
   const parsedData = await parseBody(request, schema);
