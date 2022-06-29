@@ -1,13 +1,13 @@
-import { ActionFunction, json } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { string, z } from "zod";
-import { methodNotAllowed } from "~/helpers/app-helpers.server";
+import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import {
   createCustomer,
   deleteCustomer,
   updateCustomer,
 } from "~/models/customer/customer.server";
-import { meta } from "~/root";
 
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
