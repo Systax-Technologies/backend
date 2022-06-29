@@ -16,7 +16,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const handlePOSTRequest = async (request: Request) => {
-  const productTypePostSchema = z.object({
+  const productPostSchema = z.object({
     model: z.string(),
     imageUrl: z.string(),
     description: z.string(),
@@ -25,7 +25,7 @@ const handlePOSTRequest = async (request: Request) => {
     price: z.number(),
   });
 
-  const data = await parseBody(request, productTypePostSchema);
+  const data = await parseBody(request, productPostSchema);
 
   return createProduct(data);
 };

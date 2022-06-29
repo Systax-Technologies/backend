@@ -1,4 +1,4 @@
-import { ProductStatus } from "@prisma/client";
+import { ProductInstanceStatus } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
@@ -15,13 +15,13 @@ import {
 } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = {
-  products: ProductInstances;
+  productInstances: ProductInstances;
 };
 
 export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  const products = await findManyProductInstances();
+  const productInstances = await findManyProductInstances();
   return {
-    products,
+    productInstances,
   };
 };
 
@@ -44,19 +44,19 @@ export const action: ActionFunction = async ({ request }) => {
 
 const postRequest = async (request: Request) => {
   const schema = z.object({
-    productTypeId: z.string().cuid(),
+    productId: z.string().cuid(),
     quantity: z.number().min(1),
   });
 
   const data = await parseBody(request, schema);
 
-  const createdProducts = await createManyProductInstances(
-    data.productTypeId,
+  const createdProductInstances = await createManyProductInstances(
+    data.productId,
     data.quantity
   );
 
   throw new Response(
-    JSON.stringify({ numberOfCreatedProducts: createdProducts }),
+    JSON.stringify({ numberOfCreatedProducts: createdProductInstances }),
     {
       status: 200,
       statusText: "OK",
@@ -67,24 +67,24 @@ const postRequest = async (request: Request) => {
 const patchRequest = async (request: Request) => {
   const schema = z.object({
     id: z.string().cuid(),
-    status: z.nativeEnum(ProductStatus),
+    status: z.nativeEnum(ProductInstanceStatus),
     orderId: z.nullable(z.string().cuid()),
-    productTypeId: z.string().cuid(),
+    productId: z.string().cuid(),
   });
 
   const data = await parseBody(request, schema);
 
-  const updatedProduct = await updateProductInstance(data.id, {
+  const updatedProductInstance = await updateProductInstance(data.id, {
     status: data.status,
     orderId: data.orderId,
-    productTypeId: data.productTypeId,
+    productId: data.productId,
   });
 
-  if (!updatedProduct) {
+  if (!updatedProductInstance) {
     throw notFoundRequest();
   }
 
-  throw new Response(JSON.stringify(updatedProduct), {
+  throw new Response(JSON.stringify(updatedProductInstance), {
     status: 200,
     statusText: "OK",
   });
@@ -97,13 +97,13 @@ const deleteRequest = async (request: Request) => {
 
   const data = await parseBody(request, schema);
 
-  const deletedProduct = await deleteProductInstance(data.id);
+  const deletedProductInstance = await deleteProductInstance(data.id);
 
-  if (deletedProduct == null) {
+  if (deletedProductInstance == null) {
     throw notFoundRequest();
   }
 
-  throw new Response(JSON.stringify(deletedProduct), {
+  throw new Response(JSON.stringify(deletedProductInstance), {
     status: 200,
     statusText: "Text",
   });

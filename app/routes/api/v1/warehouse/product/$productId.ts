@@ -5,9 +5,9 @@ import { parseBody } from "~/lib/parse-body.server";
 import { deleteProduct, updateProduct } from "~/models/product/product.server";
 
 export const action: ActionFunction = async ({ request, params }) => {
-  const productTypeId = params.productTypeId;
+  const productId = params.productId;
 
-  if (productTypeId == null) {
+  if (productId == null) {
     throw new Response(null, {
       status: 400,
       statusText: "Bad Request",
@@ -16,11 +16,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   switch (request.method.toLowerCase()) {
     case "patch": {
-      handlePATCHRequest(productTypeId, request);
+      handlePATCHRequest(productId, request);
     }
 
     case "delete": {
-      handleDELETERequest(productTypeId);
+      handleDELETERequest(productId);
     }
 
     default: {
