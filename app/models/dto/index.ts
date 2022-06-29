@@ -1,4 +1,4 @@
-import { Address, CreditCard, OrderStatus, Role } from "@prisma/client";
+import type { Address, CreditCard, OrderStatus, Role } from "@prisma/client";
 
 export type LoginDto = {
   email: string;

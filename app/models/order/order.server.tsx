@@ -1,6 +1,6 @@
-import { Order, OrderStatus } from "@prisma/client";
+import type { Order, OrderStatus } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
-import { OrderInput, OrderUpdateInput } from "../dto";
+import type { OrderInput, OrderUpdateInput } from "../dto";
 
 export const findOrders = async (): Promise<Order[]> => {
   return database.order.findMany();

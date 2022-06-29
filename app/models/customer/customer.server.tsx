@@ -1,6 +1,6 @@
 import type { Customer } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
-import {
+import type {
   creditCardInput,
   CustomerInput,
   LoginDto,
@@ -55,7 +55,7 @@ export const updateCustomer = async (id: string, data: UpdateCustomerDto) => {
 
 export const createCustomerCreditCard = async (
   customerId: string,
-  data: creditCardInput,
+  data: creditCardInput
 ) => {
   return database.creditCard.create({
     data: {
