@@ -6,20 +6,20 @@ import {
   notFoundRequest,
 } from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import type { Products } from "~/models/product/product.server";
+import type { ProductInstances } from "~/models/productInstance/productInstance.server";
 import {
-  createManyProducts,
-  deleteProduct,
-  findManyProducts,
-  updateProduct,
-} from "~/models/product/product.server";
+  createManyProductInstances,
+  deleteProductInstance,
+  findManyProductInstances,
+  updateProductInstance,
+} from "~/models/productInstance/productInstance.server";
 
 type LoaderData = {
-  products: Products;
+  products: ProductInstances;
 };
 
 export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  const products = await findManyProducts();
+  const products = await findManyProductInstances();
   return {
     products,
   };
@@ -50,9 +50,9 @@ const postRequest = async (request: Request) => {
 
   const data = await parseBody(request, schema);
 
-  const createdProducts = await createManyProducts(
+  const createdProducts = await createManyProductInstances(
     data.productTypeId,
-    data.quantity
+    data.quantity,
   );
 
   throw new Response(
@@ -60,7 +60,7 @@ const postRequest = async (request: Request) => {
     {
       status: 200,
       statusText: "OK",
-    }
+    },
   );
 };
 
@@ -74,16 +74,22 @@ const patchRequest = async (request: Request) => {
 
   const data = await parseBody(request, schema);
 
-  const updatedProduct = await updateProduct(data.id, {
+  const updatedProduct = await updateProductInstance(data.id, {
     status: data.status,
     orderId: data.orderId,
     productTypeId: data.productTypeId,
   });
-  
+
   if (!updatedProduct) {
     throw notFoundRequest();
   }
-  
+
+  throw new Response(JSON.stringify(updatedProduct), {
+    status: 200,
+    statusText: "OK",
+  });
+};
+
 const deleteRequest = async (request: Request) => {
   const schema = z.object({
     id: z.string().cuid(),
@@ -91,9 +97,9 @@ const deleteRequest = async (request: Request) => {
 
   const data = await parseBody(request, schema);
 
-  const deletedProduct = await deleteProduct(data.id);
+  const deletedProduct = await deleteProductInstance(data.id);
 
-  if (deleteProduct == null) {
+  if (deleteProductInstance == null) {
     throw notFoundRequest();
   }
 

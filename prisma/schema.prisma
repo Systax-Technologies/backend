@@ -82,7 +82,7 @@ model Order {
   shippedAt   DateTime?
   deliveredAt DateTime?
 
-  products   Product[]
+  products   ProductInstance[]
   customerId String
   customer   Customer  @relation(fields: [customerId], references: [id])
 }
@@ -92,18 +92,18 @@ enum ProductStatus {
   SOLD
 }
 
-model Product {
+model ProductInstance {
   id     String        @id @default(cuid())
   status ProductStatus @default(IN_STOCK)
 
   orderId       String?
   order         Order?         @relation(fields: [orderId], references: [id])
   productTypeId String
-  productType   ProductType    @relation(fields: [productTypeId], references: [id])
+  productType   Product    @relation(fields: [productTypeId], references: [id])
   activeProduct ActiveProduct?
 }
 
-model ProductType {
+model Product {
   id          String   @id @default(cuid())
   model       String
   imageUrl    String
@@ -114,7 +114,7 @@ model ProductType {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  products Product[]
+  products ProductInstance[]
 }
 
 enum ActiveProductStatus {
@@ -129,5 +129,5 @@ model ActiveProduct {
 
   customerId String
   customer   Customer @relation(fields: [customerId], references: [id])
-  product    Product  @relation(fields: [id], references: [id])
+  product    ProductInstance  @relation(fields: [id], references: [id])
 }

@@ -5,7 +5,7 @@ import { parseBody } from "~/lib/parse-body.server";
 import {
   deleteProductType,
   updateProductType,
-} from "~/models/productType/productType.server";
+} from "~/models/product/productType.server";
 
 export const action: ActionFunction = async ({ request, params }) => {
   const productTypeId = params.productTypeId;
