@@ -52,7 +52,7 @@ const postRequest = async (request: Request) => {
 
   const createdProducts = await createManyProductInstances(
     data.productTypeId,
-    data.quantity,
+    data.quantity
   );
 
   throw new Response(
@@ -60,7 +60,7 @@ const postRequest = async (request: Request) => {
     {
       status: 200,
       statusText: "OK",
-    },
+    }
   );
 };
 
@@ -99,7 +99,7 @@ const deleteRequest = async (request: Request) => {
 
   const deletedProduct = await deleteProductInstance(data.id);
 
-  if (deleteProductInstance == null) {
+  if (deletedProduct == null) {
     throw notFoundRequest();
   }
 

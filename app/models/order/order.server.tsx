@@ -22,7 +22,7 @@ export const createOrder = async (data: OrderInput): Promise<Order> => {
 
 export const updateOrder = async (
   id: string,
-  data: OrderUpdateInput,
+  data: OrderUpdateInput
 ): Promise<Order | null> => {
   return database.order.update({
     where: {
@@ -45,7 +45,7 @@ export const deleteOrder = async (id: string): Promise<Order | null> => {
 };
 
 export const findCustomerOrders = async (
-  customerId: string,
+  customerId: string
 ): Promise<Order[]> => {
   return database.order.findMany({
     where: {
@@ -55,7 +55,7 @@ export const findCustomerOrders = async (
 };
 
 export const findOrdersByStatus = async (
-  status: OrderStatus,
+  status: OrderStatus
 ): Promise<Order[]> => {
   return database.order.findMany({
     where: {
@@ -66,7 +66,7 @@ export const findOrdersByStatus = async (
 
 export const findOrdersWithinOrderedDates = async (
   startDate: Date,
-  endDate: Date,
+  endDate: Date
 ): Promise<Order[]> => {
   return database.order.findMany({
     where: {
@@ -80,7 +80,7 @@ export const findOrdersWithinOrderedDates = async (
 
 export const findOrdersWithinShippedDates = async (
   startDate: Date,
-  endDate: Date,
+  endDate: Date
 ): Promise<Order[]> => {
   return database.order.findMany({
     where: {
@@ -94,7 +94,7 @@ export const findOrdersWithinShippedDates = async (
 
 export const findOrdersWithinDeliveredDates = async (
   startDate: Date,
-  endDate: Date,
+  endDate: Date
 ): Promise<Order[]> => {
   return database.order.findMany({
     where: {

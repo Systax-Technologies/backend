@@ -2,10 +2,7 @@ import { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import { methodNotAllowed } from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import {
-  deleteProductType,
-  updateProductType,
-} from "~/models/product/productType.server";
+import { deleteProduct, updateProduct } from "~/models/product/product.server";
 
 export const action: ActionFunction = async ({ request, params }) => {
   const productTypeId = params.productTypeId;
@@ -44,32 +41,32 @@ const handlePATCHRequest = async (id: string, request: Request) => {
 
   const data = await parseBody(request, patchSchema);
 
-  const productType = await updateProductType(id, data);
+  const product = await updateProduct(id, data);
 
-  if (productType == null) {
+  if (product == null) {
     throw new Response(null, {
       status: 404,
       statusText: "Not Found",
     });
   }
 
-  throw new Response(JSON.stringify(productType), {
+  throw new Response(JSON.stringify(product), {
     status: 200,
     statusText: "OK",
   });
 };
 
 const handleDELETERequest = async (id: string) => {
-  const productType = await deleteProductType(id);
+  const product = await deleteProduct(id);
 
-  if (productType == null) {
+  if (product == null) {
     throw new Response(null, {
       status: 404,
       statusText: "Not Found",
     });
   }
 
-  throw new Response(JSON.stringify(productType), {
+  throw new Response(JSON.stringify(product), {
     status: 200,
     statusText: "200",
   });
