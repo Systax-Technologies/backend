@@ -1,24 +1,73 @@
-import type { Product } from "@prisma/client";
-import type { LoaderFunction } from "@remix-run/node";
-import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
-import { findProductInstance } from "~/models/productInstance/productInstance.server";
+import { ActionFunction } from "@remix-run/node";
+import { z } from "zod";
+import { methodNotAllowed } from "~/helpers/app-helpers.server";
+import { parseBody } from "~/lib/parse-body.server";
+import { deleteProduct, updateProduct } from "~/models/product/product.server";
 
-type LoaderData = Product;
-
-export const loader: LoaderFunction = async ({
-  params,
-}): Promise<LoaderData> => {
+export const action: ActionFunction = async ({ request, params }) => {
   const productId = params.productId;
 
   if (productId == null) {
-    throw badRequest();
+    throw new Response(null, {
+      status: 400,
+      statusText: "Bad Request",
+    });
   }
 
-  const product = await findProductInstance(productId);
+  switch (request.method.toLowerCase()) {
+    case "patch": {
+      handlePATCHRequest(productId, request);
+    }
+
+    case "delete": {
+      handleDELETERequest(productId);
+    }
+
+    default: {
+      methodNotAllowed();
+    }
+  }
+};
+
+const handlePATCHRequest = async (id: string, request: Request) => {
+  const patchSchema = z.object({
+    model: z.string(),
+    imageUrl: z.string(),
+    description: z.string(),
+    color: z.string(),
+    size: z.string(),
+    price: z.number(),
+  });
+
+  const data = await parseBody(request, patchSchema);
+
+  const product = await updateProduct(id, data);
 
   if (product == null) {
-    throw notFoundRequest();
+    throw new Response(null, {
+      status: 404,
+      statusText: "Not Found",
+    });
   }
 
-  return product;
+  throw new Response(JSON.stringify(product), {
+    status: 200,
+    statusText: "OK",
+  });
+};
+
+const handleDELETERequest = async (id: string) => {
+  const product = await deleteProduct(id);
+
+  if (product == null) {
+    throw new Response(null, {
+      status: 404,
+      statusText: "Not Found",
+    });
+  }
+
+  throw new Response(JSON.stringify(product), {
+    status: 200,
+    statusText: "200",
+  });
 };

@@ -3,23 +3,23 @@ import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
 import { countProductInstancesByType } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = {
-  numberOfProducts: number;
+  numberOfProductInstances: number;
 };
 
 export const loader: LoaderFunction = async ({
   params,
 }): Promise<LoaderData> => {
-  const productTypeId = params.productTypeId;
+  const productId = params.productId;
 
-  if (productTypeId == null) {
+  if (productId == null) {
     throw badRequest();
   }
 
-  const countedProducts = await countProductInstancesByType(productTypeId);
+  const countedProductInstances = await countProductInstancesByType(productId);
 
-  if (countedProducts == null) {
+  if (countedProductInstances == null) {
     throw notFoundRequest();
   }
 
-  return { numberOfProducts: countedProducts };
+  return { numberOfProductInstances: countedProductInstances };
 };

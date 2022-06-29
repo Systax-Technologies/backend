@@ -3,9 +3,9 @@ import { database } from "~/helpers/db-helper.server";
 import { ProductInput, ProductUpdateInput } from "../dto";
 
 /**
- * Function to find a specific Product Type
- * @param id Id of the Product Type to find
- * @returns The `ProductType` found
+ * Function to find a specific Product
+ * @param id Id of the Product to find
+ * @returns The `Product` found
  */
 export const findProduct = async (id: string): Promise<Product | null> => {
   return database.product.findUnique({
@@ -14,12 +14,12 @@ export const findProduct = async (id: string): Promise<Product | null> => {
 };
 
 /**
- * Function to create a new Product Type
- * @param data The `ProductType` object to add
- * @returns The `ProductType` object created
+ * Function to create a new Product
+ * @param data The `Product` object to add
+ * @returns The `Product` object created
  */
 export const createProduct = async (
-  data: ProductInput,
+  data: ProductInput
 ): Promise<Product | null> => {
   return database.product.create({
     data,
@@ -27,14 +27,14 @@ export const createProduct = async (
 };
 
 /**
- * Function to update a Product Type
- * @param id Id of the Product Type to update
- * @param data Data for the new Product Type
- * @returns The new `ProductType` object created
+ * Function to update a Product
+ * @param id Id of the Product to update
+ * @param data Data for the new Product
+ * @returns The new `Product` object created
  */
 export const updateProduct = async (
   id: string,
-  data: ProductUpdateInput,
+  data: ProductUpdateInput
 ): Promise<Product | null> => {
   try {
     return database.product.update({
@@ -47,9 +47,9 @@ export const updateProduct = async (
 };
 
 /**
- * Function to delete a Product Type
- * @param id The Id of the Product Type to delete
- * @returns The `ProductType` object deleted
+ * Function to delete a Product
+ * @param id The Id of the Product to delete
+ * @returns The `Product` object deleted
  */
 export const deleteProduct = async (id: string): Promise<Product | null> => {
   try {

@@ -94,10 +94,10 @@ In order to run the `prisma studio` utility, run:
 
 - [Warehouse](#warehouse)
   - [POST `/api/v1/warehouse/login`](#post-apiv1warehouselogin)
-  - [GET `/api/v1/warehouse/products`](#get-apiv1warehouseproducts)
-  - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
-  - [PATCH `/api/v1/warehouse/products`](#patch-apiv1warehouseproducts)
-  - [DELETE `/api/v1/warehouse/products`](#delete-apiv1warehouseproducts)
+  - [GET `/api/v1/warehouse/productInstances`](#get-apiv1warehouseproductinstances)
+  - [POST `/api/v1/warehouse/productInstances`](#post-apiv1warehouseproductinstances)
+  - [PATCH `/api/v1/warehouse/productInstances`](#patch-apiv1warehouseproductinstances)
+  - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
   - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees)
   - [GET `/api/v1/warehouse/employees/employee`](#get-apiv1warehouseemployeesemployee)
   - [POST `/api/v1/warehouse/employees/employee`](#post-apiv1warehouseemployeesemployee)
@@ -154,9 +154,9 @@ Content-Type: application/json
 
 ---
 
-### GET `/api/v1/warehouse/products`
+### GET `/api/v1/warehouse/productInstances`
 
-Retrieve the complete list of products.
+Retrieve the complete list of product instances.
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -168,12 +168,12 @@ Content-Type: application/json
 
 ```json
 {
-  "products": [
+  "productInstances": [
     "id": "ch72gsb320000udocl363eofy",
     "status": "SOLD",
     "orderId": "c00p6qup20000ckkzslahp5pn",
-    "productTypeId": "cl4rb193000002a66jmw17ri3",
-    "activeProduct": {
+    "productId": "cl4rb193000002a66jmw17ri3",
+    "activeProductInstance": {
       "id": "cl4rb2pdh00012a6640drwif0",
       "status": "ACTIVE",
       "customerId": "cl4rb3wvv00032a66audt0pbp"
@@ -187,14 +187,14 @@ Content-Type: application/json
 > - All the id fields must be a valid cuid
 > - `status` accepts only "SOLD" and "IN_STOCK" as valid values
 > - `orderId` can be `null`
-> - `status` under `activeProduct` accepts only "ACTIVE", "REMOVED" or "DAMAGED" as valid values
-> - `activeProduct` can be `null`
+> - `status` under `activeProductInstance` accepts only "ACTIVE", "REMOVED" or "DAMAGED" as valid values
+> - `activeProductInstance` can be `null`
 
 ---
 
-### POST `/api/v1/warehouse/products`
+### POST `/api/v1/warehouse/productInstances`
 
-Create a number of new products given the quantity and the type of product
+Create a number of new product instances given the quantity and the type of product
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -206,21 +206,21 @@ Content-Type: application/json
 
 ```json
 {
-  "productTypeId": "cl4rb193000002a66jmw17ri3",
+  "productId": "cl4rb193000002a66jmw17ri3",
   "quantity": 3
 }
 ```
 
 > **Constraints:**
 >
-> - `productTypeId` must be a valid cuid
+> - `productId` must be a valid cuid
 > - `quantity` must be greater than `0`
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "numberOfCreatedProducts": 3
+  "numberOfCreatedProductInstances": 3
 }
 ```
 
@@ -233,9 +233,9 @@ Content-Type: application/json
 
 ---
 
-### PATCH `/api/v1/warehouse/products`
+### PATCH `/api/v1/warehouse/productInstances`
 
-Update the fields of a specific product
+Update the fields of a specific product instance
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -250,13 +250,13 @@ Content-Type: application/json
   "id": "ch72gsb320000udocl363eofy",
   "status": "SOLD",
   "orderId": "c00p6qup20000ckkzslahp5pn",
-  "productTypeId": "cl4rb193000002a66jmw17ri3"
+  "productId": "cl4rb193000002a66jmw17ri3"
 }
 ```
 
 > **Constraints:**
 >
-> - The `id` field is readonly, used only to query the product to update
+> - The `id` field is readonly, used only to query the product instance to update
 > - All the id fields must be a valid cuid
 > - `status` accepts only "SOLD" and "IN_STOCK" as valid values
 > - `orderId` can be `null`
@@ -265,11 +265,11 @@ Content-Type: application/json
 
 ```json
 {
-  "product": {
+  "productInstance": {
     "id": "ch72gsb320000udocl363eofy",
     "status": "SOLD",
     "orderId": "c00p6qup20000ckkzslahp5pn",
-    "productTypeId": "cl4rb193000002a66jmw17ri3"
+    "productId": "cl4rb193000002a66jmw17ri3"
   }
 }
 ```
@@ -288,9 +288,9 @@ Content-Type: application/json
 
 ---
 
-### DELETE `/api/v1/warehouse/products`
+### DELETE `/api/v1/warehouse/productInstances`
 
-Delete a specific product record and its related active product record (if present)
+Delete a specific product instance record and its related active product instance record (if present)
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -308,17 +308,17 @@ Content-Type: application/json
 
 > **Constraints:**
 >
-> - The `id` field is readonly, used only to query the product to update, and must be a valid cuid
+> - The `id` field is readonly, used only to query the product instance to update, and must be a valid cuid
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "product": {
+  "productInstance": {
     "id": "ch72gsb320000udocl363eofy",
     "status": "SOLD",
     "orderId": "c00p6qup20000ckkzslahp5pn",
-    "productTypeId": "cl4rb193000002a66jmw17ri3"
+    "productId": "cl4rb193000002a66jmw17ri3"
   }
 }
 ```
@@ -501,7 +501,7 @@ Content-Type: application/json
 
 > **Constraints:**
 >
-> - The `id` field is readonly, used only to query the product to update
+> - The `id` field is readonly, used only to query the emlployee to update
 > - `email` must have a valid email address syntax
 > - `password` must be already hashed
 > - `role` accepts only "ADMIN" and "WORKER" as valid values
@@ -511,15 +511,15 @@ Content-Type: application/json
 ```json
 {
   "employee": {
-      "id":"ch72gsb320000udocl363eofy",
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "createdAt":"01-01-1970-00:00:00",
-      "updatedAt":"01-01-1970-00:00:00",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN"
-   }
+    "id": "ch72gsb320000udocl363eofy",
+    "email": "example@example.com",
+    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+    "createdAt": "01-01-1970-00:00:00",
+    "updatedAt": "01-01-1970-00:00:00",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "ADMIN"
+  }
 }
 ```
 
@@ -563,15 +563,15 @@ Content-Type: application/json
 ```json
 {
   "employee": {
-      "id":"ch72gsb320000udocl363eofy",
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "createdAt":"01-01-1970-00:00:00",
-      "updatedAt":"01-01-1970-00:00:00",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN"
-   }
+    "id": "ch72gsb320000udocl363eofy",
+    "email": "example@example.com",
+    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+    "createdAt": "01-01-1970-00:00:00",
+    "updatedAt": "01-01-1970-00:00:00",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "ADMIN"
+  }
 }
 ```
 
@@ -612,15 +612,15 @@ Content-Type: application/json
 ```json
 {
   "employee": {
-      "id":"ch72gsb320000udocl363eofy",
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "createdAt":"01-01-1970-00:00:00",
-      "updatedAt":"01-01-1970-00:00:00",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN"
-   }
+    "id": "ch72gsb320000udocl363eofy",
+    "email": "example@example.com",
+    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
+    "createdAt": "01-01-1970-00:00:00",
+    "updatedAt": "01-01-1970-00:00:00",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "ADMIN"
+  }
 }
 ```
 
