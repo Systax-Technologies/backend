@@ -1,11 +1,13 @@
 import { ActionFunction, json } from "@remix-run/node";
 import { string, z } from "zod";
+import { methodNotAllowed } from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import {
   createCustomer,
   deleteCustomer,
   updateCustomer,
 } from "~/models/customer/customer.server";
+import { meta } from "~/root";
 
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
@@ -15,6 +17,8 @@ export const action: ActionFunction = async ({ request }) => {
       return patchRequest(request);
     case "delete":
       return deleteRequest(request);
+    default:
+      throw methodNotAllowedResponse();
   }
 };
 
