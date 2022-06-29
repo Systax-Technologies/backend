@@ -1,6 +1,10 @@
-import { ActionFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
-import { methodNotAllowed } from "~/helpers/app-helpers.server";
+import {
+  badRequestResponse,
+  methodNotAllowedResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { deleteProduct, updateProduct } from "~/models/product/product.server";
 
@@ -8,10 +12,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const productId = params.productId;
 
   if (productId == null) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    throw badRequestResponse();
   }
 
   switch (request.method.toLowerCase()) {
@@ -24,7 +25,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
 
     default: {
-      methodNotAllowed();
+      methodNotAllowedResponse();
     }
   }
 };
@@ -44,10 +45,7 @@ const handlePATCHRequest = async (id: string, request: Request) => {
   const product = await updateProduct(id, data);
 
   if (product == null) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Not Found",
-    });
+    throw notFoundResponse();
   }
 
   throw new Response(JSON.stringify(product), {
@@ -60,10 +58,7 @@ const handleDELETERequest = async (id: string) => {
   const product = await deleteProduct(id);
 
   if (product == null) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Not Found",
-    });
+    throw notFoundResponse();
   }
 
   throw new Response(JSON.stringify(product), {

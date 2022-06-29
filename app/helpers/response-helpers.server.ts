@@ -1,8 +1,18 @@
 /**
+ * Return a 200 HTTP response
+ * @param body The body of the response
+ */
+export const okResponse = (body: string) => {
+  return new Response(body, {
+    status: 200,
+    statusText: "OK",
+  });
+};
+/**
  * Return a 400 HTTP repsonse
  *
  */
-export const badRequest = () => {
+export const badRequestResponse = () => {
   return new Response(null, {
     status: 400,
     statusText: "Bad Request",
@@ -12,7 +22,7 @@ export const badRequest = () => {
 /**
  * Return a 401 HTTP response
  */
-export const unauthorizedRequest = () => {
+export const unauthorizedResponse = () => {
   return new Response(null, {
     status: 401,
     statusText: "Unauthorized",
@@ -23,7 +33,7 @@ export const unauthorizedRequest = () => {
  * Return a 403 HTTP repsonse
  *
  */
-export const forbiddenRequest = () => {
+export const forbiddenResponse = () => {
   return new Response(null, {
     status: 403,
     statusText: "Forbidden",
@@ -34,7 +44,7 @@ export const forbiddenRequest = () => {
  * Return a 404 HTTP repsonse
  *
  */
-export const notFoundRequest = () => {
+export const notFoundResponse = () => {
   return new Response(null, {
     status: 404,
     statusText: "Not Found",
@@ -44,7 +54,7 @@ export const notFoundRequest = () => {
 /**
  * Return a 405 HTTP response
  */
-export const methodNotAllowed = () => {
+export const methodNotAllowedResponse = () => {
   return new Response(null, {
     status: 405,
     statusText: "Method Not Allowed",

@@ -1,13 +1,11 @@
-import { ActionFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
+import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
 import { postAuthenticationHandler } from "~/lib/authentication.server";
 import { findEmployeeByLogin } from "~/models/employee/employee.server";
 
 export const action: ActionFunction = async ({ request }) => {
   if (request.method.toLowerCase() !== "post") {
-    throw new Response(null, {
-      status: 405,
-      statusText: "Method Not Allowed",
-    });
+    throw methodNotAllowedResponse();
   }
 
   return postAuthenticationHandler(request, findEmployeeByLogin);

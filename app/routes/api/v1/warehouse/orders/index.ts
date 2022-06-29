@@ -1,5 +1,5 @@
-import { Order } from "@prisma/client";
-import { LoaderFunction } from "@remix-run/node";
+import type { Order } from "@prisma/client";
+import type { LoaderFunction } from "@remix-run/node";
 import { findOrders } from "~/models/order/order.server";
 
 type LoaderData = Order[];

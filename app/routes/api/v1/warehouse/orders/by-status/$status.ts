@@ -1,7 +1,11 @@
-import { Order, OrderStatus } from "@prisma/client";
-import { LoaderFunction } from "@remix-run/node";
+import type { Order } from "@prisma/client";
+import { OrderStatus } from "@prisma/client";
+import type { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
-import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
+import {
+  badRequestResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { findOrdersByStatus } from "~/models/order/order.server";
 
 type LoaderData = Order[];
@@ -11,7 +15,7 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   let orderStatus = params.status;
   if (!orderStatus) {
-    throw badRequest();
+    throw badRequestResponse();
   }
 
   orderStatus = orderStatus.toUpperCase();
@@ -24,11 +28,11 @@ export const loader: LoaderFunction = async ({
     const orders = await findOrdersByStatus(parsedData.data);
 
     if (!orders || !orders.length) {
-      throw notFoundRequest();
+      throw notFoundResponse();
     }
 
     return orders;
   } else {
-    throw badRequest();
+    throw badRequestResponse();
   }
 };
