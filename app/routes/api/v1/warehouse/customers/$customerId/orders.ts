@@ -6,7 +6,7 @@ import {
 } from "~/helpers/response-helpers.server";
 import { findCustomerOrders } from "~/models/order/order.server";
 
-type LoaderData = Order[];
+type LoaderData = { orders: Order[] };
 
 export const loader: LoaderFunction = async ({
   params,
@@ -23,5 +23,5 @@ export const loader: LoaderFunction = async ({
     throw notFoundResponse();
   }
 
-  return orders;
+  return { orders };
 };

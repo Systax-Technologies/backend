@@ -1,16 +1,21 @@
 import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
-import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
+import {
+  methodNotAllowedResponse,
+  okResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { createProduct } from "~/models/product/product.server";
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({
+  request,
+}): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      throw handlePOSTRequest(request);
+      return handlePOSTRequest(request);
     }
     default: {
-      methodNotAllowedResponse();
+      return methodNotAllowedResponse();
     }
   }
 };
@@ -27,5 +32,5 @@ const handlePOSTRequest = async (request: Request) => {
 
   const data = await parseBody(request, productPostSchema);
 
-  return createProduct(data);
+  return okResponse(JSON.stringify(createProduct(data)));
 };
