@@ -4,7 +4,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import { findEmployeesByRole } from "~/models/employee/employee.server";
 
-type LoaderData = Employee[];
+type LoaderData = { employees: Employee[] };
 
 export const loader: LoaderFunction = async ({
   params,
@@ -30,16 +30,16 @@ export const loader: LoaderFunction = async ({
   const parsedData = schema.safeParse(role);
 
   if (parsedData.success) {
-    const employee = await findEmployeesByRole(parsedData.data);
+    const employees = await findEmployeesByRole(parsedData.data);
 
-    if (employee == null) {
+    if (employees == null) {
       throw new Response(null, {
         status: 404,
         statusText: "Employee Not Found",
       });
     }
 
-    return employee;
+    return { employees };
   } else {
     throw new Response(null, {
       status: 400,

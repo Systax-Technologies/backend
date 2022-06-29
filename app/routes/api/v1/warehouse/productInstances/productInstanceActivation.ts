@@ -8,9 +8,13 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { productInstanceActivation } from "~/models/productInstance/productInstance.server";
 
+type LoaderData = {
+  activatedProduct: ProductInstance;
+};
+
 export const action: ActionFunction = async ({
   request,
-}): Promise<ProductInstance | null> => {
+}): Promise<LoaderData> => {
   if (request.method.toLowerCase() != "post") {
     throw methodNotAllowedResponse();
   }
@@ -22,12 +26,12 @@ export const action: ActionFunction = async ({
   const data = await parseBody(request, schema);
   const productInstanceActivated = await productInstanceActivation(
     data.customerId,
-    data.productInstanceId
+    data.productInstanceId,
   );
 
   if (productInstanceActivated == null) {
     throw notFoundResponse();
   }
 
-  return productInstanceActivated;
+  return { activatedProduct: productInstanceActivated };
 };

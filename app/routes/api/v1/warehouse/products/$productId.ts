@@ -5,6 +5,7 @@ import {
   badRequestResponse,
   methodNotAllowedResponse,
   notFoundResponse,
+  okResponse,
 } from "~/helpers/response-helpers.server";
 
 import { parseBody } from "~/lib/parse-body.server";
@@ -34,29 +35,32 @@ export const loader: LoaderFunction = async ({
   return product;
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action: ActionFunction = async ({
+  request,
+  params,
+}): Promise<Response> => {
   const productId = params.productId;
 
   if (productId == null) {
-    throw badRequestResponse();
+    return badRequestResponse();
   }
 
   switch (request.method.toLowerCase()) {
-    case "patch": {
-      handlePATCHRequest(productId, request);
-    }
+    case "patch":
+      return handlePATCHRequest(productId, request);
 
-    case "delete": {
-      handleDELETERequest(productId);
-    }
+    case "delete":
+      return handleDELETERequest(productId);
 
-    default: {
-      methodNotAllowedResponse();
-    }
+    default:
+      return methodNotAllowedResponse();
   }
 };
 
-const handlePATCHRequest = async (id: string, request: Request) => {
+const handlePATCHRequest = async (
+  id: string,
+  request: Request,
+): Promise<Response> => {
   const patchSchema = z.object({
     model: z.string(),
     imageUrl: z.string(),
@@ -67,28 +71,21 @@ const handlePATCHRequest = async (id: string, request: Request) => {
   });
 
   const data = await parseBody(request, patchSchema);
-
   const product = await updateProduct(id, data);
 
   if (product == null) {
-    throw notFoundResponse();
+    return notFoundResponse();
   }
 
-  throw new Response(JSON.stringify(product), {
-    status: 200,
-    statusText: "OK",
-  });
+  return okResponse(JSON.stringify(product));
 };
 
 const handleDELETERequest = async (id: string) => {
   const product = await deleteProduct(id);
 
   if (product == null) {
-    throw notFoundResponse();
+    return notFoundResponse();
   }
 
-  throw new Response(JSON.stringify(product), {
-    status: 200,
-    statusText: "200",
-  });
+  return okResponse(JSON.stringify(product));
 };
