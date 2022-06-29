@@ -1,4 +1,4 @@
-import {
+import type {
   ActiveProductInstance,
   ActiveProductInstanceStatus,
 } from "@prisma/client";

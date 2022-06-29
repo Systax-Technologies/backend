@@ -2,9 +2,9 @@ import { ProductInstanceStatus } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
-  methodNotAllowed,
-  notFoundRequest,
-} from "~/helpers/app-helpers.server";
+  methodNotAllowedResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import type { ProductInstances } from "~/models/productInstance/productInstance.server";
 import {
@@ -37,7 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
       deleteRequest(request);
 
     default: {
-      throw methodNotAllowed();
+      throw methodNotAllowedResponse();
     }
   }
 };
@@ -81,7 +81,7 @@ const patchRequest = async (request: Request) => {
   });
 
   if (!updatedProductInstance) {
-    throw notFoundRequest();
+    throw notFoundResponse();
   }
 
   throw new Response(JSON.stringify(updatedProductInstance), {
@@ -100,7 +100,7 @@ const deleteRequest = async (request: Request) => {
   const deletedProductInstance = await deleteProductInstance(data.id);
 
   if (deletedProductInstance == null) {
-    throw notFoundRequest();
+    throw notFoundResponse();
   }
 
   throw new Response(JSON.stringify(deletedProductInstance), {

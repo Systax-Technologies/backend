@@ -1,6 +1,6 @@
 import type { Product } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
-import { ProductInput, ProductUpdateInput } from "../dto";
+import type { ProductInput, ProductUpdateInput } from "../dto";
 
 /**
  * Function to find a specific Product

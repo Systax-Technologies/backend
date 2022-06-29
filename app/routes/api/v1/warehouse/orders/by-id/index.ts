@@ -1,7 +1,10 @@
 import { OrderStatus } from "@prisma/client";
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
-import { badRequest, methodNotAllowed } from "~/helpers/app-helpers.server";
+import {
+  badRequestResponse,
+  methodNotAllowedResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import {
   createOrder,
@@ -10,7 +13,7 @@ import {
 } from "~/models/order/order.server";
 
 export const loader: LoaderFunction = async () => {
-  throw badRequest();
+  throw badRequestResponse();
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -28,7 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
     }
 
     default: {
-      throw methodNotAllowed();
+      throw methodNotAllowedResponse();
     }
   }
 };
@@ -43,7 +46,7 @@ const handlePOSTRequest = async (request: Request) => {
   const createdOrder = await createOrder(parsedData);
 
   if (!createdOrder) {
-    throw badRequest();
+    throw badRequestResponse();
   }
 
   return new Response(JSON.stringify(createdOrder), {
@@ -89,7 +92,7 @@ const handleDELETERequest = async (request: Request) => {
   const deletedOrder = await deleteOrder(parsedData.id);
 
   if (deletedOrder == null) {
-    throw badRequest();
+    throw badRequestResponse();
   }
   return new Response(JSON.stringify(deletedOrder), {
     status: 200,

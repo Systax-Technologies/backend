@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { badRequest } from "~/helpers/app-helpers.server";
+import { badRequestResponse } from "~/helpers/response-helpers.server";
 
 export const parseBody = async <Output, Input>(
   request: Request,
@@ -10,7 +10,7 @@ export const parseBody = async <Output, Input>(
   try {
     requestBody = await request.json();
   } catch (e) {
-    throw badRequest();
+    throw badRequestResponse();
   }
 
   const parsedData = schema.safeParse(requestBody);
@@ -18,6 +18,6 @@ export const parseBody = async <Output, Input>(
   if (parsedData.success) {
     return parsedData.data;
   } else {
-    throw badRequest();
+    throw badRequestResponse();
   }
 };

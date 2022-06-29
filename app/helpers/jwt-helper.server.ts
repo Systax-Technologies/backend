@@ -1,5 +1,6 @@
 import * as jwtLib from "jsonwebtoken";
 import { EnvSchema } from "~/config/EnvSchema.server";
+import { unauthorizedResponse } from "./response-helpers.server";
 
 const JWT_SECRET = EnvSchema.get("JWT_SECRET");
 
@@ -8,7 +9,7 @@ export const verifyJwt = (jwt: string) => {
   try {
     decoded = jwtLib.verify(jwt, JWT_SECRET);
   } catch (err) {
-    throw new Response(null, { status: 401, statusText: "Unauthenticated" });
+    throw unauthorizedResponse();
   }
   return decoded;
 };

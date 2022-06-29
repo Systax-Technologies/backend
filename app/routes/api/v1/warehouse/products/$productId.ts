@@ -2,10 +2,11 @@ import { Product } from "@prisma/client";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
-  badRequest,
-  methodNotAllowed,
-  notFoundRequest,
-} from "~/helpers/app-helpers.server";
+  badRequestResponse,
+  methodNotAllowedResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
+
 import { parseBody } from "~/lib/parse-body.server";
 import {
   deleteProduct,
@@ -21,13 +22,13 @@ export const loader: LoaderFunction = async ({
   const productId = params.productId;
 
   if (!productId) {
-    throw badRequest();
+    throw badRequestResponse();
   }
 
   const product = await findProduct(productId);
 
   if (!product) {
-    throw notFoundRequest();
+    throw notFoundResponse();
   }
 
   return product;
@@ -37,10 +38,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const productId = params.productId;
 
   if (productId == null) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    throw badRequestResponse();
   }
 
   switch (request.method.toLowerCase()) {
@@ -53,7 +51,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
 
     default: {
-      methodNotAllowed();
+      methodNotAllowedResponse();
     }
   }
 };
@@ -73,10 +71,7 @@ const handlePATCHRequest = async (id: string, request: Request) => {
   const product = await updateProduct(id, data);
 
   if (product == null) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Not Found",
-    });
+    throw notFoundResponse();
   }
 
   throw new Response(JSON.stringify(product), {
@@ -89,10 +84,7 @@ const handleDELETERequest = async (id: string) => {
   const product = await deleteProduct(id);
 
   if (product == null) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Not Found",
-    });
+    throw notFoundResponse();
   }
 
   throw new Response(JSON.stringify(product), {

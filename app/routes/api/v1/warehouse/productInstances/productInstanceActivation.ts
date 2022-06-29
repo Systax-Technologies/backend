@@ -1,18 +1,18 @@
-import { ProductInstance } from "@prisma/client";
-import { ActionFunction } from "@remix-run/node";
+import type { ProductInstance } from "@prisma/client";
+import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
-import { notFoundRequest } from "~/helpers/app-helpers.server";
+import {
+  methodNotAllowedResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { productInstanceActivation } from "~/models/productInstance/productInstance.server";
 
 export const action: ActionFunction = async ({
   request,
-}): Promise<ProductInstance> => {
+}): Promise<ProductInstance | null> => {
   if (request.method.toLowerCase() != "post") {
-    throw new Response(null, {
-      status: 405,
-      statusText: "Invalid Method",
-    });
+    throw methodNotAllowedResponse();
   }
   const schema = z.object({
     customerId: z.string().cuid(),
@@ -26,7 +26,7 @@ export const action: ActionFunction = async ({
   );
 
   if (productInstanceActivated == null) {
-    throw notFoundRequest();
+    throw notFoundResponse();
   }
 
   return productInstanceActivated;

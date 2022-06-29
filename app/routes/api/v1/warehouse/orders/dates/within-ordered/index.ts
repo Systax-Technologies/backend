@@ -1,15 +1,15 @@
-import { ActionFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
-  methodNotAllowed,
-  notFoundRequest,
-} from "~/helpers/app-helpers.server";
+  methodNotAllowedResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { findOrdersWithinOrderedDates } from "~/models/order/order.server";
 
 export const action: ActionFunction = async ({ request }) => {
   if (request.method.toLowerCase() != "post") {
-    methodNotAllowed();
+    methodNotAllowedResponse();
   }
 
   const schema = z.object({
@@ -33,7 +33,7 @@ export const action: ActionFunction = async ({ request }) => {
   );
 
   if (!ordersWithinDates || !ordersWithinDates.length) {
-    throw notFoundRequest();
+    throw notFoundResponse();
   }
 
   return new Response(JSON.stringify({ ordersWithinDates }), {

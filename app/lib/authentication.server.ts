@@ -1,7 +1,11 @@
-import { Customer, Employee } from "@prisma/client";
+import type { Customer, Employee } from "@prisma/client";
 import { z } from "zod";
 import { createJwt } from "~/helpers/jwt-helper.server";
-import { LoginDto } from "~/models/dto";
+import {
+  badRequestResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
+import type { LoginDto } from "~/models/dto";
 
 type AccessToken = {
   accessToken: string;
@@ -9,19 +13,16 @@ type AccessToken = {
 
 export const postAuthenticationHandler = async <
   ReturnHandlerLogin extends Employee | Customer | null,
-  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>,
+  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>
 >(
   request: Request,
-  handlerLogin: HandlerLogin,
+  handlerLogin: HandlerLogin
 ): Promise<AccessToken> => {
   let body: any;
   try {
     body = await request.json();
   } catch (e) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    throw badRequestResponse();
   }
 
   const loginSchema = z.object({
@@ -51,15 +52,9 @@ export const postAuthenticationHandler = async <
         };
       }
     } else {
-      throw new Response(null, {
-        status: 404,
-        statusText: "User not found",
-      });
+      throw notFoundResponse();
     }
   } else {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Bad Request",
-    });
+    throw badRequestResponse();
   }
 };

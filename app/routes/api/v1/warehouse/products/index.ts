@@ -1,6 +1,6 @@
-import { ActionFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
-import { methodNotAllowed } from "~/helpers/app-helpers.server";
+import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { createProduct } from "~/models/product/product.server";
 
@@ -10,7 +10,7 @@ export const action: ActionFunction = async ({ request }) => {
       throw handlePOSTRequest(request);
     }
     default: {
-      methodNotAllowed();
+      methodNotAllowedResponse();
     }
   }
 };

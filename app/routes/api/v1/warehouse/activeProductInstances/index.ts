@@ -1,6 +1,10 @@
 import { ActiveProductInstanceStatus } from "@prisma/client";
-import { ActionFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
+import {
+  badRequestResponse,
+  okResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import {
   createActiveProductInstance,
@@ -19,6 +23,8 @@ export const action: ActionFunction = async ({ request }) => {
     case "delete":
       deleteRequest(request);
       break;
+    default:
+      throw badRequestResponse();
   }
 };
 
@@ -31,10 +37,7 @@ const postRequest = async (request: Request) => {
   const createdActiveProductInstance = await createActiveProductInstance(
     data.customerId
   );
-  throw new Response(JSON.stringify(createdActiveProductInstance), {
-    status: 200,
-    statusText: "OK",
-  });
+  throw okResponse(JSON.stringify(createdActiveProductInstance));
 };
 
 const patchRequest = async (request: Request) => {
@@ -48,10 +51,7 @@ const patchRequest = async (request: Request) => {
     data.activeProductInstanceId,
     data.status
   );
-  throw new Response(JSON.stringify(updatedActiveProductInstance), {
-    status: 200,
-    statusText: "Ok",
-  });
+  throw okResponse(JSON.stringify(updatedActiveProductInstance));
 };
 
 const deleteRequest = async (request: Request) => {
@@ -63,8 +63,5 @@ const deleteRequest = async (request: Request) => {
   const deletedActiveProductInstance = await deleteActiveProductInstance(
     data.activeProductInstanceId
   );
-  throw new Response(JSON.stringify(deletedActiveProductInstance), {
-    status: 200,
-    statusText: "Ok",
-  });
+  throw okResponse(JSON.stringify(deletedActiveProductInstance));
 };

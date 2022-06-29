@@ -1,4 +1,5 @@
 import { verifyJwt } from "~/helpers/jwt-helper.server";
+import { unauthorizedResponse } from "~/helpers/response-helpers.server";
 
 export const verifyRequest = (request: Request) => {
   const authorizationHeader = request.headers.get("Authorization");
@@ -6,9 +7,6 @@ export const verifyRequest = (request: Request) => {
     const [_, jwt] = authorizationHeader.split(" ");
     return verifyJwt(jwt);
   } else {
-    throw new Response(null, {
-      status: 401,
-      statusText: "Unauthorized",
-    });
+    throw unauthorizedResponse();
   }
 };

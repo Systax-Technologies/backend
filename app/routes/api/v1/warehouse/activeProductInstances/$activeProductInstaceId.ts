@@ -1,5 +1,9 @@
-import { ActiveProductInstance } from "@prisma/client";
-import { LoaderFunction } from "@remix-run/node";
+import type { ActiveProductInstance } from "@prisma/client";
+import type { LoaderFunction } from "@remix-run/node";
+import {
+  badRequestResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { findActiveProductInstance } from "~/models/activeProductInstance/activeProductInstance.server";
 
 type LoaderData = ActiveProductInstance;
@@ -10,10 +14,7 @@ export const loader: LoaderFunction = async ({
   const activeProductInstanceId = params.productInstanceId;
 
   if (activeProductInstanceId == null) {
-    throw new Response(null, {
-      status: 400,
-      statusText: "Product Instance Id Not Provided",
-    });
+    throw badRequestResponse();
   }
 
   const activeProductInstance = await findActiveProductInstance(
@@ -21,10 +22,7 @@ export const loader: LoaderFunction = async ({
   );
 
   if (activeProductInstance == null) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Product Not Found",
-    });
+    throw notFoundResponse();
   }
 
   return activeProductInstance;

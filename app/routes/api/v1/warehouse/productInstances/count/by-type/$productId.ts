@@ -1,5 +1,8 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
+import {
+  badRequestResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { countProductInstancesByType } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = {
@@ -12,13 +15,13 @@ export const loader: LoaderFunction = async ({
   const productId = params.productId;
 
   if (productId == null) {
-    throw badRequest();
+    throw badRequestResponse();
   }
 
   const countedProductInstances = await countProductInstancesByType(productId);
 
   if (countedProductInstances == null) {
-    throw notFoundRequest();
+    throw notFoundResponse();
   }
 
   return { numberOfProductInstances: countedProductInstances };
