@@ -1,13 +1,17 @@
-import { ActiveProduct, ProductInstance, ProductStatus } from "@prisma/client";
+import {
+  ActiveProductInstance,
+  ProductInstance,
+  ProductInstanceStatus,
+} from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 
 /**
- * Funtion to find a specific Product given its ID
- * @param id The ID of the Product to find
- * @returns `Product` object if found, otherwise `null`
+ * Funtion to find a specific ProductInstance given its ID
+ * @param id The ID of the ProductInstance to find
+ * @returns `ProductInstance` object if found, otherwise `null`
  */
 export const findProductInstance = async (
-  id: string,
+  id: string
 ): Promise<ProductInstance | null> => {
   return database.productInstance.findUnique({
     where: { id },
@@ -15,41 +19,41 @@ export const findProductInstance = async (
 };
 
 export type ProductInstances = (ProductInstance & {
-  activeProduct: ActiveProduct | null;
+  activeProductInstance: ActiveProductInstance | null;
 })[];
 
 export const findManyProductInstances = async (): Promise<ProductInstances> => {
   return database.productInstance.findMany({
     include: {
-      activeProduct: true,
+      activeProductInstance: true,
     },
   });
 };
 
 /**
- * Function to create one or more Products given the Product Type
- * @param productTypeId ID of the Product Type
- * @param quantity Quantity of single Products to create
+ * Function to create one or more ProductInstances given the Product
+ * @param productId ID of the Product
+ * @param quantity Quantity of single ProductInstances to create
  * @returns The count of the number of records created
  */
 export const createManyProductInstances = async (
-  productTypeId: string,
-  quantity: number,
+  productId: string,
+  quantity: number
 ): Promise<{ count: number }> => {
   return database.productInstance.createMany({
-    data: [...Array(quantity)].map((_) => ({ productTypeId })),
+    data: [...Array(quantity)].map((_) => ({ productId })),
   });
 };
 
 /**
- * Function to update a single Product
- * @param id Id of the Product to update
- * @param data `Product` object with the new data
- * @returns The new `Product`
+ * Function to update a single ProductInstance
+ * @param id Id of the ProductInstance to update
+ * @param data `ProductInstance` object with the new data
+ * @returns The new `ProductInstance`
  */
 export const updateProductInstance = async (
   id: string,
-  data: Omit<ProductInstance, "id">,
+  data: Omit<ProductInstance, "id">
 ): Promise<ProductInstance | null> => {
   try {
     return database.productInstance.update({
@@ -62,15 +66,15 @@ export const updateProductInstance = async (
 };
 
 /**
- * Function to update the Order Id field of one or more Products, only if the status is `IN_STOCK`.
+ * Function to update the Order Id field of one or more ProductInstances, only if the status is `IN_STOCK`.
  * The Status will automatically be updated to `SOLD`
  * @param ids Array of Ids to update
  * @param orderId The Order Id to add
  * @returns The count of the number of records updated
  */
-export const updateManyProductOrders = async (
+export const updateManyProductInstanceOrders = async (
   ids: string[],
-  orderId: string,
+  orderId: string
 ): Promise<{ count: number }> => {
   return database.productInstance.updateMany({
     where: {
@@ -85,18 +89,18 @@ export const updateManyProductOrders = async (
 };
 
 /**
- * Function to activate a product
- * @param customerId id of customer to associate an active product
- * @param productId id of product to activate
- * @returns The Product
+ * Function to activate a ProductInstance
+ * @param customerId id of customer to associate an active ProductInstance
+ * @param productInstanceId id of ProductInstance to activate
+ * @returns The ProductInstance
  */
 export const productInstanceActivation = async (
   customerId: string,
-  productId: string,
+  productInstanceId: string
 ): Promise<ProductInstance | null> => {
   const result = await database.productInstance.findFirst({
     where: {
-      id: productId,
+      id: productInstanceId,
       status: "SOLD",
     },
   });
@@ -104,10 +108,10 @@ export const productInstanceActivation = async (
   if (result) {
     return database.productInstance.update({
       where: {
-        id: productId,
+        id: productInstanceId,
       },
       data: {
-        activeProduct: {
+        activeProductInstance: {
           create: {
             customerId,
           },
@@ -120,12 +124,12 @@ export const productInstanceActivation = async (
 };
 
 /**
- * Function to delete a single Product
- * @param id The Id of the Product to delete
- * @returns The `Product` object deleted
+ * Function to delete a single ProductInstance
+ * @param id The Id of the ProductInstance to delete
+ * @returns The `ProductInstance` object deleted
  */
 export const deleteProductInstance = async (
-  id: string,
+  id: string
 ): Promise<ProductInstance | null> => {
   try {
     return database.productInstance.delete({
@@ -137,12 +141,12 @@ export const deleteProductInstance = async (
 };
 
 /**
- * Function to count the Products with the given Status
+ * Function to count the ProductInstances with the given Status
  * @param status The status to count for
  * @returns The count of the matching records
  */
 export const countProductInstancesByStatus = async (
-  status: ProductStatus,
+  status: ProductInstanceStatus
 ): Promise<number | null> => {
   return database.productInstance.count({
     where: { status },
@@ -150,12 +154,12 @@ export const countProductInstancesByStatus = async (
 };
 
 /**
- * Function to count the Products with the given Product Type
- * @param productTypeId The Id of the Product Type to count for
+ * Function to count the ProductInstances with the given Product
+ * @param productId The Id of the Product to count for
  * @returns The count of the matching records
  */
 export const countProductInstancesByType = async (
-  productTypeId: string,
+  productId: string
 ): Promise<number | null> => {
-  return database.productInstance.count({ where: { productTypeId } });
+  return database.productInstance.count({ where: { productId } });
 };
