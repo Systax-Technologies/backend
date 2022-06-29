@@ -13,31 +13,29 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const schema = z.object({
-    startDate: z.preprocess(
-      (a) => (a == null ? null : new Date(z.string().parse(a))),
-      z.nullable(z.date())
-    ),
-    endDate: z.preprocess(
-      (a) => (a == null ? null : new Date(z.string().parse(a))),
-      z.nullable(z.date())
-    ),
+    startDate: z.preprocess((arg) => {
+      if (typeof arg === "string") {
+        return new Date(arg);
+      }
+    }, z.date()),
+    endDate: z.preprocess((arg) => {
+      if (typeof arg === "string") {
+        return new Date(arg);
+      }
+    }, z.date()),
   });
 
   const parsedData = await parseBody(request, schema);
 
-  if (!parsedData.startDate) {
-    parsedData.startDate = new Date("1970-01-01");
-  }
-  if (!parsedData.endDate) {
-    parsedData.endDate = new Date();
-  }
   const ordersWithinDates = await findOrdersWithinOrderedDates(
     parsedData.startDate,
     parsedData.endDate
   );
+
   if (!ordersWithinDates || !ordersWithinDates.length) {
     throw notFoundRequest();
   }
+
   return new Response(JSON.stringify({ ordersWithinDates }), {
     status: 200,
     statusText: "OK",
