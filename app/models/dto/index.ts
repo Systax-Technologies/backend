@@ -55,7 +55,7 @@ export type creditCardInput = {
   secretCode: number;
 };
 
-export type ProductTypeInput = {
+export type ProductInput = {
   model: string;
   imageUrl: string;
   description: string;
@@ -64,7 +64,7 @@ export type ProductTypeInput = {
   price: number;
 };
 
-export type ProductTypeUpdateInput = {
+export type ProductUpdateInput = {
   model: string;
   imageUrl: string;
   description: string;

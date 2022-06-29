@@ -2,7 +2,7 @@ import { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import { methodNotAllowed } from "~/helpers/app-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { createProductType } from "~/models/productType/productType.server";
+import { createProductType } from "~/models/product/productType.server";
 
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {

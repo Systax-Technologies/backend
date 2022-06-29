@@ -2,7 +2,7 @@ import { Product } from "@prisma/client";
 import { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import { parseBody } from "~/lib/parse-body.server";
-import { productActivation } from "~/models/product/product.server";
+import { productInstanceActivation } from "~/models/productInstance/productInstance.server";
 
 export const action: ActionFunction = async ({ request }): Promise<Product> => {
   if (request.method.toLowerCase() != "post") {
@@ -17,9 +17,9 @@ export const action: ActionFunction = async ({ request }): Promise<Product> => {
   });
 
   const data = await parseBody(request, schema);
-  const productActivated = await productActivation(
+  const productActivated = await productInstanceActivation(
     data.customerId,
-    data.productId
+    data.productId,
   );
   return productActivated;
 };

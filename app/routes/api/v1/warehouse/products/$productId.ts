@@ -1,7 +1,7 @@
 import type { Product } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { badRequest, notFoundRequest } from "~/helpers/app-helpers.server";
-import { findProduct } from "~/models/product/product.server";
+import { findProductInstance } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = Product;
 
@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({
     throw badRequest();
   }
 
-  const product = await findProduct(productId);
+  const product = await findProductInstance(productId);
 
   if (product == null) {
     throw notFoundRequest();
