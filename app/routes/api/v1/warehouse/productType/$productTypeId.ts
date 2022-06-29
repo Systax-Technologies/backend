@@ -41,32 +41,32 @@ const handlePATCHRequest = async (id: string, request: Request) => {
 
   const data = await parseBody(request, patchSchema);
 
-  const productType = await updateProduct(id, data);
+  const product = await updateProduct(id, data);
 
-  if (productType == null) {
+  if (product == null) {
     throw new Response(null, {
       status: 404,
       statusText: "Not Found",
     });
   }
 
-  throw new Response(JSON.stringify(productType), {
+  throw new Response(JSON.stringify(product), {
     status: 200,
     statusText: "OK",
   });
 };
 
 const handleDELETERequest = async (id: string) => {
-  const productType = await deleteProduct(id);
+  const product = await deleteProduct(id);
 
-  if (productType == null) {
+  if (product == null) {
     throw new Response(null, {
       status: 404,
       statusText: "Not Found",
     });
   }
 
-  throw new Response(JSON.stringify(productType), {
+  throw new Response(JSON.stringify(product), {
     status: 200,
     statusText: "200",
   });
