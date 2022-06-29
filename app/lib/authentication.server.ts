@@ -42,9 +42,15 @@ export const postAuthenticationHandler = async <
     });
 
     if (user) {
-      return {
-        accessToken: createJwt({ id: user.id }),
-      };
+      if ("role" in user) {
+        return {
+          accessToken: createJwt({ id: user.id, role: user.role }),
+        };
+      } else {
+        return {
+          accessToken: createJwt({ id: user.id }),
+        };
+      }
     } else {
       throw notFoundResponse();
     }
