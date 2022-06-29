@@ -39,7 +39,7 @@ model Customer {
   creditCard        CreditCard[]
 
   order         Order[]
-  activeProduct ActiveProduct[]
+  activeProductInstance ActiveProductInstance[]
   address       Address[]
 }
 
@@ -82,25 +82,25 @@ model Order {
   shippedAt   DateTime?
   deliveredAt DateTime?
 
-  products   ProductInstance[]
+  productInstances   ProductInstance[]
   customerId String
   customer   Customer  @relation(fields: [customerId], references: [id])
 }
 
-enum ProductStatus {
+enum ProductInstanceStatus {
   IN_STOCK
   SOLD
 }
 
 model ProductInstance {
   id     String        @id @default(cuid())
-  status ProductStatus @default(IN_STOCK)
+  status ProductInstanceStatus @default(IN_STOCK)
 
   orderId       String?
   order         Order?         @relation(fields: [orderId], references: [id])
-  productTypeId String
-  productType   Product    @relation(fields: [productTypeId], references: [id])
-  activeProduct ActiveProduct?
+  productId String
+  product   Product    @relation(fields: [productId], references: [id])
+  activeProductInstance ActiveProductInstance?
 }
 
 model Product {
@@ -114,20 +114,20 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  products ProductInstance[]
+  productInstances ProductInstance[]
 }
 
-enum ActiveProductStatus {
+enum ActiveProductInstanceStatus {
   ACTIVE
   REMOVED
   DAMAGED
 }
 
-model ActiveProduct {
+model ActiveProductInstance {
   id     String              @id @default(cuid())
-  status ActiveProductStatus @default(ACTIVE)
+  status ActiveProductInstanceStatus @default(ACTIVE)
 
   customerId String
   customer   Customer @relation(fields: [customerId], references: [id])
-  product    ProductInstance  @relation(fields: [id], references: [id])
+  productInstance    ProductInstance  @relation(fields: [id], references: [id])
 }
