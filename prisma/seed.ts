@@ -1,4 +1,5 @@
 import { ProductType } from "@prisma/client";
+import { database } from "~/helpers/db-helper.server";
 
 const sizes = ["XXS", "XS", "S", "M", "L", "XL"];
 
@@ -32,4 +33,8 @@ function randomElement<T>(array: Array<T>) {
   return array[Math.floor(Math.random() * sizes.length)];
 }
 
-async function seed() {}
+for (let i = 0; i < 10; i++) {
+  database.productType.create({
+    data: createProduct(),
+  });
+}
