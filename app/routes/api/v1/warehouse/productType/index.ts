@@ -7,7 +7,7 @@ import { createProductType } from "~/models/product/productType.server";
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      return;
+      throw handlePOSTRequest(request);
     }
     default: {
       methodNotAllowed();
