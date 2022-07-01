@@ -1,11 +1,18 @@
-import type { ActionFunction } from "@remix-run/node";
+import { Product } from "@prisma/client";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   methodNotAllowedResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { createProduct } from "~/models/product/product.server";
+import { createProduct, findProducts } from "~/models/product/product.server";
+
+type LoaderData = Product[];
+
+export const loader: LoaderFunction = async (): Promise<LoaderData> => {
+  return findProducts();
+};
 
 export const action: ActionFunction = async ({
   request,
