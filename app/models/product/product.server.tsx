@@ -3,6 +3,14 @@ import { database } from "~/helpers/db-helper.server";
 import type { ProductInput, ProductUpdateInput } from "../dto";
 
 /**
+ * Function to find every Product
+ * @return The array of every `Product` found
+ */
+export const findProducts = async (): Promise<Product[]> => {
+  return database.product.findMany();
+};
+
+/**
  * Function to find a specific Product
  * @param id Id of the Product to find
  * @returns The `Product` found
@@ -32,7 +40,7 @@ export const createProduct = async (data: ProductInput): Promise<Product> => {
  */
 export const updateProduct = async (
   id: string,
-  data: ProductUpdateInput,
+  data: ProductUpdateInput
 ): Promise<Product | null> => {
   try {
     return database.product.update({
