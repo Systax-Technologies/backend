@@ -27,7 +27,7 @@ const handlePOSTRequest = async (request: Request) => {
     description: z.string(),
     color: z.string(),
     size: z.string(),
-    price: z.number(),
+    price: z.number().positive(),
   });
 
   const data = await parseBody(request, productPostSchema);

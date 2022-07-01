@@ -59,7 +59,7 @@ export const action: ActionFunction = async ({
 
 const handlePATCHRequest = async (
   id: string,
-  request: Request,
+  request: Request
 ): Promise<Response> => {
   const patchSchema = z.object({
     model: z.string(),
@@ -67,7 +67,7 @@ const handlePATCHRequest = async (
     description: z.string(),
     color: z.string(),
     size: z.string(),
-    price: z.number(),
+    price: z.number().positive(),
   });
 
   const data = await parseBody(request, patchSchema);
