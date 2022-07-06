@@ -6,24 +6,43 @@ import {
   unauthorizedResponse,
 } from "~/helpers/response-helpers.server";
 
+type Employee = {
+  id: string;
+  role: Role;
+};
+
+type Customer = {
+  id: string;
+};
+
+type ReturnType<T> = T extends "customer"
+  ? Customer
+  : T extends "employee"
+  ? Employee
+  : never;
+
 /**
  * Verify the authenticity of a request's JWT
  * @param request The request to verify
  * @returns The data contained in the JWT
  */
-export const verifyRequest = (request: Request) => {
-  const schema = z.object({
-    id: z.string(),
-    role: z.nullable(z.nativeEnum(Role)),
-  });
-
+export const verifyRequest = <UserType extends "customer" | "employee">(
+  request: Request
+): ReturnType<UserType> => {
   const authorizationHeader = request.headers.get("Authorization");
   if (authorizationHeader) {
     const [_, jwt] = authorizationHeader.split(" ");
     const decodedJwt = verifyJwt(jwt);
-    const parsedData = schema.safeParse(
+    let parsedData: z.SafeParseReturnType<any, any>;
+    const schema = z.object({
+      id: z.string(),
+      role: z.optional(z.nativeEnum(Role)),
+    });
+
+    parsedData = schema.safeParse(
       typeof decodedJwt === "string" ? JSON.parse(decodedJwt) : decodedJwt
     );
+
     if (parsedData.success) {
       return parsedData.data;
     } else {
