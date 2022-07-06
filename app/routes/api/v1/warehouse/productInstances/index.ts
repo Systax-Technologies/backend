@@ -4,6 +4,7 @@ import { z } from "zod";
 import {
   methodNotAllowedResponse,
   notFoundResponse,
+  okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import type { ProductInstances } from "~/models/productInstance/productInstance.server";
@@ -25,24 +26,26 @@ export const loader: LoaderFunction = async (): Promise<LoaderData> => {
   };
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({
+  request,
+}): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post":
-      postRequest(request);
-      break;
+      return postRequest(request);
+
     case "patch":
-      patchRequest(request);
-      break;
+      return patchRequest(request);
+
     case "delete":
-      deleteRequest(request);
+      return deleteRequest(request);
 
     default: {
-      throw methodNotAllowedResponse();
+      return methodNotAllowedResponse();
     }
   }
 };
 
-const postRequest = async (request: Request) => {
+const postRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     productId: z.string().cuid(),
     quantity: z.number().min(1),
@@ -52,19 +55,15 @@ const postRequest = async (request: Request) => {
 
   const createdProductInstances = await createManyProductInstances(
     data.productId,
-    data.quantity
+    data.quantity,
   );
 
-  throw new Response(
+  return okResponse(
     JSON.stringify({ numberOfCreatedProducts: createdProductInstances }),
-    {
-      status: 200,
-      statusText: "OK",
-    }
   );
 };
 
-const patchRequest = async (request: Request) => {
+const patchRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     id: z.string().cuid(),
     status: z.nativeEnum(ProductInstanceStatus),
@@ -81,30 +80,23 @@ const patchRequest = async (request: Request) => {
   });
 
   if (!updatedProductInstance) {
-    throw notFoundResponse();
+    return notFoundResponse();
   }
 
-  throw new Response(JSON.stringify(updatedProductInstance), {
-    status: 200,
-    statusText: "OK",
-  });
+  return okResponse(JSON.stringify(updatedProductInstance));
 };
 
-const deleteRequest = async (request: Request) => {
+const deleteRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     id: z.string().cuid(),
   });
 
   const data = await parseBody(request, schema);
-
   const deletedProductInstance = await deleteProductInstance(data.id);
 
   if (deletedProductInstance == null) {
-    throw notFoundResponse();
+    return notFoundResponse();
   }
 
-  throw new Response(JSON.stringify(deletedProductInstance), {
-    status: 200,
-    statusText: "Text",
-  });
+  throw okResponse(JSON.stringify(deletedProductInstance));
 };

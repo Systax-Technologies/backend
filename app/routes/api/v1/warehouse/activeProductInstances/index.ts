@@ -12,35 +12,34 @@ import {
   updateActiveProductInstanceStatus,
 } from "~/models/activeProductInstance/activeProductInstance.server";
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({
+  request,
+}): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post":
-      postRequest(request);
-      break;
+      return postRequest(request);
     case "patch":
-      patchRequest(request);
-      break;
+      return patchRequest(request);
     case "delete":
-      deleteRequest(request);
-      break;
+      return deleteRequest(request);
     default:
-      throw badRequestResponse();
+      return badRequestResponse();
   }
 };
 
-const postRequest = async (request: Request) => {
+const postRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     customerId: z.string().cuid(),
   });
 
   const data = await parseBody(request, schema);
   const createdActiveProductInstance = await createActiveProductInstance(
-    data.customerId
+    data.customerId,
   );
-  throw okResponse(JSON.stringify(createdActiveProductInstance));
+  return okResponse(JSON.stringify(createdActiveProductInstance));
 };
 
-const patchRequest = async (request: Request) => {
+const patchRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     activeProductInstanceId: z.string().cuid(),
     status: z.nativeEnum(ActiveProductInstanceStatus),
@@ -49,19 +48,19 @@ const patchRequest = async (request: Request) => {
   const data = await parseBody(request, schema);
   const updatedActiveProductInstance = await updateActiveProductInstanceStatus(
     data.activeProductInstanceId,
-    data.status
+    data.status,
   );
-  throw okResponse(JSON.stringify(updatedActiveProductInstance));
+  return okResponse(JSON.stringify(updatedActiveProductInstance));
 };
 
-const deleteRequest = async (request: Request) => {
+const deleteRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     activeProductInstanceId: z.string().cuid(),
   });
 
   const data = await parseBody(request, schema);
   const deletedActiveProductInstance = await deleteActiveProductInstance(
-    data.activeProductInstanceId
+    data.activeProductInstanceId,
   );
-  throw okResponse(JSON.stringify(deletedActiveProductInstance));
+  return okResponse(JSON.stringify(deletedActiveProductInstance));
 };

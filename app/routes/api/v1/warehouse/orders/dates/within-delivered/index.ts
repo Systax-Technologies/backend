@@ -1,3 +1,4 @@
+import { Order } from "@prisma/client";
 import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
@@ -7,7 +8,13 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { findOrdersWithinDeliveredDates } from "~/models/order/order.server";
 
-export const action: ActionFunction = async ({ request }) => {
+type LoaderData = {
+  orders: Order[];
+};
+
+export const action: ActionFunction = async ({
+  request,
+}): Promise<LoaderData> => {
   if (request.method.toLowerCase() != "post") {
     throw methodNotAllowedResponse();
   }
@@ -29,15 +36,12 @@ export const action: ActionFunction = async ({ request }) => {
 
   const ordersWithinDates = await findOrdersWithinDeliveredDates(
     parsedData.startDate,
-    parsedData.endDate
+    parsedData.endDate,
   );
 
   if (!ordersWithinDates || !ordersWithinDates.length) {
     throw notFoundResponse();
   }
 
-  return new Response(JSON.stringify({ ordersWithinDates }), {
-    status: 200,
-    statusText: "OK",
-  });
+  return { orders: ordersWithinDates };
 };

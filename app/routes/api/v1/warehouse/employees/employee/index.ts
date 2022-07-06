@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Employee, Role } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
@@ -16,7 +16,13 @@ import {
   updateEmployee,
 } from "~/models/employee/employee.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
+type LoaderData = {
+  employee: Employee;
+};
+
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
   if (request.method.toLowerCase() !== "get") {
     throw methodNotAllowedResponse();
   }
@@ -32,7 +38,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json(employee);
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({
+  request,
+}): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post":
       return postRequest(request);
@@ -41,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
     case "delete":
       return deleteRequest(request);
     default:
-      throw methodNotAllowedResponse();
+      return methodNotAllowedResponse();
   }
 };
 

@@ -18,9 +18,7 @@ export const findProduct = async (id: string): Promise<Product | null> => {
  * @param data The `Product` object to add
  * @returns The `Product` object created
  */
-export const createProduct = async (
-  data: ProductInput
-): Promise<Product | null> => {
+export const createProduct = async (data: ProductInput): Promise<Product> => {
   return database.product.create({
     data,
   });
@@ -34,7 +32,7 @@ export const createProduct = async (
  */
 export const updateProduct = async (
   id: string,
-  data: ProductUpdateInput
+  data: ProductUpdateInput,
 ): Promise<Product | null> => {
   try {
     return database.product.update({

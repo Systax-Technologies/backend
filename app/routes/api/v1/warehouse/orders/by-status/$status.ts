@@ -8,7 +8,7 @@ import {
 } from "~/helpers/response-helpers.server";
 import { findOrdersByStatus } from "~/models/order/order.server";
 
-type LoaderData = Order[];
+type LoaderData = { orders: Order[] };
 
 export const loader: LoaderFunction = async ({
   params,
@@ -31,7 +31,7 @@ export const loader: LoaderFunction = async ({
       throw notFoundResponse();
     }
 
-    return orders;
+    return { orders };
   } else {
     throw badRequestResponse();
   }
