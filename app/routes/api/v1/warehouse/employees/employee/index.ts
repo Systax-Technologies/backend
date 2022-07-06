@@ -27,28 +27,15 @@ export const loader: LoaderFunction = async ({
     throw methodNotAllowedResponse();
   }
 
-  const jwt = verifyRequest(request);
+  const data = verifyRequest(request);
 
-  const schema = z.object({
-    id: z.string(),
-    role: z.nullable(z.nativeEnum(Role)),
-  });
+  const employee = await findEmployee(data.id);
 
-  const parsedData = schema.safeParse(
-    typeof jwt === "string" ? JSON.parse(jwt) : jwt,
-  );
-
-  if (parsedData.success) {
-    const employee = await findEmployee(parsedData.data.id);
-
-    if (employee == null) {
-      throw notFoundResponse();
-    }
-
-    return { employee };
-  } else {
-    throw badRequestResponse();
+  if (employee == null) {
+    throw notFoundResponse();
   }
+
+  return json(employee);
 };
 
 export const action: ActionFunction = async ({

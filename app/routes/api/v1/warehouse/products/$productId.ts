@@ -1,5 +1,5 @@
-import { Product } from "@prisma/client";
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { Product } from "@prisma/client";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   badRequestResponse,
