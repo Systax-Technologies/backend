@@ -8,10 +8,13 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { createProduct, findProducts } from "~/models/product/product.server";
 
-type LoaderData = Product[];
+type LoaderData = { products: Product[] };
 
 export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  return findProducts();
+  const products = await findProducts();
+  return {
+    products,
+  };
 };
 
 export const action: ActionFunction = async ({
