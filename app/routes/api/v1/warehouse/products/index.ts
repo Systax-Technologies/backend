@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import type { Product } from "@prisma/client";
-=======
->>>>>>> 32d8d0308a24f63ec69bad446c899a26226904bd
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
@@ -13,8 +9,6 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { verifyRequest } from "~/lib/verify-request.server";
 import { createProduct, findProducts } from "~/models/product/product.server";
-
-type LoaderData = { products: Product[] };
 
 export const loader: LoaderFunction = async ({
   request,
