@@ -84,9 +84,5 @@ const handlePOSTRequest = async (request: Request): Promise<Response> => {
     createdOrder.id
   );
 
-  if (numberOfUpdatedProductInstances.count != productInstancesIds.length) {
-    return badRequestResponse();
-  }
-
   return okResponse(JSON.stringify(createdOrder));
 };
