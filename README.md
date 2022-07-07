@@ -95,7 +95,7 @@ In order to run the `prisma studio` utility, run:
 - [Warehouse](#warehouse)
   - [Login](#login)
     - [POST `/api/v1/warehouse/login`](#post-apiv1warehouselogin)
-  - [Product](#producttype)
+  - [Product](#product)
     - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
     - [GET `/api/v1/warehouse/products/{product-id}`](#get-apiv1warehouseproductsproduct-id)
     - [PATCH `/api/v1/warehouse/products/{product-id}`](#patch-apiv1warehouseproductsproduct-id)
@@ -107,9 +107,9 @@ In order to run the `prisma studio` utility, run:
     - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
   - [Order](#order)
     - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
+    - [POST `/api/v1/warehouse/orders/`](#post-apiv1warehouseorders)
     - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
     - [GET `/api/v1/warehouse/customers/{customer-id}/orders`](#get-apiv1warehousecustomerscustomer-idorders)
-    - [POST `/api/v1/warehouse/orders/by-id/`](#post-apiv1warehouseordersby-id)
     - [PATCH `/api/v1/warehouse/orders/by-id/`](#patch-apiv1warehouseordersby-id)
     - [DELETE `/api/v1/warehouse/orders/by-id/`](#delete-apiv1warehouseordersby-id)
     - [GET `/api/v1/warehouse/orders/by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
@@ -581,6 +581,8 @@ Content-Type: application/json
 
 ---
 
+## Orders
+
 ### GET `/api/v1/warehouse/orders`
 
 Retrieves the complete list of orders.
@@ -651,6 +653,69 @@ Content-Type: application/json
 
 ---
 
+### POST `/api/v1/warehouse/orders/`
+
+Creates an order given the id of the customer associated to it
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "customerId": "cl5apl7c00037xhjjm5hela3m",
+  "products": [
+    {
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "quantity": 2
+    },
+    {
+      "productId": "cl5ar5z3y0051cujjz0cq3jo7",
+      "quantity": 1
+    }
+  ]
+}
+```
+
+> **Constraints:**
+>
+> - `customerId` must be a valid cuid and must exist in the `Customer` Model
+> - `productId` must be a valid cuid and must exist in the `Product` Model
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl4vfbh0u00009xjjvk2btxym",
+  "status": "ORDERED",
+  "orderedAt": "2022-06-26T14:45:56.334Z",
+  "shippedAt": null,
+  "deliveredAt": null,
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+}
+```
+
+> **Constraints:**
+>
+> - The `id` field is readonly, used only to query the order to update
+> - All the id fields must be a valid cuid
+> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
+> - `shippedAt` and `deliveredAt` can be null
+
+#### Possible errors: <!-- omit in toc -->
+
+|             Error code | Description                                                      |
+| ---------------------: | :--------------------------------------------------------------- |
+|        400 Bad Request | The `customerId` provided does not exist in the `Customer` Model |
+|          404 Not Found | The `productId`(s) provided do not exist in the `Product` Model  |
+| 405 Method Not Allowed | The request method is not `POST`                                 |
+
+---
+
 ### GET `/api/v1/warehouse/customers/{customer-id}/orders`
 
 Retrieves the list of orders of a specified customer.
@@ -686,57 +751,6 @@ Content-Type: application/json
 > - All the id fields must be a valid cuid
 > - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
 > - `shippedAt` and `deliveredAt` can be null
-
----
-
-### POST `/api/v1/warehouse/orders/by-id/`
-
-Creates an order given the id of the customer associated to it
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-}
-```
-
-> **Constraints:**
->
-> - `customerId` must be a valid cuid and must exist in the `Customer` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vfbh0u00009xjjvk2btxym",
-  "status": "ORDERED",
-  "orderedAt": "2022-06-26T14:45:56.334Z",
-  "shippedAt": null,
-  "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                                      |
-| ---------------------: | :--------------------------------------------------------------- |
-|        400 Bad Request | The `customerId` provided does not exist in the `Customer` Model |
-| 405 Method Not Allowed | The request method is not `POST`, `PATCH` or `DELETE`            |
 
 ---
 
@@ -792,7 +806,7 @@ Content-Type: application/json
 |             Error code | Description                                           |
 | ---------------------: | :---------------------------------------------------- |
 |        400 Bad Request | The `id` provided does not exist in the `Order` Model |
-| 405 Method Not Allowed | The request method is not `POST`, `PATCH` or `DELETE` |
+| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE`         |
 
 ---
 
@@ -843,7 +857,7 @@ Content-Type: application/json
 |             Error code | Description                                           |
 | ---------------------: | :---------------------------------------------------- |
 |        400 Bad Request | The `id` provided does not exist in the `Order` Model |
-| 405 Method Not Allowed | The request method is not `POST`, `PATCH` or `DELETE` |
+| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE`         |
 
 ---
 
