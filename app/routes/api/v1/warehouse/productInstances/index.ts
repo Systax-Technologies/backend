@@ -7,7 +7,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import type { ProductInstances } from "~/models/productInstance/productInstance.server";
+import { ProductInstances } from "~/models/dto";
 import {
   createManyProductInstances,
   deleteProductInstance,
@@ -48,18 +48,18 @@ export const action: ActionFunction = async ({
 const postRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     productId: z.string().cuid(),
-    quantity: z.number().min(1),
+    quantity: z.number().int().positive(),
   });
 
   const data = await parseBody(request, schema);
 
   const createdProductInstances = await createManyProductInstances(
     data.productId,
-    data.quantity,
+    data.quantity
   );
 
   return okResponse(
-    JSON.stringify({ numberOfCreatedProducts: createdProductInstances }),
+    JSON.stringify({ numberOfCreatedProducts: createdProductInstances })
   );
 };
 

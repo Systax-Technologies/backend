@@ -95,7 +95,7 @@ In order to run the `prisma studio` utility, run:
 - [Warehouse](#warehouse)
   - [Login](#login)
     - [POST `/api/v1/warehouse/login`](#post-apiv1warehouselogin)
-  - [Product](#producttype)
+  - [Product](#product)
     - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
     - [GET `/api/v1/warehouse/products/{product-id}`](#get-apiv1warehouseproductsproduct-id)
     - [PATCH `/api/v1/warehouse/products/{product-id}`](#patch-apiv1warehouseproductsproduct-id)
@@ -107,9 +107,9 @@ In order to run the `prisma studio` utility, run:
     - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
   - [Order](#order)
     - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
+    - [POST `/api/v1/warehouse/orders/`](#post-apiv1warehouseorders)
     - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
     - [GET `/api/v1/warehouse/customers/{customer-id}/orders`](#get-apiv1warehousecustomerscustomer-idorders)
-    - [POST `/api/v1/warehouse/orders/by-id/`](#post-apiv1warehouseordersby-id)
     - [PATCH `/api/v1/warehouse/orders/by-id/`](#patch-apiv1warehouseordersby-id)
     - [DELETE `/api/v1/warehouse/orders/by-id/`](#delete-apiv1warehouseordersby-id)
     - [GET `/api/v1/warehouse/orders/by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
@@ -581,6 +581,8 @@ Content-Type: application/json
 
 ---
 
+## Orders
+
 ### GET `/api/v1/warehouse/orders`
 
 Retrieves the complete list of orders.
@@ -599,9 +601,28 @@ Content-Type: application/json
     "id": "cl4qrncms0334tcjj75gn06tv",
     "status": "ORDERED",
     "orderedAt": "2022-06-23T08:32:15.028Z",
-    "shippedAt": "2022-06-23T08:32:15.028Z",
+    "shippedAt": null,
     "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "2022-06-22T14:11:24.664Z",
+          "updatedAt": "2022-06-22T14:10:44.094Z"
+        }
+      },
+    ]
   ]
 }
 ```
@@ -638,7 +659,25 @@ Content-Type: application/json
   "orderedAt": "2022-06-23T08:32:15.028Z",
   "shippedAt": null,
   "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+  "productInstances": [
+    {
+      "id": "cl52gilrq0059g4jjj50ffvdg",
+      "status": "SOLD",
+      "orderId": "cl5atk1nr002506jjot8atd5p",
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "product": {
+        "id": "cl4zoemig0036l2jjv0efdted",
+        "model": "Test Product",
+        "imageUrl": "/path/to/image",
+        "description": "Test Description",
+        "color": "Blue",
+        "size": "M",
+        "price": 19.99,
+        "createdAt": "2022-06-22T14:11:24.664Z",
+        "updatedAt": "2022-06-22T14:10:44.094Z"
+      }
+    },
 }
 ```
 
@@ -651,45 +690,7 @@ Content-Type: application/json
 
 ---
 
-### GET `/api/v1/warehouse/customers/{customer-id}/orders`
-
-Retrieves the list of orders of a specified customer.
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-> **Constraints:**
->
-> - The customer id must be a valid cuid and must be present in the `Customer` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "ORDERED",
-    "orderedAt": "2022-06-23T08:32:15.028Z",
-    "shippedAt": "2022-06-23T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
----
-
-### POST `/api/v1/warehouse/orders/by-id/`
+### POST `/api/v1/warehouse/orders/`
 
 Creates an order given the id of the customer associated to it
 
@@ -703,13 +704,24 @@ Content-Type: application/json
 
 ```json
 {
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+  "customerId": "cl5apl7c00037xhjjm5hela3m",
+  "products": [
+    {
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "quantity": 2
+    },
+    {
+      "productId": "cl5ar5z3y0051cujjz0cq3jo7",
+      "quantity": 1
+    }
+  ]
 }
 ```
 
 > **Constraints:**
 >
 > - `customerId` must be a valid cuid and must exist in the `Customer` Model
+> - `productId` must be a valid cuid and must exist in the `Product` Model
 
 #### Return: <!-- omit in toc -->
 
@@ -736,7 +748,67 @@ Content-Type: application/json
 |             Error code | Description                                                      |
 | ---------------------: | :--------------------------------------------------------------- |
 |        400 Bad Request | The `customerId` provided does not exist in the `Customer` Model |
-| 405 Method Not Allowed | The request method is not `POST`, `PATCH` or `DELETE`            |
+|          404 Not Found | The `productId`(s) provided do not exist in the `Product` Model  |
+| 405 Method Not Allowed | The request method is not `POST`                                 |
+
+---
+
+### GET `/api/v1/warehouse/customers/{customer-id}/orders`
+
+Retrieves the list of orders of a specified customer.
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+> **Constraints:**
+>
+> - The customer id must be a valid cuid and must be present in the `Customer` Model
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "orders": [
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "ORDERED",
+      "orderedAt": "2022-06-23T08:32:15.028Z",
+      "shippedAt": "2022-06-23T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+> **Constraints:**
+>
+> - The `id` field is readonly, used only to query the order to update
+> - All the id fields must be a valid cuid
+> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
+> - `shippedAt` and `deliveredAt` can be null
 
 ---
 
@@ -792,7 +864,7 @@ Content-Type: application/json
 |             Error code | Description                                           |
 | ---------------------: | :---------------------------------------------------- |
 |        400 Bad Request | The `id` provided does not exist in the `Order` Model |
-| 405 Method Not Allowed | The request method is not `POST`, `PATCH` or `DELETE` |
+| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE`         |
 
 ---
 
@@ -843,7 +915,7 @@ Content-Type: application/json
 |             Error code | Description                                           |
 | ---------------------: | :---------------------------------------------------- |
 |        400 Bad Request | The `id` provided does not exist in the `Order` Model |
-| 405 Method Not Allowed | The request method is not `POST`, `PATCH` or `DELETE` |
+| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE`         |
 
 ---
 
@@ -866,12 +938,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "<provided status>",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "<provided status>",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -920,12 +1013,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "ORDERED",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "<provided status>",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -974,12 +1088,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "SHIPPED",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "SHIPPED",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -1028,12 +1163,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "DELIVERED",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": "2022-07-04T08:32:15.028Z",
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "DELIVERED",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": "2022-07-04T08:32:15.028Z",
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
