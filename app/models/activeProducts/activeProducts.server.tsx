@@ -9,27 +9,19 @@ import { database } from "~/helpers/db-helper.server";
  * @param id Id of the Active Product Instance
  * @returns The `ActiveProductInstance` object found
  */
-export const findActiveProductInstance = async (
-  id: string
+export const findActiveProduct = async (
+  id: string,
 ): Promise<ActiveProductInstance | null> => {
   return database.activeProductInstance.findUnique({
     where: { id },
   });
 };
 
-export const findActiveProductInstancesByStatus = async (
-  status: ActiveProductInstanceStatus
+export const findActiveProductsByStatus = async (
+  status: ActiveProductInstanceStatus,
 ): Promise<ActiveProductInstance[]> => {
   return database.activeProductInstance.findMany({
     where: { status },
-  });
-};
-
-export const findActiveProductInstancesByCustomerId = async (
-  customerId: string
-): Promise<ActiveProductInstance[]> => {
-  return database.activeProductInstance.findMany({
-    where: { customerId },
   });
 };
 
@@ -38,8 +30,8 @@ export const findActiveProductInstancesByCustomerId = async (
  * @param customerId Id of the customer that activated the product instance
  * @returns The `ActiveProductInstance` object created
  */
-export const createActiveProductInstance = async (
-  customerId: string
+export const createActiveProduct = async (
+  customerId: string,
 ): Promise<ActiveProductInstance | null> => {
   return database.activeProductInstance.create({
     data: { customerId },
@@ -52,9 +44,9 @@ export const createActiveProductInstance = async (
  * @param status The new `ActiveProductInstanceStatus`
  * @returns The `ActiveProductInstance` updated
  */
-export const updateActiveProductInstanceStatus = async (
+export const updateActiveProductStatus = async (
   id: string,
-  status: ActiveProductInstanceStatus
+  status: ActiveProductInstanceStatus,
 ): Promise<ActiveProductInstance | null> => {
   try {
     return database.activeProductInstance.update({
@@ -71,8 +63,8 @@ export const updateActiveProductInstanceStatus = async (
  * @param id Id of the Active Product Instance to delete
  * @returns The `ActiveProductInstance` object deleted
  */
-export const deleteActiveProductInstance = async (
-  id: string
+export const deleteActiveProduct = async (
+  id: string,
 ): Promise<ActiveProductInstance | null> => {
   try {
     return database.activeProductInstance.delete({
@@ -81,4 +73,10 @@ export const deleteActiveProductInstance = async (
   } catch (_) {
     return null;
   }
+};
+
+export const findActiveProducts = async (): Promise<
+  ActiveProductInstance[]
+> => {
+  return database.activeProductInstance.findMany();
 };

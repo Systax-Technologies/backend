@@ -13,13 +13,13 @@ export const loader: LoaderFunction = async ({
   request,
   params,
 }): Promise<LoaderData> => {
-  verifyRequest<"employee">(request);
-
   const customerId = params.customerId;
 
   if (!customerId) {
     throw badRequestResponse();
   }
+
+  verifyRequest<"employee">(request);
 
   const orders = await findCustomerOrders(customerId);
 

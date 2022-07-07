@@ -73,7 +73,7 @@ export type ProductInput = {
 
 export type ProductUpdateInput = {
   model: string;
-  imageUrl: string;
+  imageUrl: string[];
   description: string;
   color: string;
   size: string;

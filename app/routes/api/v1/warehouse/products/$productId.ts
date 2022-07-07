@@ -1,8 +1,8 @@
-import type { Product } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   badRequestResponse,
+  forbiddenResponse,
   methodNotAllowedResponse,
   notFoundResponse,
   okResponse,
@@ -16,12 +16,10 @@ import {
   updateProduct,
 } from "~/models/product/product.server";
 
-type LoaderData = Product;
-
 export const loader: LoaderFunction = async ({
   request,
   params,
-}): Promise<LoaderData> => {
+}): Promise<Response> => {
   verifyRequest<"customer">(request);
 
   const productId = params.productId;
@@ -36,68 +34,54 @@ export const loader: LoaderFunction = async ({
     throw notFoundResponse();
   }
 
-  return product;
+  return okResponse(JSON.stringify(product));
 };
 
 export const action: ActionFunction = async ({
   request,
   params,
 }): Promise<Response> => {
-  const productId = params.productId;
+  const method = request.method.toLowerCase();
+  if (method === "patch" || method === "delete") {
+    const jwtContent = verifyRequest<"employee">(request);
+    if (jwtContent.role !== "ADMIN") {
+      throw forbiddenResponse();
+    }
 
-  if (productId == null) {
-    return badRequestResponse();
-  }
+    const productId = params.productId;
 
-  let jwtContent = verifyRequest<"employee">(request);
-  if (jwtContent.role !== "ADMIN") {
-    throw forbiddenResponse();
-  }
+    if (productId == null) {
+      return badRequestResponse();
+    }
 
-  switch (request.method.toLowerCase()) {
-    case "patch":
-      return handlePATCHRequest(productId, request);
+    if (method === "patch") {
+      const patchSchema = z.object({
+        model: z.string(),
+        imageUrl: z.string().array(),
+        description: z.string(),
+        color: z.string(),
+        size: z.string(),
+        price: z.number().positive(),
+      });
 
-    case "delete":
-      return handleDELETERequest(productId);
+      const data = await parseBody(request, patchSchema);
+      const product = await updateProduct(productId, data);
 
-    default:
-      return methodNotAllowedResponse();
+      if (product == null) {
+        return notFoundResponse();
+      }
+
+      return okResponse(JSON.stringify(product));
+    } else {
+      const product = await deleteProduct(productId);
+
+      if (product == null) {
+        return notFoundResponse();
+      }
+
+      return okResponse(JSON.stringify(product));
+    }
+  } else {
+    return methodNotAllowedResponse();
   }
 };
-
-const handlePATCHRequest = async (
-  id: string,
-  request: Request
-): Promise<Response> => {
-  const patchSchema = z.object({
-    model: z.string(),
-    imageUrl: z.string(),
-    description: z.string(),
-    color: z.string(),
-    size: z.string(),
-    price: z.number().positive(),
-  });
-
-  const data = await parseBody(request, patchSchema);
-  const product = await updateProduct(id, data);
-
-  if (product == null) {
-    return notFoundResponse();
-  }
-
-  return okResponse(JSON.stringify(product));
-};
-
-const handleDELETERequest = async (id: string) => {
-  const product = await deleteProduct(id);
-
-  if (product == null) {
-    return notFoundResponse();
-  }
-
-  return okResponse(JSON.stringify(product));
-};
-function forbiddenResponse() {
-  throw new Error("Function not implemented.");
-}
