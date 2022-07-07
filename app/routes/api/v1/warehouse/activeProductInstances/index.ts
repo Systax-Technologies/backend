@@ -17,6 +17,7 @@ import {
 export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
+
   const map: Record<string, (request: Request) => Promise<Response>> = {
     post: postRequest,
     patch: patchRequest,

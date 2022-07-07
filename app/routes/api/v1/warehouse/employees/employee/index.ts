@@ -1,9 +1,10 @@
-import { Employee, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import {
   badRequestResponse,
+  forbiddenResponse,
   methodNotAllowedResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
@@ -16,9 +17,7 @@ import {
   updateEmployee,
 } from "~/models/employee/employee.server";
 
-type LoaderData = {
-  employee: Employee;
-};
+type LoaderData = Response;
 
 export const loader: LoaderFunction = async ({
   request,
@@ -27,7 +26,7 @@ export const loader: LoaderFunction = async ({
     throw methodNotAllowedResponse();
   }
 
-  const data = verifyRequest(request);
+  const data = verifyRequest<"employee">(request);
 
   const employee = await findEmployee(data.id);
 
@@ -35,22 +34,29 @@ export const loader: LoaderFunction = async ({
     throw notFoundResponse();
   }
 
-  return json(employee);
+  return json({ employee });
 };
 
 export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
-  switch (request.method.toLowerCase()) {
-    case "post":
-      return postRequest(request);
-    case "patch":
-      return patchRequest(request);
-    case "delete":
-      return deleteRequest(request);
-    default:
-      return methodNotAllowedResponse();
+  const map: Record<string, (request: Request) => Promise<Response>> = {
+    post: postRequest,
+    patch: patchRequest,
+    delete: deleteRequest,
+  };
+
+  const method = request.method.toLowerCase();
+
+  if (method in map) {
+    let jwtContent = verifyRequest<"employee">(request);
+    if (jwtContent.role !== "ADMIN") {
+      throw forbiddenResponse();
+    }
+    return map[method](request);
   }
+
+  return badRequestResponse();
 };
 
 const postRequest = async (request: Request): Promise<Response> => {
