@@ -3,8 +3,10 @@ import type { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   badRequestResponse,
+  forbiddenResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
+import { verifyRequest } from "~/lib/verify-request.server";
 import { countProductInstancesByStatus } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = {
@@ -12,8 +14,14 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({
+  request,
   params,
 }): Promise<LoaderData> => {
+  let jwtContent = verifyRequest<"employee">(request);
+  if (jwtContent.role !== "ADMIN") {
+    throw forbiddenResponse();
+  }
+
   const productInstanceStatus = params.productInstanceStatus;
 
   if (productInstanceStatus == null) {

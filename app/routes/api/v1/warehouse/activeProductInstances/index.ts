@@ -2,8 +2,8 @@ import { ActiveProductInstanceStatus } from "@prisma/client";
 import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
-  badRequestResponse,
   forbiddenResponse,
+  methodNotAllowedResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
@@ -17,7 +17,6 @@ import {
 export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
-
   const map: Record<string, (request: Request) => Promise<Response>> = {
     post: postRequest,
     patch: patchRequest,
@@ -32,9 +31,9 @@ export const action: ActionFunction = async ({
       throw forbiddenResponse();
     }
     return map[method](request);
+  } else {
+    throw methodNotAllowedResponse();
   }
-
-  return badRequestResponse();
 };
 
 const postRequest = async (request: Request): Promise<Response> => {

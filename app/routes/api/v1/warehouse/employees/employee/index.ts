@@ -50,8 +50,15 @@ export const action: ActionFunction = async ({
 
   if (method in map) {
     let jwtContent = verifyRequest<"employee">(request);
-    if (jwtContent.role !== "ADMIN") {
-      throw forbiddenResponse();
+    /* both ADMIN and WORKER should be able to update their profile */
+    if (method === "patch") {
+      if (jwtContent.role !== "ADMIN" || "WORKER") {
+        throw forbiddenResponse();
+      }
+    } else {
+      if (jwtContent.role !== "ADMIN") {
+        throw forbiddenResponse();
+      }
     }
     return map[method](request);
   }

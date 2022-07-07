@@ -9,6 +9,7 @@ import {
 } from "~/helpers/response-helpers.server";
 
 import { parseBody } from "~/lib/parse-body.server";
+import { verifyRequest } from "~/lib/verify-request.server";
 import {
   deleteProduct,
   findProduct,
@@ -18,8 +19,11 @@ import {
 type LoaderData = Product;
 
 export const loader: LoaderFunction = async ({
+  request,
   params,
 }): Promise<LoaderData> => {
+  verifyRequest<"customer">(request);
+
   const productId = params.productId;
 
   if (!productId) {
@@ -43,6 +47,11 @@ export const action: ActionFunction = async ({
 
   if (productId == null) {
     return badRequestResponse();
+  }
+
+  let jwtContent = verifyRequest<"employee">(request);
+  if (jwtContent.role !== "ADMIN") {
+    throw forbiddenResponse();
   }
 
   switch (request.method.toLowerCase()) {
@@ -89,3 +98,6 @@ const handleDELETERequest = async (id: string) => {
 
   return okResponse(JSON.stringify(product));
 };
+function forbiddenResponse() {
+  throw new Error("Function not implemented.");
+}
