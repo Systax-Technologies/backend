@@ -1,4 +1,4 @@
-import { Order } from "@prisma/client";
+import type { Order } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
@@ -79,10 +79,7 @@ const handlePOSTRequest = async (request: Request): Promise<Response> => {
   /**
    * Query to update the `ProductInstance`s using the array of `id`s previously got
    */
-  const numberOfUpdatedProductInstances = await updateManyProductInstanceOrders(
-    productInstancesIds,
-    createdOrder.id
-  );
+  await updateManyProductInstanceOrders(productInstancesIds, createdOrder.id);
 
   return okResponse(JSON.stringify(createdOrder));
 };
