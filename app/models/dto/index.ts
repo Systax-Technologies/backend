@@ -57,7 +57,7 @@ export type creditCardInput = {
 
 export type ProductInput = {
   model: string;
-  imageUrl: string;
+  imageUrl: string[];
   description: string;
   color: string;
   size: string;

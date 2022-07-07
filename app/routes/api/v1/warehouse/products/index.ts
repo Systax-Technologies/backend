@@ -1,5 +1,9 @@
+<<<<<<< Updated upstream
 import { Product } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+=======
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
+>>>>>>> Stashed changes
 import { z } from "zod";
 import {
   methodNotAllowedResponse,
@@ -8,6 +12,7 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { createProduct, findProducts } from "~/models/product/product.server";
 
+<<<<<<< Updated upstream
 type LoaderData = { products: Product[] };
 
 export const loader: LoaderFunction = async (): Promise<LoaderData> => {
@@ -15,6 +20,11 @@ export const loader: LoaderFunction = async (): Promise<LoaderData> => {
   return {
     products,
   };
+=======
+export const loader: LoaderFunction = async ({}): Promise<Response> => {
+  const products = await findProducts();
+  return json({ products });
+>>>>>>> Stashed changes
 };
 
 export const action: ActionFunction = async ({
@@ -33,7 +43,7 @@ export const action: ActionFunction = async ({
 const handlePOSTRequest = async (request: Request) => {
   const productPostSchema = z.object({
     model: z.string(),
-    imageUrl: z.string(),
+    imageUrl: z.string().array(),
     description: z.string(),
     color: z.string(),
     size: z.string(),
@@ -42,5 +52,5 @@ const handlePOSTRequest = async (request: Request) => {
 
   const data = await parseBody(request, productPostSchema);
 
-  return okResponse(JSON.stringify(createProduct(data)));
+  return okResponse(JSON.stringify(await createProduct(data)));
 };
