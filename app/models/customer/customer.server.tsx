@@ -1,4 +1,4 @@
-import type { Customer } from "@prisma/client";
+import type { ActiveProductInstanceStatus, Customer } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 import type {
   creditCardInput,
@@ -16,6 +16,10 @@ export const findCustomer = async (id: string): Promise<Customer | null> => {
   return database.customer.findUnique({
     where: { id },
   });
+};
+
+export const findCustomers = async (): Promise<Customer[]> => {
+  return database.customer.findMany();
 };
 
 export const findCustomerByLogin = async ({
@@ -55,7 +59,7 @@ export const updateCustomer = async (id: string, data: UpdateCustomerDto) => {
 
 export const createCustomerCreditCard = async (
   customerId: string,
-  data: creditCardInput
+  data: creditCardInput,
 ) => {
   return database.creditCard.create({
     data: {
@@ -77,4 +81,44 @@ export const deleteCustomer = async (id: string): Promise<Customer | null> => {
   } catch (_) {
     return null;
   }
+};
+
+type CustomerActiveProduct = {
+  status: ActiveProductInstanceStatus;
+  id: string;
+  model: string;
+};
+
+export const findCustomerActiveProducts = async (
+  customerId: string,
+): Promise<CustomerActiveProduct[] | null> => {
+  const activeProducts = await database.activeProductInstance.findMany({
+    where: { customerId: { equals: customerId } },
+    select: {
+      id: true,
+      status: true,
+      productInstance: {
+        select: {},
+        include: {
+          product: {
+            select: {
+              model: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (activeProducts.length === 0) {
+    return null;
+  }
+
+  return activeProducts.map((product) => {
+    return {
+      status: product.status,
+      id: product.id,
+      model: product.productInstance.product.model,
+    };
+  });
 };

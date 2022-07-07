@@ -1,5 +1,5 @@
 import { ActiveProductInstanceStatus } from "@prisma/client";
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   forbiddenResponse,
@@ -9,18 +9,33 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { verifyRequest } from "~/lib/verify-request.server";
 import {
-  createActiveProductInstance,
-  deleteActiveProductInstance,
-  updateActiveProductInstanceStatus,
-} from "~/models/activeProductInstance/activeProductInstance.server";
+  createActiveProduct,
+  deleteActiveProduct,
+  findActiveProducts,
+  updateActiveProductStatus,
+} from "~/models/activeProducts/activeProducts.server";
+
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<Response> => {
+  const method = request.method.toLowerCase();
+  if (method !== "get") {
+    return methodNotAllowedResponse();
+  }
+
+  verifyRequest<"employee">(request);
+
+  const activeProducts = await findActiveProducts();
+  return okResponse(JSON.stringify({ activeProducts }));
+};
 
 export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
   const map: Record<string, (request: Request) => Promise<Response>> = {
-    post: postRequest,
-    patch: patchRequest,
-    delete: deleteRequest,
+    post: handlePOSTRequest,
+    patch: handlePATCHRequest,
+    delete: handleDELETERequest,
   };
 
   const method = request.method.toLowerCase();
@@ -36,40 +51,40 @@ export const action: ActionFunction = async ({
   }
 };
 
-const postRequest = async (request: Request): Promise<Response> => {
+const handlePOSTRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     customerId: z.string().cuid(),
   });
 
   const data = await parseBody(request, schema);
-  const createdActiveProductInstance = await createActiveProductInstance(
-    data.customerId
+  const createdActiveProductInstance = await createActiveProduct(
+    data.customerId,
   );
   return okResponse(JSON.stringify(createdActiveProductInstance));
 };
 
-const patchRequest = async (request: Request): Promise<Response> => {
+const handlePATCHRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     activeProductInstanceId: z.string().cuid(),
     status: z.nativeEnum(ActiveProductInstanceStatus),
   });
 
   const data = await parseBody(request, schema);
-  const updatedActiveProductInstance = await updateActiveProductInstanceStatus(
+  const updatedActiveProductInstance = await updateActiveProductStatus(
     data.activeProductInstanceId,
-    data.status
+    data.status,
   );
   return okResponse(JSON.stringify(updatedActiveProductInstance));
 };
 
-const deleteRequest = async (request: Request): Promise<Response> => {
+const handleDELETERequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     activeProductInstanceId: z.string().cuid(),
   });
 
   const data = await parseBody(request, schema);
-  const deletedActiveProductInstance = await deleteActiveProductInstance(
-    data.activeProductInstanceId
+  const deletedActiveProductInstance = await deleteActiveProduct(
+    data.activeProductInstanceId,
   );
   return okResponse(JSON.stringify(deletedActiveProductInstance));
 };

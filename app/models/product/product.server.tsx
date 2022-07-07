@@ -66,7 +66,3 @@ export const deleteProduct = async (id: string): Promise<Product | null> => {
     return null;
   }
 };
-
-export const findProducts = async (): Promise<Product[]> => {
-  return database.product.findMany();
-};

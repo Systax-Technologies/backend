@@ -1,5 +1,4 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { z } from "zod";
 import {
   forbiddenResponse,
@@ -13,10 +12,10 @@ import { createProduct, findProducts } from "~/models/product/product.server";
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<Response> => {
-  verifyRequest<"customer">(request);
+  verifyRequest<"employee">(request);
 
   const products = await findProducts();
-  return json(products);
+  return okResponse(JSON.stringify({ products }));
 };
 
 export const action: ActionFunction = async ({
@@ -24,29 +23,28 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      let jwtContent = verifyRequest<"employee">(request);
-      if (jwtContent.role !== "ADMIN" || "WORKER") {
+      const jwtContent = verifyRequest<"employee">(request);
+      if (jwtContent.role !== "ADMIN") {
         throw forbiddenResponse();
       }
-      return handlePOSTRequest(request);
+
+      const productPostSchema = z.object({
+        model: z.string(),
+        imageUrl: z.string().array(),
+        description: z.string(),
+        color: z.string(),
+        size: z.string(),
+        price: z.number().positive(),
+      });
+
+      const data = await parseBody(request, productPostSchema);
+
+      const createdProduct = await createProduct(data);
+
+      return okResponse(JSON.stringify(createdProduct));
     }
     default: {
       return methodNotAllowedResponse();
     }
   }
-};
-
-const handlePOSTRequest = async (request: Request) => {
-  const productPostSchema = z.object({
-    model: z.string(),
-    imageUrl: z.string().array(),
-    description: z.string(),
-    color: z.string(),
-    size: z.string(),
-    price: z.number().positive(),
-  });
-
-  const data = await parseBody(request, productPostSchema);
-
-  return okResponse(JSON.stringify(await createProduct(data)));
 };

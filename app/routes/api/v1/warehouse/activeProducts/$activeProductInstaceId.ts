@@ -6,7 +6,7 @@ import {
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
 import { verifyRequest } from "~/lib/verify-request.server";
-import { findActiveProductInstance } from "~/models/activeProductInstance/activeProductInstance.server";
+import { findActiveProduct } from "~/models/activeProducts/activeProducts.server";
 
 type LoaderData = ActiveProductInstance;
 
@@ -25,8 +25,8 @@ export const loader: LoaderFunction = async ({
     throw badRequestResponse();
   }
 
-  const activeProductInstance = await findActiveProductInstance(
-    activeProductInstanceId
+  const activeProductInstance = await findActiveProduct(
+    activeProductInstanceId,
   );
 
   if (activeProductInstance == null) {
