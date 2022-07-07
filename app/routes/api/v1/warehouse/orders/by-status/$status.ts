@@ -4,15 +4,23 @@ import type { LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   badRequestResponse,
+  forbiddenResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
+import { verifyRequest } from "~/lib/verify-request.server";
 import { findOrdersByStatus } from "~/models/order/order.server";
 
 type LoaderData = { orders: Order[] };
 
 export const loader: LoaderFunction = async ({
+  request,
   params,
 }): Promise<LoaderData> => {
+  const jwtContent = verifyRequest<"employee">(request);
+  if (jwtContent.role !== "ADMIN" || "WORKER") {
+    throw forbiddenResponse();
+  }
+
   let orderStatus = params.status;
   if (!orderStatus) {
     throw badRequestResponse();

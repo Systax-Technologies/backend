@@ -4,13 +4,17 @@ import {
   badRequestResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
+import { verifyRequest } from "~/lib/verify-request.server";
 import { findCustomerOrders } from "~/models/order/order.server";
 
 type LoaderData = { orders: Order[] };
 
 export const loader: LoaderFunction = async ({
+  request,
   params,
 }): Promise<LoaderData> => {
+  verifyRequest<"employee">(request);
+
   const customerId = params.customerId;
 
   if (!customerId) {

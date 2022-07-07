@@ -2,15 +2,21 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import {
+  forbiddenResponse,
   methodNotAllowedResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
+import { verifyRequest } from "~/lib/verify-request.server";
 import { createProduct, findProducts } from "~/models/product/product.server";
 
-export const loader: LoaderFunction = async ({}): Promise<Response> => {
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<Response> => {
+  verifyRequest<"customer">(request);
+
   const products = await findProducts();
-  return json({ products });
+  return json(products);
 };
 
 export const action: ActionFunction = async ({
@@ -18,6 +24,10 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post": {
+      let jwtContent = verifyRequest<"employee">(request);
+      if (jwtContent.role !== "ADMIN" || "WORKER") {
+        throw forbiddenResponse();
+      }
       return handlePOSTRequest(request);
     }
     default: {

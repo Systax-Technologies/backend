@@ -31,6 +31,7 @@ export const verifyRequest = <UserType extends "customer" | "employee">(
 ): ReturnType<UserType> => {
   const authorizationHeader = request.headers.get("Authorization");
   if (authorizationHeader) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, jwt] = authorizationHeader.split(" ");
     const decodedJwt = verifyJwt(jwt);
     let parsedData: z.SafeParseReturnType<any, any>;

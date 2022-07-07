@@ -2,12 +2,14 @@ import { ProductInstanceStatus } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
-  methodNotAllowedResponse,
+  badRequestResponse,
+  forbiddenResponse,
   notFoundResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { ProductInstances } from "~/models/dto";
+import { verifyRequest } from "~/lib/verify-request.server";
+import type { ProductInstances } from "~/models/dto";
 import {
   createManyProductInstances,
   deleteProductInstance,
@@ -19,7 +21,10 @@ type LoaderData = {
   productInstances: ProductInstances;
 };
 
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
+  verifyRequest<"employee">(request);
   const productInstances = await findManyProductInstances();
   return {
     productInstances,
@@ -29,20 +34,25 @@ export const loader: LoaderFunction = async (): Promise<LoaderData> => {
 export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
-  switch (request.method.toLowerCase()) {
-    case "post":
-      return postRequest(request);
+  const map: Record<string, (request: Request) => Promise<Response>> = {
+    post: postRequest,
+    patch: patchRequest,
+    delete: deleteRequest,
+  };
 
-    case "patch":
-      return patchRequest(request);
+  const method = request.method.toLowerCase();
 
-    case "delete":
-      return deleteRequest(request);
-
-    default: {
-      return methodNotAllowedResponse();
+  if (method in map) {
+    let jwtContent = verifyRequest<"employee">(request);
+    if (method !== "patch") {
+      if (jwtContent.role !== "ADMIN") {
+        throw forbiddenResponse();
+      }
     }
+    return map[method](request);
   }
+
+  return badRequestResponse();
 };
 
 const postRequest = async (request: Request): Promise<Response> => {

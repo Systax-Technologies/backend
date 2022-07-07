@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { string, z } from "zod";
 import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
+import { verifyRequest } from "~/lib/verify-request.server";
 import {
   createCustomer,
   deleteCustomer,
@@ -40,8 +41,9 @@ export const postRequest = async (request: Request): Promise<Response> => {
 };
 
 export const patchRequest = async (request: Request): Promise<Response> => {
+  let jwtContent = verifyRequest<"customer">(request);
+
   const schema = z.object({
-    id: z.string().cuid(),
     customer: z.object({
       email: z.string(),
       password: z.string(),
@@ -52,7 +54,7 @@ export const patchRequest = async (request: Request): Promise<Response> => {
 
   const data = await parseBody(request, schema);
 
-  const updatedCustomer = await updateCustomer(data.id, data.customer);
+  const updatedCustomer = await updateCustomer(jwtContent.id, data.customer);
   return json(updatedCustomer);
 };
 
