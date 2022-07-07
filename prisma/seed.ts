@@ -6,19 +6,19 @@ async function seed() {
   await Promise.all(
     getCustomers().map((customer) => {
       return db.customer.create({ data: customer });
-    }),
+    })
   );
 
   await Promise.all(
     getEmployees().map((employee) => {
       return db.employee.create({ data: employee });
-    }),
+    })
   );
 
   await Promise.all(
     getProduct().map((product) => {
       return db.product.create({ data: product });
-    }),
+    })
   );
 }
 
@@ -128,7 +128,7 @@ function getProduct() {
         "https://ae01.alicdn.com/kf/S37117a8fe86348c08525bba72d70fb02L/Xiaomi-Mi-Smart-Band-7-AMOLED-schermo-intero-50m-profondit-impermeabile-professionale-Sleep-Track-ricco-quadrante.png_.webp",
       description: "Orologio bello",
       color: "Nero",
-      size: "",
+      size: "XL",
       price: 150,
     },
     {
@@ -137,7 +137,7 @@ function getProduct() {
         "https://cdn.tgdd.vn/Files/2022/05/23/1434440/xiaomi-mi-band-7-ra-mat-ngay-24-05-2022-nhung-cai-2.jpg",
       description: "Orologio molto bello",
       color: "Bianco",
-      size: "",
+      size: "XL",
       price: 175,
     },
     {
@@ -146,7 +146,7 @@ function getProduct() {
         "https://www.homecleaner.it/474-large_default/braccialetto-sostitutivo-per-xiaomi-mi-band-5-giallo.jpg",
       description: "Orologio bellissimo",
       color: "Giallo",
-      size: "",
+      size: "XL",
       price: 75,
     },
     {
@@ -155,7 +155,7 @@ function getProduct() {
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr-PNUZzfIck_73iVjC6K1TvVXgoZUtZuJjw&usqp=CAU",
       description: "Orologio bello",
       color: "Blu",
-      size: "",
+      size: "XL",
       price: 75,
     },
   ];
