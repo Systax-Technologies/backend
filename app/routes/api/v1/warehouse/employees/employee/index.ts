@@ -1,9 +1,8 @@
-import { Employee, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import {
-  badRequestResponse,
   methodNotAllowedResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
@@ -16,13 +15,9 @@ import {
   updateEmployee,
 } from "~/models/employee/employee.server";
 
-type LoaderData = {
-  employee: Employee;
-};
-
 export const loader: LoaderFunction = async ({
   request,
-}): Promise<LoaderData> => {
+}): Promise<Response> => {
   if (request.method.toLowerCase() !== "get") {
     throw methodNotAllowedResponse();
   }
