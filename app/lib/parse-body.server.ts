@@ -3,7 +3,7 @@ import { badRequestResponse } from "~/helpers/response-helpers.server";
 
 export const parseBody = async <Output, Input>(
   request: Request,
-  schema: z.Schema<Output, any, Input>
+  schema: z.Schema<Output, any, Input>,
 ): Promise<Output> => {
   let requestBody: any;
 
@@ -18,6 +18,7 @@ export const parseBody = async <Output, Input>(
   if (parsedData.success) {
     return parsedData.data;
   } else {
+    console.log(parsedData.error);
     throw badRequestResponse();
   }
 };

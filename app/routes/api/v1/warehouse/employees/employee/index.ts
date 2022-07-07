@@ -87,10 +87,12 @@ const patchRequest = async (request: Request): Promise<Response> => {
 };
 
 const deleteRequest = async (request: Request): Promise<Response> => {
-  const schema = z.string();
+  const schema = z.object({
+    id: z.string().cuid(),
+  });
 
   const data = await parseBody(request, schema);
 
-  const deletedEmployee = await deleteEmployee(data);
+  const deletedEmployee = await deleteEmployee(data.id);
   return json(deletedEmployee);
 };
