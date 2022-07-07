@@ -601,9 +601,28 @@ Content-Type: application/json
     "id": "cl4qrncms0334tcjj75gn06tv",
     "status": "ORDERED",
     "orderedAt": "2022-06-23T08:32:15.028Z",
-    "shippedAt": "2022-06-23T08:32:15.028Z",
+    "shippedAt": null,
     "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "2022-06-22T14:11:24.664Z",
+          "updatedAt": "2022-06-22T14:10:44.094Z"
+        }
+      },
+    ]
   ]
 }
 ```
@@ -640,7 +659,25 @@ Content-Type: application/json
   "orderedAt": "2022-06-23T08:32:15.028Z",
   "shippedAt": null,
   "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+  "productInstances": [
+    {
+      "id": "cl52gilrq0059g4jjj50ffvdg",
+      "status": "SOLD",
+      "orderId": "cl5atk1nr002506jjot8atd5p",
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "product": {
+        "id": "cl4zoemig0036l2jjv0efdted",
+        "model": "Test Product",
+        "imageUrl": "/path/to/image",
+        "description": "Test Description",
+        "color": "Blue",
+        "size": "M",
+        "price": 19.99,
+        "createdAt": "2022-06-22T14:11:24.664Z",
+        "updatedAt": "2022-06-22T14:10:44.094Z"
+      }
+    },
 }
 ```
 
@@ -735,12 +772,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "ORDERED",
-    "orderedAt": "2022-06-23T08:32:15.028Z",
-    "shippedAt": "2022-06-23T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "ORDERED",
+      "orderedAt": "2022-06-23T08:32:15.028Z",
+      "shippedAt": "2022-06-23T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -880,12 +938,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "<provided status>",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "<provided status>",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -934,12 +1013,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "ORDERED",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "<provided status>",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -988,12 +1088,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "SHIPPED",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "SHIPPED",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": null,
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
@@ -1042,12 +1163,33 @@ Content-Type: application/json
 ```json
 {
   "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "DELIVERED",
-    "orderedAt": "2022-06-26T08:32:15.028Z",
-    "shippedAt": "2022-06-28T08:32:15.028Z",
-    "deliveredAt": "2022-07-04T08:32:15.028Z",
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+    {
+      "id": "cl4qrncms0334tcjj75gn06tv",
+      "status": "DELIVERED",
+      "orderedAt": "2022-06-26T08:32:15.028Z",
+      "shippedAt": "2022-06-28T08:32:15.028Z",
+      "deliveredAt": "2022-07-04T08:32:15.028Z",
+      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+      "productInstances": [
+        {
+          "id": "cl52gilrq0059g4jjj50ffvdg",
+          "status": "SOLD",
+          "orderId": "cl5atk1nr002506jjot8atd5p",
+          "productId": "cl4zoemig0036l2jjv0efdted",
+          "product": {
+            "id": "cl4zoemig0036l2jjv0efdted",
+            "model": "Test Product",
+            "imageUrl": "/path/to/image",
+            "description": "Test Description",
+            "color": "Blue",
+            "size": "M",
+            "price": 19.99,
+            "createdAt": "2022-06-22T14:11:24.664Z",
+            "updatedAt": "2022-06-22T14:10:44.094Z"
+          }
+        }
+      ]
+    }
   ]
 }
 ```
