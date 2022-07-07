@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-import { Product } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-=======
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
->>>>>>> Stashed changes
+import { json } from "@remix-run/node";
 import { z } from "zod";
 import {
   methodNotAllowedResponse,
@@ -12,19 +8,9 @@ import {
 import { parseBody } from "~/lib/parse-body.server";
 import { createProduct, findProducts } from "~/models/product/product.server";
 
-<<<<<<< Updated upstream
-type LoaderData = { products: Product[] };
-
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  const products = await findProducts();
-  return {
-    products,
-  };
-=======
 export const loader: LoaderFunction = async ({}): Promise<Response> => {
   const products = await findProducts();
   return json({ products });
->>>>>>> Stashed changes
 };
 
 export const action: ActionFunction = async ({

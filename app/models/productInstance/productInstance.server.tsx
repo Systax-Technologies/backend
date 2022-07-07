@@ -1,9 +1,6 @@
-import type {
-  ActiveProductInstance,
-  ProductInstance,
-  ProductInstanceStatus,
-} from "@prisma/client";
+import type { ProductInstance, ProductInstanceStatus } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
+import { ProductInstances } from "../dto";
 
 /**
  * Funtion to find a specific ProductInstance given its ID
@@ -18,16 +15,44 @@ export const findProductInstance = async (
   });
 };
 
-export type ProductInstances = (ProductInstance & {
-  activeProductInstance: ActiveProductInstance | null;
-})[];
-
 export const findManyProductInstances = async (): Promise<ProductInstances> => {
   return database.productInstance.findMany({
     include: {
       activeProductInstance: true,
     },
   });
+};
+
+/**
+ * Function to find many ProductInstances given the ProductId and the quantity
+ * @param productId ID of the Product
+ * @param quantity Quantity of single ProductInstances to find
+ * @returns The array of id of the found ProductInstances
+ */
+export const findManyProductInstancesAvailableToOrder = async (
+  productId: string,
+  quantity: number
+): Promise<string[] | null> => {
+  const result = await database.productInstance.findMany({
+    take: quantity,
+    where: {
+      status: "IN_STOCK",
+      productId,
+    },
+    select: {
+      id: true,
+    },
+  });
+  if (result.length != quantity) {
+    return null;
+  }
+
+  let ids: string[] = [];
+  for (var data of result) {
+    ids.push(data.id);
+  }
+
+  return ids;
 };
 
 /**

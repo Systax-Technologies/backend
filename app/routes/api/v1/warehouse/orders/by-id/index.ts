@@ -7,20 +7,12 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import {
-  createOrder,
-  deleteOrder,
-  updateOrder,
-} from "~/models/order/order.server";
+import { deleteOrder, updateOrder } from "~/models/order/order.server";
 
 export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
-    case "post": {
-      return handlePOSTRequest(request);
-    }
-
     case "patch": {
       return handlePATCHRequest(request);
     }
@@ -35,33 +27,20 @@ export const action: ActionFunction = async ({
   }
 };
 
-const handlePOSTRequest = async (request: Request): Promise<Response> => {
-  const schema = z.object({
-    customerId: z.string().cuid(),
-  });
-
-  const parsedData = await parseBody(request, schema);
-  const createdOrder = await createOrder(parsedData);
-
-  if (!createdOrder) {
-    return badRequestResponse();
-  }
-
-  return okResponse(JSON.stringify(createdOrder));
-};
-
 const handlePATCHRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     id: z.string().cuid(),
     status: z.nativeEnum(OrderStatus),
-    shippedAt: z.preprocess(
-      (a) => (a == null ? null : new Date(z.string().parse(a))),
-      z.nullable(z.date()),
-    ),
-    deliveredAt: z.preprocess(
-      (a) => (a == null ? null : new Date(z.string().parse(a))),
-      z.nullable(z.date()),
-    ),
+    shippedAt: z.preprocess((arg) => {
+      if (typeof arg === "string") {
+        return new Date(arg);
+      }
+    }, z.date()),
+    deliveredAt: z.preprocess((arg) => {
+      if (typeof arg === "string") {
+        return new Date(arg);
+      }
+    }, z.date()),
   });
 
   const parsedData = await parseBody(request, schema);
