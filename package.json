@@ -14,6 +14,7 @@
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:studio": "export $(cat .env | xargs) && DATABASE_URL=\"postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB\" prisma studio",
+    "db:seed": "node --require esbuild-register prisma/seed.ts",
     "prisma-studio": "prisma studio",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write ."
@@ -29,11 +30,12 @@
     "zod": "^3.17.3"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.8",
     "@remix-run/dev": "^1.6.3",
     "@remix-run/eslint-config": "^1.6.3",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "esbuild-register": "^3.3.3",
     "eslint": "^8.19.0",
     "prisma": "^4",
     "typescript": "^4.7.4"
