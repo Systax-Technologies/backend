@@ -1,11 +1,21 @@
-import type { ActionFunction } from "@remix-run/node";
+import { Product } from "@prisma/client";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
 import {
   methodNotAllowedResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { createProduct } from "~/models/product/product.server";
+import { createProduct, findProducts } from "~/models/product/product.server";
+
+type LoaderData = { products: Product[] };
+
+export const loader: LoaderFunction = async (): Promise<LoaderData> => {
+  const products = await findProducts();
+  return {
+    products,
+  };
+};
 
 export const action: ActionFunction = async ({
   request,
@@ -27,7 +37,7 @@ const handlePOSTRequest = async (request: Request) => {
     description: z.string(),
     color: z.string(),
     size: z.string(),
-    price: z.number(),
+    price: z.number().positive(),
   });
 
   const data = await parseBody(request, productPostSchema);
