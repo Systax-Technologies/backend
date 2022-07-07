@@ -3,17 +3,23 @@ import { PrismaClient, Role } from "@prisma/client";
 const db = new PrismaClient();
 
 async function seed() {
-  await Promise.all([
+  await Promise.all(
     getCustomers().map((customer) => {
       return db.customer.create({ data: customer });
     }),
+  );
+
+  await Promise.all(
     getEmployees().map((employee) => {
       return db.employee.create({ data: employee });
     }),
+  );
+
+  await Promise.all(
     getProduct().map((product) => {
       return db.product.create({ data: product });
     }),
-  ]);
+  );
 }
 
 seed();
