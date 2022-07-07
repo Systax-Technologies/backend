@@ -4,13 +4,12 @@ import { z } from "zod";
 import {
   badRequestResponse,
   forbiddenResponse,
-  methodNotAllowedResponse,
   notFoundResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { verifyRequest } from "~/lib/verify-request.server";
-import type { ProductInstances } from "~/models/productInstance/productInstance.server";
+import type { ProductInstances } from "~/models/dto";
 import {
   createManyProductInstances,
   deleteProductInstance,
@@ -59,7 +58,7 @@ export const action: ActionFunction = async ({
 const postRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     productId: z.string().cuid(),
-    quantity: z.number().min(1),
+    quantity: z.number().int().positive(),
   });
 
   const data = await parseBody(request, schema);

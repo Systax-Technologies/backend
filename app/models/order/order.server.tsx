@@ -3,13 +3,28 @@ import { database } from "~/helpers/db-helper.server";
 import type { OrderInput, OrderUpdateInput } from "../dto";
 
 export const findOrders = async (): Promise<Order[]> => {
-  return database.order.findMany();
+  return database.order.findMany({
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
 };
 
 export const findOrderById = async (id: string): Promise<Order | null> => {
   return database.order.findUnique({
     where: {
       id,
+    },
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
+      },
     },
   });
 };
@@ -51,6 +66,13 @@ export const findCustomerOrders = async (
     where: {
       customerId,
     },
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
+      },
+    },
   });
 };
 
@@ -60,6 +82,13 @@ export const findOrdersByStatus = async (
   return database.order.findMany({
     where: {
       status,
+    },
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
+      },
     },
   });
 };
@@ -73,6 +102,13 @@ export const findOrdersWithinOrderedDates = async (
       orderedAt: {
         lte: endDate,
         gte: startDate,
+      },
+    },
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
       },
     },
   });
@@ -89,6 +125,13 @@ export const findOrdersWithinShippedDates = async (
         gte: startDate,
       },
     },
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
+      },
+    },
   });
 };
 
@@ -101,6 +144,13 @@ export const findOrdersWithinDeliveredDates = async (
       deliveredAt: {
         lte: endDate,
         gte: startDate,
+      },
+    },
+    include: {
+      productInstances: {
+        include: {
+          product: true,
+        },
       },
     },
   });

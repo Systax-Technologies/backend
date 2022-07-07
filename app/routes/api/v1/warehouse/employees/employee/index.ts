@@ -17,11 +17,9 @@ import {
   updateEmployee,
 } from "~/models/employee/employee.server";
 
-type LoaderData = Response;
-
 export const loader: LoaderFunction = async ({
   request,
-}): Promise<LoaderData> => {
+}): Promise<Response> => {
   if (request.method.toLowerCase() !== "get") {
     throw methodNotAllowedResponse();
   }
@@ -100,10 +98,12 @@ const patchRequest = async (request: Request): Promise<Response> => {
 };
 
 const deleteRequest = async (request: Request): Promise<Response> => {
-  const schema = z.string();
+  const schema = z.object({
+    id: z.string().cuid(),
+  });
 
   const data = await parseBody(request, schema);
 
-  const deletedEmployee = await deleteEmployee(data);
+  const deletedEmployee = await deleteEmployee(data.id);
   return json(deletedEmployee);
 };

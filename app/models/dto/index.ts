@@ -1,4 +1,11 @@
-import type { Address, CreditCard, OrderStatus, Role } from "@prisma/client";
+import type {
+  ActiveProductInstance,
+  Address,
+  CreditCard,
+  OrderStatus,
+  ProductInstance,
+  Role,
+} from "@prisma/client";
 
 export type LoginDto = {
   email: string;
@@ -57,7 +64,7 @@ export type creditCardInput = {
 
 export type ProductInput = {
   model: string;
-  imageUrl: string;
+  imageUrl: string[];
   description: string;
   color: string;
   size: string;
@@ -72,3 +79,7 @@ export type ProductUpdateInput = {
   size: string;
   price: number;
 };
+
+export type ProductInstances = (ProductInstance & {
+  activeProductInstance: ActiveProductInstance | null;
+})[];

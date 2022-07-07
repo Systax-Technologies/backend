@@ -38,9 +38,9 @@ model Customer {
   shippingAddress   Address?     @relation(name: "shippingAddresses", fields: [shippingAddressId], references: [id], onDelete: Cascade)
   creditCard        CreditCard[]
 
-  order         Order[]
+  order                 Order[]
   activeProductInstance ActiveProductInstance[]
-  address       Address[]
+  address               Address[]
 }
 
 model Address {
@@ -82,9 +82,9 @@ model Order {
   shippedAt   DateTime?
   deliveredAt DateTime?
 
-  productInstances   ProductInstance[]
-  customerId String
-  customer   Customer  @relation(fields: [customerId], references: [id])
+  productInstances ProductInstance[]
+  customerId       String
+  customer         Customer          @relation(fields: [customerId], references: [id])
 }
 
 enum ProductInstanceStatus {
@@ -93,20 +93,20 @@ enum ProductInstanceStatus {
 }
 
 model ProductInstance {
-  id     String        @id @default(cuid())
+  id     String                @id @default(cuid())
   status ProductInstanceStatus @default(IN_STOCK)
 
-  orderId       String?
-  order         Order?         @relation(fields: [orderId], references: [id])
-  productId String
-  product   Product    @relation(fields: [productId], references: [id])
+  orderId               String?
+  order                 Order?                 @relation(fields: [orderId], references: [id])
+  productId             String
+  product               Product                @relation(fields: [productId], references: [id])
   activeProductInstance ActiveProductInstance?
 }
 
 model Product {
   id          String   @id @default(cuid())
   model       String
-  imageUrl    String
+  imageUrl    String[]
   description String
   color       String
   size        String
@@ -124,10 +124,10 @@ enum ActiveProductInstanceStatus {
 }
 
 model ActiveProductInstance {
-  id     String              @id @default(cuid())
+  id     String                      @id @default(cuid())
   status ActiveProductInstanceStatus @default(ACTIVE)
 
-  customerId String
-  customer   Customer @relation(fields: [customerId], references: [id])
-  productInstance    ProductInstance  @relation(fields: [id], references: [id])
+  customerId      String
+  customer        Customer        @relation(fields: [customerId], references: [id])
+  productInstance ProductInstance @relation(fields: [id], references: [id])
 }
