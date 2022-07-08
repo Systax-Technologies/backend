@@ -47,3 +47,11 @@ export const verifyEmployeeRequest = async (
     throw unauthorizedResponse();
   }
 };
+
+export const verifyCustomerRequest = async (
+  request: Request,
+): Promise<{ id: string }> => {
+  return {
+    id: "",
+  };
+};

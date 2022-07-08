@@ -20,7 +20,9 @@ export const loader: LoaderFunction = async ({
   if (jwtContent.role !== "ADMIN") {
     throw forbiddenResponse();
   }
-  const employees = await findEmployees();
+  const employees = (await findEmployees()).filter(
+    (el) => el.id !== jwtContent.id,
+  );
   return okResponse(JSON.stringify({ employees }));
 };
 
