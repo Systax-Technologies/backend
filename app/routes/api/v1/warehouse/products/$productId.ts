@@ -56,11 +56,11 @@ export const action: ActionFunction = async ({
 
     if (method === "patch") {
       const patchSchema = z.object({
-        model: z.string().min(1).max(50),
+        model: z.string(),
         imageUrl: z.string().array(),
-        description: z.string().min(1).max(250),
-        color: z.string().min(1).max(25),
-        size: z.string().min(1).max(25),
+        description: z.string(),
+        color: z.string(),
+        size: z.string(),
         price: z.number().positive(),
       });
 

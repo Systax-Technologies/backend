@@ -58,9 +58,9 @@ export const action: ActionFunction = async ({
       }
       const schema = z.object({
         email: z.string(),
-        password: z.string().min(1).max(16),
-        firstName: z.string().min(1).max(25),
-        lastName: z.string().min(1).max(25),
+        password: z.string().min(8),
+        firstName: z.string(),
+        lastName: z.string(),
         role: z.nativeEnum(Role),
       });
 

@@ -27,9 +27,9 @@ export const action: ActionFunction = async ({ request }) => {
 export const postRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     email: z.string().email(),
-    password: z.string().min(1).max(16),
-    firstName: z.string().min(1).max(25),
-    lastName: z.string().min(1).max(25),
+    password: z.string().min(8),
+    firstName: z.string(),
+    lastName: z.string(),
     bllingAddressId: z.string().nullable(),
     shippingAddressId: z.string().nullable(),
   });
@@ -49,9 +49,9 @@ export const patchRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     customer: z.object({
       email: z.string().email(),
-      password: z.string().min(1).max(16),
-      firstName: z.string().min(1).max(25),
-      lastName: z.string().min(1).max(25),
+      password: z.string().min(8),
+      firstName: z.string(),
+      lastName: z.string(),
     }),
   });
 
@@ -64,7 +64,7 @@ export const patchRequest = async (request: Request): Promise<Response> => {
 };
 
 export const deleteRequest = async (request: Request): Promise<Response> => {
-  const schema = z.string().cuid();
+  const schema = z.string();
 
   const data = await parseBody(request, schema);
   const deletedCustomer = await deleteCustomer(data);
