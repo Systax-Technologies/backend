@@ -1,5 +1,6 @@
 import type { Customer, Employee } from "@prisma/client";
 import { z } from "zod";
+import { hashPassword } from "~/helpers/crypto.server";
 import { createJwt } from "~/helpers/jwt-helper.server";
 import {
   badRequestResponse,
@@ -27,8 +28,7 @@ export const postAuthenticationHandler = async <
 
   const loginSchema = z.object({
     email: z.string().email(),
-    // the password is hashed, so it must be at least 64 chars
-    password: z.string().min(64),
+    password: z.string().min(1).max(16),
   });
 
   const parsedData = loginSchema.safeParse(body);
@@ -38,7 +38,7 @@ export const postAuthenticationHandler = async <
 
     const user = await handlerLogin({
       email,
-      password,
+      password: hashPassword(password),
     });
 
     if (user) {
