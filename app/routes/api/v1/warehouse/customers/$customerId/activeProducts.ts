@@ -4,7 +4,7 @@ import {
   notFoundResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findCustomerActiveProducts } from "~/models/customer/customer.server";
 
 export const loader: LoaderFunction = async ({
@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({
     return badRequestResponse();
   }
 
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const customerId = params.customerId;
   if (!customerId) {

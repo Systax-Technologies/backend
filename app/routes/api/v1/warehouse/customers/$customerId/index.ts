@@ -5,7 +5,7 @@ import {
   notFoundResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import {
   deleteCustomer,
   findCustomer,
@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({
     return methodNotAllowedResponse();
   }
 
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const customerId = params.customerId;
   if (!customerId) {
@@ -41,7 +41,7 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "delete": {
-      verifyRequest<"employee">(request);
+      await verifyEmployeeRequest(request);
       const customerId = params.customerId;
       if (!customerId) {
         return badRequestResponse();

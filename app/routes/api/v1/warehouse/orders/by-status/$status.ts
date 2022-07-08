@@ -7,7 +7,7 @@ import {
   forbiddenResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findOrdersByStatus } from "~/models/order/order.server";
 
 type LoaderData = { orders: Order[] };
@@ -16,7 +16,7 @@ export const loader: LoaderFunction = async ({
   request,
   params,
 }): Promise<LoaderData> => {
-  const jwtContent = verifyRequest<"employee">(request);
+  const jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN" || "WORKER") {
     throw forbiddenResponse();
   }

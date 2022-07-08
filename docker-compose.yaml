@@ -10,6 +10,7 @@ services:
       - "database:/var/lib/postgresql/data"
     env_file:
       - .env
+
   backend:
     build: ./
     container_name: backend

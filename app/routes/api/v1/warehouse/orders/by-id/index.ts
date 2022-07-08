@@ -8,7 +8,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { deleteOrder, updateOrder } from "~/models/order/order.server";
 
 export const action: ActionFunction = async ({
@@ -30,7 +30,7 @@ export const action: ActionFunction = async ({
 };
 
 const handlePATCHRequest = async (request: Request): Promise<Response> => {
-  const jwtContent = verifyRequest<"employee">(request);
+  const jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN" || "WORKER") {
     throw forbiddenResponse();
   }
@@ -60,7 +60,7 @@ const handlePATCHRequest = async (request: Request): Promise<Response> => {
 };
 
 const handleDELETERequest = async (request: Request): Promise<Response> => {
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const schema = z.object({
     id: z.string().cuid(),

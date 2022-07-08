@@ -3,7 +3,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { z } from "zod";
 import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyCustomerRequest } from "~/lib/verify-request.server";
 import { createCustomerCreditCard } from "~/models/customer/customer.server";
 
 export const action: ActionFunction = async ({
@@ -13,7 +13,7 @@ export const action: ActionFunction = async ({
     throw methodNotAllowedResponse();
   }
 
-  let jwtContent = verifyRequest<"customer">(request);
+  let jwtContent = await verifyCustomerRequest(request);
 
   const schema = z.object({
     creditCard: z.object({
@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({
   const data = await parseBody(request, schema);
   const customer = await createCustomerCreditCard(
     jwtContent.id,
-    data.creditCard
+    data.creditCard,
   );
   return customer;
 };

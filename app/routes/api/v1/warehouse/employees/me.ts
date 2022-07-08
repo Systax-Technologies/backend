@@ -1,0 +1,16 @@
+import { LoaderFunction } from "@remix-run/node";
+import {
+  forbiddenResponse,
+  okResponse,
+} from "~/helpers/response-helpers.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
+import { findEmployee } from "~/models/employee/employee.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const jwtContent = await verifyEmployeeRequest(request);
+  if (jwtContent.role !== "ADMIN") {
+    throw forbiddenResponse();
+  }
+  const employee = await findEmployee(jwtContent.id);
+  return okResponse(JSON.stringify(employee));
+};

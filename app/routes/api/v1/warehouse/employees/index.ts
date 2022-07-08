@@ -7,7 +7,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import {
   createEmployee,
   findEmployees,
@@ -16,11 +16,13 @@ import {
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<Response> => {
-  let jwtContent = verifyRequest<"employee">(request);
+  let jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN") {
     throw forbiddenResponse();
   }
-  const employees = await findEmployees();
+  const employees = (await findEmployees()).filter(
+    (el) => el.id !== jwtContent.id,
+  );
   return okResponse(JSON.stringify({ employees }));
 };
 
@@ -30,7 +32,7 @@ export const action: ActionFunction = async ({
   if (request.method.toLowerCase() !== "post") {
     throw methodNotAllowedResponse();
   }
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const schema = z.object({
     email: z.string(),

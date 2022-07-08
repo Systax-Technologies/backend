@@ -7,7 +7,7 @@ import {
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findOrdersWithinShippedDates } from "~/models/order/order.server";
 
 type LoaderData = {
@@ -20,7 +20,7 @@ export const action: ActionFunction = async ({
   if (request.method.toLowerCase() != "post") {
     throw methodNotAllowedResponse();
   }
-  const jwtContent = verifyRequest<"employee">(request);
+  const jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN" || "WORKER") {
     throw forbiddenResponse();
   }
@@ -42,7 +42,7 @@ export const action: ActionFunction = async ({
 
   const ordersWithinDates = await findOrdersWithinShippedDates(
     parsedData.startDate,
-    parsedData.endDate
+    parsedData.endDate,
   );
 
   if (!ordersWithinDates || !ordersWithinDates.length) {
