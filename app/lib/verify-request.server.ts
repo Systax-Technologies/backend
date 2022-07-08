@@ -36,7 +36,7 @@ export const verifyRequest = <UserType extends "customer" | "employee">(
     const decodedJwt = verifyJwt(jwt);
     let parsedData: z.SafeParseReturnType<any, any>;
     const schema = z.object({
-      id: z.string(),
+      id: z.string().cuid(),
       role: z.optional(z.nativeEnum(Role)),
     });
 

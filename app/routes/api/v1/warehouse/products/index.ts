@@ -29,11 +29,11 @@ export const action: ActionFunction = async ({
       }
 
       const productPostSchema = z.object({
-        model: z.string(),
+        model: z.string().min(1).max(50),
         imageUrl: z.string().array(),
-        description: z.string(),
-        color: z.string(),
-        size: z.string(),
+        description: z.string().min(1).max(250),
+        color: z.string().min(1).max(25),
+        size: z.string().min(1).max(25),
         price: z.number().positive(),
       });
 

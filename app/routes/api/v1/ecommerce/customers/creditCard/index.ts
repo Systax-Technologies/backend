@@ -17,10 +17,10 @@ export const action: ActionFunction = async ({
 
   const schema = z.object({
     creditCard: z.object({
-      number: z.number(),
-      expMonthDate: z.number(),
-      expYearDate: z.number(),
-      secretCode: z.number(),
+      number: z.number().int().gte(16).lte(16),
+      expMonthDate: z.number().int(),
+      expYearDate: z.number().int(),
+      secretCode: z.number().min(3).max(4),
     }),
   });
 
