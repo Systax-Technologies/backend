@@ -8,7 +8,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import type { ProductInstances } from "~/models/dto";
 import {
   createManyProductInstances,
@@ -24,7 +24,7 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<LoaderData> => {
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
   const productInstances = await findManyProductInstances();
   return {
     productInstances,
@@ -43,7 +43,7 @@ export const action: ActionFunction = async ({
   const method = request.method.toLowerCase();
 
   if (method in map) {
-    let jwtContent = verifyRequest<"employee">(request);
+    let jwtContent = await verifyEmployeeRequest(request);
     if (method !== "patch") {
       if (jwtContent.role !== "ADMIN") {
         throw forbiddenResponse();
@@ -65,11 +65,11 @@ const postRequest = async (request: Request): Promise<Response> => {
 
   const createdProductInstances = await createManyProductInstances(
     data.productId,
-    data.quantity
+    data.quantity,
   );
 
   return okResponse(
-    JSON.stringify({ numberOfCreatedProducts: createdProductInstances })
+    JSON.stringify({ numberOfCreatedProducts: createdProductInstances }),
   );
 };
 

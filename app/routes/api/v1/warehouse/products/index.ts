@@ -6,13 +6,13 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { createProduct, findProducts } from "~/models/product/product.server";
 
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<Response> => {
-  verifyRequest<"employee">(request);
+  verifyEmployeeRequest(request);
 
   const products = await findProducts();
   return okResponse(JSON.stringify({ products }));
@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      const jwtContent = verifyRequest<"employee">(request);
+      const jwtContent = await verifyEmployeeRequest(request);
       if (jwtContent.role !== "ADMIN") {
         throw forbiddenResponse();
       }

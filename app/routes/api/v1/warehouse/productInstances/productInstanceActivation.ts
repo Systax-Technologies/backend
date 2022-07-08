@@ -6,7 +6,7 @@ import {
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { productInstanceActivation } from "~/models/productInstance/productInstance.server";
 
 type ActionData = {
@@ -20,7 +20,7 @@ export const action: ActionFunction = async ({
     throw methodNotAllowedResponse();
   }
 
-  verifyRequest<"customer">(request);
+  await verifyEmployeeRequest(request);
 
   const schema = z.object({
     customerId: z.string().cuid(),
@@ -30,7 +30,7 @@ export const action: ActionFunction = async ({
   const data = await parseBody(request, schema);
   const productInstanceActivated = await productInstanceActivation(
     data.customerId,
-    data.productInstanceId
+    data.productInstanceId,
   );
 
   if (productInstanceActivated == null) {

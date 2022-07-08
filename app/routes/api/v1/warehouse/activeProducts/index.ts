@@ -7,7 +7,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import {
   createActiveProduct,
   deleteActiveProduct,
@@ -23,7 +23,7 @@ export const loader: LoaderFunction = async ({
     return methodNotAllowedResponse();
   }
 
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const activeProducts = await findActiveProducts();
   return okResponse(JSON.stringify({ activeProducts }));
@@ -41,7 +41,7 @@ export const action: ActionFunction = async ({
   const method = request.method.toLowerCase();
 
   if (method in map) {
-    let jwtContent = verifyRequest<"employee">(request);
+    let jwtContent = await verifyEmployeeRequest(request);
     if (jwtContent.role !== "ADMIN") {
       throw forbiddenResponse();
     }

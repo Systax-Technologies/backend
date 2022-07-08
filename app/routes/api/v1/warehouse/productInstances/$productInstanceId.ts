@@ -4,7 +4,7 @@ import {
   badRequestResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findProductInstance } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = ProductInstance;
@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async ({
   request,
   params,
 }): Promise<LoaderData> => {
-  verifyRequest<"customer">(request);
+  await verifyEmployeeRequest(request);
 
   const productInstanceId = params.productInstanceId;
 

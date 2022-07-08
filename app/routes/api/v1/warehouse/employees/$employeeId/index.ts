@@ -1,6 +1,7 @@
 import { Role } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
+import { hashPassword } from "~/helpers/crypto.server";
 import {
   badRequestResponse,
   forbiddenResponse,
@@ -9,7 +10,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import {
   deleteEmployee,
   findEmployee,
@@ -24,7 +25,7 @@ export const loader: LoaderFunction = async ({
     throw methodNotAllowedResponse();
   }
 
-  verifyRequest<"employee">(request);
+  verifyEmployeeRequest<"employee">(request);
 
   const employeeId = params.employeeId;
   if (!employeeId) {
@@ -47,7 +48,7 @@ export const action: ActionFunction = async ({
   const method = request.method.toLowerCase();
 
   if (method === "patch" || method === "delete") {
-    const jwtContent = verifyRequest<"employee">(request);
+    const jwtContent = verifyEmployeeRequest<"employee">(request);
     if (method === "patch") {
       if (jwtContent.role !== "ADMIN") {
         throw forbiddenResponse();
@@ -58,13 +59,15 @@ export const action: ActionFunction = async ({
       }
       const schema = z.object({
         email: z.string(),
-        password: z.string(),
+        password: z.string().min(8),
         firstName: z.string(),
         lastName: z.string(),
         role: z.nativeEnum(Role),
       });
 
       const data = await parseBody(request, schema);
+
+      data.password = hashPassword(data.password);
 
       const updatedEmployee = await updateEmployee(employeeId, data);
 
