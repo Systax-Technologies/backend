@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      verifyEmployeeRequest(request);
+      await verifyEmployeeRequest(request);
       return handlePOSTRequest(request);
     }
 
@@ -66,7 +66,7 @@ const handlePOSTRequest = async (request: Request): Promise<Response> => {
   for (var product of parsedData.products) {
     const queryResult = await findManyProductInstancesAvailableToOrder(
       product.productId,
-      product.quantity,
+      product.quantity
     );
 
     if (!queryResult) {

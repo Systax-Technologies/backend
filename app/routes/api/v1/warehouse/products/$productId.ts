@@ -20,7 +20,7 @@ export const loader: LoaderFunction = async ({
   request,
   params,
 }): Promise<Response> => {
-  verifyEmployeeRequest(request);
+  await verifyEmployeeRequest(request);
 
   const productId = params.productId;
 
