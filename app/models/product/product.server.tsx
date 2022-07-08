@@ -40,7 +40,7 @@ export const createProduct = async (data: ProductInput): Promise<Product> => {
  */
 export const updateProduct = async (
   id: string,
-  data: ProductUpdateInput,
+  data: ProductUpdateInput
 ): Promise<Product | null> => {
   try {
     return database.product.update({
