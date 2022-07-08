@@ -6,7 +6,7 @@ import {
   forbiddenResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { countProductInstancesByStatus } from "~/models/productInstance/productInstance.server";
 
 type LoaderData = {
@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({
   request,
   params,
 }): Promise<LoaderData> => {
-  let jwtContent = verifyRequest<"employee">(request);
+  let jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN") {
     throw forbiddenResponse();
   }
@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({
   const parsedData = schema.safeParse(productInstanceStatus);
   if (parsedData.success) {
     const countedProductInstancesStatus = await countProductInstancesByStatus(
-      parsedData.data
+      parsedData.data,
     );
 
     if (countedProductInstancesStatus == null) {

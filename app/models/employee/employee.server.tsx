@@ -2,12 +2,23 @@ import type { Employee, Role } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 import type {
   EmployeeCreateInput,
+  EmployeeRead,
   EmployeeUpdateInput,
   LoginDto,
 } from "../dto";
 
-export const findEmployees = async (): Promise<Employee[]> => {
-  return database.employee.findMany();
+export const findEmployees = async (): Promise<EmployeeRead[]> => {
+  return database.employee.findMany({
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 };
 
 export const findEmployeeByLogin = async ({

@@ -4,7 +4,7 @@ import {
   badRequestResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findCustomerOrders } from "~/models/order/order.server";
 
 type LoaderData = { orders: Order[] };
@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({
     throw badRequestResponse();
   }
 
-  verifyRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const orders = await findCustomerOrders(customerId);
 

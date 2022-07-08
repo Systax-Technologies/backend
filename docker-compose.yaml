@@ -7,14 +7,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - "database:/var/lib/postgresql/data"
+      - "pw_database:/var/lib/postgresql/data"
     env_file:
       - .env
-  backend:
-    build: ./
-    container_name: backend
-    ports:
-      - "3000:3000"
+  # backend:
+  #   build: ./
+  #   container_name: backend
+  #   ports:
+  #     - "3000:3000"
 
 volumes:
-  database:
+  pw_database:

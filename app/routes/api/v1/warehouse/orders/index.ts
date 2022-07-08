@@ -9,7 +9,7 @@ import {
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { createOrder, findOrders } from "~/models/order/order.server";
 import {
   findManyProductInstancesAvailableToOrder,
@@ -21,7 +21,7 @@ type LoaderData = { orders: Order[] };
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<LoaderData> => {
-  const jwtContent = verifyRequest<"employee">(request);
+  const jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN" || "WORKER") {
     throw forbiddenResponse();
   }
@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   switch (request.method.toLowerCase()) {
     case "post": {
-      verifyRequest<"customer">(request);
+      verifyEmployeeRequest(request);
       return handlePOSTRequest(request);
     }
 
@@ -66,7 +66,7 @@ const handlePOSTRequest = async (request: Request): Promise<Response> => {
   for (var product of parsedData.products) {
     const queryResult = await findManyProductInstancesAvailableToOrder(
       product.productId,
-      product.quantity
+      product.quantity,
     );
 
     if (!queryResult) {

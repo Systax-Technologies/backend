@@ -5,7 +5,7 @@ import {
   forbiddenResponse,
   notFoundResponse,
 } from "~/helpers/response-helpers.server";
-import { verifyRequest } from "~/lib/verify-request.server";
+import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findActiveProduct } from "~/models/activeProducts/activeProducts.server";
 
 type LoaderData = ActiveProductInstance;
@@ -16,7 +16,7 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   const activeProductInstanceId = params.productInstanceId;
 
-  let jwtContent = verifyRequest<"employee">(request);
+  let jwtContent = await verifyEmployeeRequest(request);
   if (jwtContent.role !== "ADMIN") {
     throw forbiddenResponse();
   }

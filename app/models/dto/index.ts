@@ -12,6 +12,16 @@ export type LoginDto = {
   password: string;
 };
 
+export type EmployeeRead = {
+  id: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+  firstName: string;
+  lastName: string;
+  role: Role;
+};
+
 export type EmployeeCreateInput = {
   email: string;
   password: string;
