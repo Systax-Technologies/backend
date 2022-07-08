@@ -1,4 +1,4 @@
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import {
   badRequestResponse,
   methodNotAllowedResponse,

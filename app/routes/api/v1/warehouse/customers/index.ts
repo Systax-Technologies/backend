@@ -1,4 +1,4 @@
-import { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import { okResponse } from "~/helpers/response-helpers.server";
 import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findCustomers } from "~/models/customer/customer.server";
