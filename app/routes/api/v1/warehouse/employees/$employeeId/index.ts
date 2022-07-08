@@ -1,6 +1,7 @@
 import { Role } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { z } from "zod";
+import { hashPassword } from "~/helpers/crypto.server";
 import {
   badRequestResponse,
   forbiddenResponse,
@@ -58,13 +59,15 @@ export const action: ActionFunction = async ({
       }
       const schema = z.object({
         email: z.string(),
-        password: z.string(),
+        password: z.string().min(8),
         firstName: z.string(),
         lastName: z.string(),
         role: z.nativeEnum(Role),
       });
 
       const data = await parseBody(request, schema);
+
+      data.password = hashPassword(data.password);
 
       const updatedEmployee = await updateEmployee(employeeId, data);
 
