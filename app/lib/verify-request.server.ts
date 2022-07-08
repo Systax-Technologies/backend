@@ -5,6 +5,7 @@ import {
   badRequestResponse,
   unauthorizedResponse,
 } from "~/helpers/response-helpers.server";
+import { findCustomer } from "~/models/customer/customer.server";
 import { findEmployee } from "~/models/employee/employee.server";
 
 /**
@@ -13,7 +14,7 @@ import { findEmployee } from "~/models/employee/employee.server";
  * @returns The data contained in the JWT
  */
 export const verifyEmployeeRequest = async (
-  request: Request,
+  request: Request
 ): Promise<{
   id: string;
   role: Role;
@@ -29,7 +30,7 @@ export const verifyEmployeeRequest = async (
     });
 
     const parsedData = schema.safeParse(
-      typeof decodedJwt === "string" ? JSON.parse(decodedJwt) : decodedJwt,
+      typeof decodedJwt === "string" ? JSON.parse(decodedJwt) : decodedJwt
     );
 
     if (parsedData.success) {
@@ -49,9 +50,33 @@ export const verifyEmployeeRequest = async (
 };
 
 export const verifyCustomerRequest = async (
-  request: Request,
+  request: Request
 ): Promise<{ id: string }> => {
-  return {
-    id: "",
-  };
+  const authorizationHeader = request.headers.get("Authorization");
+  if (authorizationHeader) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, jwt] = authorizationHeader.split(" ");
+    const decodedJwt = verifyJwt(jwt);
+    const schema = z.object({
+      id: z.string(),
+    });
+
+    const parsedData = schema.safeParse(
+      typeof decodedJwt === "string" ? JSON.parse(decodedJwt) : decodedJwt
+    );
+
+    if (parsedData.success) {
+      const customer = await findCustomer(parsedData.data.id);
+
+      if (customer == null) {
+        throw unauthorizedResponse();
+      }
+
+      return parsedData.data;
+    } else {
+      throw badRequestResponse();
+    }
+  } else {
+    throw unauthorizedResponse();
+  }
 };
