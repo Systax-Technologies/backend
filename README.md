@@ -93,12 +93,12 @@ In order to run the `prisma studio` utility, run:
 # API docs <!-- omit in toc -->
 
 - [Ecommerce](#ecommerce)
-    - [POST `/api/v1/ecommerce/login`](#post-apiv1ecommercelogin)
   - [Customers](#customers)
     - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers)
     - [PATCH `/api/v1/ecommerce/customers`](#patch-apiv1ecommercecustomers)
     - [DELETE `/api/v1/ecommerce/customers`](#delete-apiv1ecommercecustomers)
-    - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers-1)
+    - [POST `/api/v1/ecommerce/customers/creditCard`](#post-apiv1ecommercecustomerscreditcard)
+    - [POST `/api/v1/ecommerce/customers/login`](#post-apiv1ecommercecustomerslogin)
 - [Warehouse](#warehouse)
   - [Active Product](#active-product)
     - [GET `/api/v1/warehouse/activeProducts`](#get-apiv1warehouseactiveproducts)
@@ -148,47 +148,6 @@ In order to run the `prisma studio` utility, run:
 ---
 
 # Ecommerce
-
-### POST `/api/v1/ecommerce/login`
-
-Get a valid jwt for a customer
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "email": "example@example.com",
-  "password": "password"
-}
-```
-
-> **Constraints:**
->
-> - `email` must have a valid email address syntax
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-|          `404` Not found | User not found                      |
-| `405` Method Not Allowed | The request method is not `POST`    |
-
----
 
 ## Customers
 
@@ -346,7 +305,7 @@ Authorization: Bearer <jwt>
 
 ---
 
-### POST `/api/v1/ecommerce/customers`
+### POST `/api/v1/ecommerce/customers/creditCard`
 
 Create a customer credit card
 
@@ -401,6 +360,47 @@ Authorization: Bearer <jwt>
 |       `401` Unauthorized | Authentication credentials not valid |
 |          `404` Not Found | Customer not found                   |
 | `405` Method Not Allowed | The request method is not `POST`     |
+
+---
+
+### POST `/api/v1/ecommerce/customers/login`
+
+Get a valid jwt for a customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "email": "example@example.com",
+  "password": "password"
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+|          `404` Not found | User not found                      |
+| `405` Method Not Allowed | The request method is not `POST`    |
 
 ---
 
