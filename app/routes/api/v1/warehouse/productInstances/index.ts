@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
   const map: Record<string, (request: Request) => Promise<Response>> = {
-    post: handelPOSTRequest,
+    post: handlePOSTRequest,
     patch: handlePATCHRequest,
     delete: handleDELETERequest,
   };
@@ -55,7 +55,7 @@ export const action: ActionFunction = async ({
   return badRequestResponse();
 };
 
-const handelPOSTRequest = async (request: Request): Promise<Response> => {
+const handlePOSTRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     productId: z.string().cuid(),
     quantity: z.number().int().positive(),
