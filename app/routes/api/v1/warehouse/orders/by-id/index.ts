@@ -59,7 +59,7 @@ const handlePATCHRequest = async (request: Request): Promise<Response> => {
   });
 
   if (updatedOrder == null) {
-    throw notFoundResponse();
+    return notFoundResponse();
   }
 
   return okResponse(JSON.stringify(updatedOrder));
