@@ -35,9 +35,9 @@ export const action: ActionFunction = async ({
   request,
 }): Promise<Response> => {
   const map: Record<string, (request: Request) => Promise<Response>> = {
-    post: postRequest,
-    patch: patchRequest,
-    delete: deleteRequest,
+    post: handelPOSTRequest,
+    patch: handlePATCHRequest,
+    delete: handleDELETERequest,
   };
 
   const method = request.method.toLowerCase();
@@ -55,7 +55,7 @@ export const action: ActionFunction = async ({
   return badRequestResponse();
 };
 
-const postRequest = async (request: Request): Promise<Response> => {
+const handelPOSTRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     productId: z.string().cuid(),
     quantity: z.number().int().positive(),
@@ -73,7 +73,7 @@ const postRequest = async (request: Request): Promise<Response> => {
   );
 };
 
-const patchRequest = async (request: Request): Promise<Response> => {
+const handlePATCHRequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     id: z.string().cuid(),
     status: z.nativeEnum(ProductInstanceStatus),
@@ -96,7 +96,7 @@ const patchRequest = async (request: Request): Promise<Response> => {
   return okResponse(JSON.stringify(updatedProductInstance));
 };
 
-const deleteRequest = async (request: Request): Promise<Response> => {
+const handleDELETERequest = async (request: Request): Promise<Response> => {
   const schema = z.object({
     id: z.string().cuid(),
   });

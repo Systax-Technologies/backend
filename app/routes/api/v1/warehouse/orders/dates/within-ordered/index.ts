@@ -10,13 +10,13 @@ import { parseBody } from "~/lib/parse-body.server";
 import { verifyEmployeeRequest } from "~/lib/verify-request.server";
 import { findOrdersWithinOrderedDates } from "~/models/order/order.server";
 
-type LoaderData = {
+type ActionData = {
   orders: Order[];
 };
 
 export const action: ActionFunction = async ({
   request,
-}): Promise<LoaderData> => {
+}): Promise<ActionData> => {
   if (request.method.toLowerCase() != "post") {
     throw methodNotAllowedResponse();
   }

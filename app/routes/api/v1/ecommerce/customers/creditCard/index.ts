@@ -17,17 +17,17 @@ export const action: ActionFunction = async ({
 
   const schema = z.object({
     creditCard: z.object({
-      number: z.number().int().gte(16).lte(16),
-      expMonthDate: z.number().int(),
-      expYearDate: z.number().int(),
-      secretCode: z.number().min(3).max(4),
+      number: z.number().int().positive(),
+      expMonthDate: z.number().int().min(1).max(12),
+      expYearDate: z.number().int().min(1970),
+      secretCode: z.number().int().positive(),
     }),
   });
 
   const data = await parseBody(request, schema);
-  const customer = await createCustomerCreditCard(
+  const creditCard = await createCustomerCreditCard(
     jwtContent.id,
     data.creditCard,
   );
-  return customer;
+  return creditCard;
 };

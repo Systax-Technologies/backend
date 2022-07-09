@@ -5,6 +5,7 @@ import {
   badRequestResponse,
   forbiddenResponse,
   methodNotAllowedResponse,
+  notFoundResponse,
   okResponse,
 } from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
@@ -56,6 +57,11 @@ const handlePATCHRequest = async (request: Request): Promise<Response> => {
     shippedAt: parsedData.shippedAt,
     deliveredAt: parsedData.deliveredAt,
   });
+
+  if (updatedOrder == null) {
+    throw notFoundResponse();
+  }
+
   return okResponse(JSON.stringify(updatedOrder));
 };
 
@@ -71,7 +77,7 @@ const handleDELETERequest = async (request: Request): Promise<Response> => {
   const deletedOrder = await deleteOrder(parsedData.id);
 
   if (deletedOrder == null) {
-    return badRequestResponse();
+    return notFoundResponse();
   }
   return okResponse(JSON.stringify(deletedOrder));
 };
