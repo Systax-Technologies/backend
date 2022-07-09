@@ -93,12 +93,14 @@ In order to run the `prisma studio` utility, run:
 # API docs <!-- omit in toc -->
 
 - [Ecommerce](#ecommerce)
-    - [POST `/api/v1/ecommerce/login`](#post-apiv1ecommercelogin)
   - [Customers](#customers)
     - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers)
     - [PATCH `/api/v1/ecommerce/customers`](#patch-apiv1ecommercecustomers)
     - [DELETE `/api/v1/ecommerce/customers`](#delete-apiv1ecommercecustomers)
-    - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers-1)
+    - [POST `/api/v1/ecommerce/customers/creditCard`](#post-apiv1ecommercecustomerscreditcard)
+    - [POST `/api/v1/ecommerce/customers/login`](#post-apiv1ecommercecustomerslogin)
+  - [Orders](#orders)
+    - [POST `/api/v1/ecommerce/orders`](#post-apiv1ecommerceorders)
 - [Warehouse](#warehouse)
   - [Active Product](#active-product)
     - [GET `/api/v1/warehouse/activeProducts`](#get-apiv1warehouseactiveproducts)
@@ -120,8 +122,8 @@ In order to run the `prisma studio` utility, run:
     - [GET `/api/v1/warehouse/employees/{employeeId}`](#get-apiv1warehouseemployeesemployeeid)
     - [PATCH `/api/v1/warehouse/employees/{employeeId}`](#patch-apiv1warehouseemployeesemployeeid)
     - [DELETE `/api/v1/warehouse/employees/{employeeId}`](#delete-apiv1warehouseemployeesemployeeid)
+  - [Orders](#orders-1)
     - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
-    - [POST `/api/v1/warehouse/orders`](#post-apiv1warehouseorders)
     - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
     - [PATCH `/api/v1/warehouse/orders/by-id`](#patch-apiv1warehouseordersby-id)
     - [DELETE`/api/v1/warehouse/orders/by-id`](#deleteapiv1warehouseordersby-id)
@@ -148,47 +150,6 @@ In order to run the `prisma studio` utility, run:
 ---
 
 # Ecommerce
-
-### POST `/api/v1/ecommerce/login`
-
-Get a valid jwt for a customer
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "email": "example@example.com",
-  "password": "password"
-}
-```
-
-> **Constraints:**
->
-> - `email` must have a valid email address syntax
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-|          `404` Not found | User not found                      |
-| `405` Method Not Allowed | The request method is not `POST`    |
-
----
 
 ## Customers
 
@@ -346,7 +307,7 @@ Authorization: Bearer <jwt>
 
 ---
 
-### POST `/api/v1/ecommerce/customers`
+### POST `/api/v1/ecommerce/customers/creditCard`
 
 Create a customer credit card
 
@@ -401,6 +362,108 @@ Authorization: Bearer <jwt>
 |       `401` Unauthorized | Authentication credentials not valid |
 |          `404` Not Found | Customer not found                   |
 | `405` Method Not Allowed | The request method is not `POST`     |
+
+---
+
+### POST `/api/v1/ecommerce/customers/login`
+
+Get a valid jwt for a customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "email": "example@example.com",
+  "password": "password"
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+|          `404` Not found | User not found                      |
+| `405` Method Not Allowed | The request method is not `POST`    |
+
+---
+
+## Orders
+
+### POST `/api/v1/ecommerce/orders`
+
+Creates an order given the id of the customer and a list of product id with relative quantity
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "customerId": "cl5apl7c00037xhjjm5hela3m",
+  "products": [
+    {
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "quantity": 2
+    },
+    {
+      "productId": "cl5ar5z3y0051cujjz0cq3jo7",
+      "quantity": 1
+    }
+  ]
+}
+```
+
+> **Constraints:**
+>
+> - `customerId` must be a valid cuid
+> - `productId` must be a valid cuid
+> - `quantity` must be a positive number
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl4vfbh0u00009xjjvk2btxym",
+  "status": "ORDERED",
+  "orderedAt": "2022-06-26T14:45:56.334Z",
+  "shippedAt": null,
+  "deliveredAt": null,
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                                          |
+| -----------------------: | :------------------------------------------------------------------- |
+|        `400` Bad Request | The request body content is invalid or the `customerId` do not exist |
+|       `401` Unauthorized | Authentication credentials not valid                                 |
+|          `404` Not Found | The `productId`(s) provided do not exist                             |
+| `405` Method Not Allowed | The request method is not `POST`                                     |
 
 ---
 
@@ -1147,6 +1210,8 @@ Authorization: Bearer <jwt>
 
 ---
 
+## Orders
+
 ### GET `/api/v1/warehouse/orders`
 
 Retrieves the complete list of orders.
@@ -1203,64 +1268,6 @@ Authorization: Bearer <jwt>
 |       `401` Unauthorized | Authentication credentials not valid              |
 |          `403` Forbidden | User has not enough rights to access the resource |
 | `405` Method Not Allowed | The request method is not `DELETE`                |
-
----
-
-### POST `/api/v1/warehouse/orders`
-
-Creates an order given the id of the customer and a list of product id with relative quantity
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-Authorization: Bearer <jwt>
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "customerId": "cl5apl7c00037xhjjm5hela3m",
-  "products": [
-    {
-      "productId": "cl4zoemig0036l2jjv0efdted",
-      "quantity": 2
-    },
-    {
-      "productId": "cl5ar5z3y0051cujjz0cq3jo7",
-      "quantity": 1
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - `customerId` must be a valid cuid
-> - `productId` must be a valid cuid
-> - `quantity` must be a positive number
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vfbh0u00009xjjvk2btxym",
-  "status": "ORDERED",
-  "orderedAt": "2022-06-26T14:45:56.334Z",
-  "shippedAt": null,
-  "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                                                          |
-| -----------------------: | :------------------------------------------------------------------- |
-|        `400` Bad Request | The request body content is invalid or the `customerId` do not exist |
-|          `404` Not Found | The `productId`(s) provided do not exist                             |
-| `405` Method Not Allowed | The request method is not `POST`                                     |
 
 ---
 

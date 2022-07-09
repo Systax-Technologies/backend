@@ -2,7 +2,10 @@ import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import { hashPassword } from "~/helpers/crypto.server";
-import { methodNotAllowedResponse } from "~/helpers/response-helpers.server";
+import {
+  methodNotAllowedResponse,
+  notFoundResponse,
+} from "~/helpers/response-helpers.server";
 import { parseBody } from "~/lib/parse-body.server";
 import { verifyCustomerRequest } from "~/lib/verify-request.server";
 import {
@@ -14,17 +17,19 @@ import {
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method.toLowerCase()) {
     case "post":
-      return postRequest(request);
+      return handlePOSTRequest(request);
     case "patch":
-      return patchRequest(request);
+      return handlePATCHRequest(request);
     case "delete":
-      return deleteRequest(request);
+      return handleDELETERequest(request);
     default:
       throw methodNotAllowedResponse();
   }
 };
 
-export const postRequest = async (request: Request): Promise<Response> => {
+export const handlePOSTRequest = async (
+  request: Request,
+): Promise<Response> => {
   const schema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
@@ -43,7 +48,9 @@ export const postRequest = async (request: Request): Promise<Response> => {
   return json(createdCustomer);
 };
 
-export const patchRequest = async (request: Request): Promise<Response> => {
+export const handlePATCHRequest = async (
+  request: Request,
+): Promise<Response> => {
   let jwtContent = await verifyCustomerRequest(request);
 
   const schema = z.object({
@@ -63,10 +70,14 @@ export const patchRequest = async (request: Request): Promise<Response> => {
   return json(updatedCustomer);
 };
 
-export const deleteRequest = async (request: Request): Promise<Response> => {
-  const schema = z.string();
+export const handleDELETERequest = async (
+  request: Request,
+): Promise<Response> => {
+  let jwtContent = await verifyCustomerRequest(request);
 
-  const data = await parseBody(request, schema);
-  const deletedCustomer = await deleteCustomer(data);
+  const deletedCustomer = await deleteCustomer(jwtContent.id);
+  if (!deletedCustomer) {
+    throw notFoundResponse();
+  }
   return json(deletedCustomer);
 };
