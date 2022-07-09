@@ -25,7 +25,7 @@ export const loader: LoaderFunction = async ({
     throw methodNotAllowedResponse();
   }
 
-  verifyEmployeeRequest<"employee">(request);
+  await verifyEmployeeRequest(request);
 
   const employeeId = params.employeeId;
   if (!employeeId) {
@@ -48,7 +48,7 @@ export const action: ActionFunction = async ({
   const method = request.method.toLowerCase();
 
   if (method === "patch" || method === "delete") {
-    const jwtContent = verifyEmployeeRequest<"employee">(request);
+    const jwtContent = await verifyEmployeeRequest(request);
     if (method === "patch") {
       if (jwtContent.role !== "ADMIN") {
         throw forbiddenResponse();

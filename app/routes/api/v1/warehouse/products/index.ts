@@ -12,7 +12,7 @@ import { createProduct, findProducts } from "~/models/product/product.server";
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<Response> => {
-  verifyEmployeeRequest(request);
+  await verifyEmployeeRequest(request);
 
   const products = await findProducts();
   return okResponse(JSON.stringify({ products }));
