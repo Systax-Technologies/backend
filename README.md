@@ -112,39 +112,37 @@ In order to run the `prisma studio` utility, run:
   - [GET `/api/v1/warehouse/employees/me`](#get-apiv1warehouseemployeesme)
   - [GET `/api/v1/warehouse/employees/{employeeId}`](#get-apiv1warehouseemployeesemployeeid)
   - [PATCH `/api/v1/warehouse/employees/{employeeId}`](#patch-apiv1warehouseemployeesemployeeid)
-- [Product](#product)
-  - [GET `/api/v1/warehouse/products`](#get-apiv1warehouseproducts)
-  - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
-  - [GET `/api/v1/warehouse/products/{product-id}`](#get-apiv1warehouseproductsproduct-id)
-  - [PATCH `/api/v1/warehouse/products/{product-id}`](#patch-apiv1warehouseproductsproduct-id)
-  - [DELETE `/api/v1/warehouse/products/{product-id}`](#delete-apiv1warehouseproductsproduct-id)
-- [ProductInstance](#productinstance)
+  - [DELETE `/api/v1/warehouse/employees/{employeeId}`](#delete-apiv1warehouseemployeesemployeeid)
+  - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
+  - [POST `/api/v1/warehouse/orders`](#post-apiv1warehouseorders)
+  - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
+  - [PATCH `/api/v1/warehouse/orders/by-id`](#patch-apiv1warehouseordersby-id)
+  - [DELETE`/api/v1/warehouse/orders/by-id`](#deleteapiv1warehouseordersby-id)
+  - [GET `/api/v1/warehouse/orders//by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
+  - [POST `/api/v1/warehouse/orders/dates/within-delivered`](#post-apiv1warehouseordersdateswithin-delivered)
+  - [POST `/api/v1/warehouse/orders/dates/within-ordered`](#post-apiv1warehouseordersdateswithin-ordered)
+  - [POST `/api/v1/warehouse/orders/dates/within-shipped`](#post-apiv1warehouseordersdateswithin-shipped)
+- [Product Instances](#product-instances)
   - [GET `/api/v1/warehouse/productInstances`](#get-apiv1warehouseproductinstances)
   - [POST `/api/v1/warehouse/productInstances`](#post-apiv1warehouseproductinstances)
   - [PATCH `/api/v1/warehouse/productInstances`](#patch-apiv1warehouseproductinstances)
   - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
-- [Orders](#orders)
-  - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
-  - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
-  - [POST `/api/v1/warehouse/orders/`](#post-apiv1warehouseorders)
-  - [GET `/api/v1/warehouse/customers/{customer-id}/orders`](#get-apiv1warehousecustomerscustomer-idorders)
-  - [PATCH `/api/v1/warehouse/orders/by-id/`](#patch-apiv1warehouseordersby-id)
-  - [DELETE `/api/v1/warehouse/orders/by-id/`](#delete-apiv1warehouseordersby-id)
-  - [GET `/api/v1/warehouse/orders/by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
-  - [POST `/api/v1/warehouse/orders/dates/within-ordered`](#post-apiv1warehouseordersdateswithin-ordered)
-  - [POST `/api/v1/warehouse/orders/dates/within-shipped`](#post-apiv1warehouseordersdateswithin-shipped)
-  - [POST `/api/v1/warehouse/orders/dates/within-delivered`](#post-apiv1warehouseordersdateswithin-delivered)
-- [Employee](#employee)
-  - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees-1)
-  - [GET `/api/v1/warehouse/employees/employee`](#get-apiv1warehouseemployeesemployee)
-  - [POST `/api/v1/warehouse/employees/employee`](#post-apiv1warehouseemployeesemployee)
-  - [PATCH `/api/v1/warehouse/employees/employee`](#patch-apiv1warehouseemployeesemployee)
-  - [DELETE `/api/v1/warehouse/employees/employee`](#delete-apiv1warehouseemployeesemployee)
-  - [POST `/api/v1/warehouse/employees/employee/name`](#post-apiv1warehouseemployeesemployeename)
-  - [GET `/api/v1/warehouse/employees/role/{role}`](#get-apiv1warehouseemployeesrolerole)
+  - [GET `/api/v1/warehouse/productInstances/{productInstanceId}`](#get-apiv1warehouseproductinstancesproductinstanceid)
+  - [POST `/api/v1/warehouse/productInstances/productInstanceActivation`](#post-apiv1warehouseproductinstancesproductinstanceactivation)
+  - [GET `/api/v1/warehouse/productInstances/count/by-status/{productInstanceStatus}`](#get-apiv1warehouseproductinstancescountby-statusproductinstancestatus)
+  - [GET `/api/v1/warehouse/productInstances/count/by-type/{productId}`](#get-apiv1warehouseproductinstancescountby-typeproductid)
+- [Product](#product)
+  - [GET `/api/v1/warehouse/products`](#get-apiv1warehouseproducts)
+  - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
+  - [GET `/api/v1/warehouse/products/{productId}`](#get-apiv1warehouseproductsproductid)
+  - [PATCH `/api/v1/warehouse/products/{product-id}`](#patch-apiv1warehouseproductsproduct-id)
+  - [DELETE `/api/v1/warehouse/products/{product-id}`](#delete-apiv1warehouseproductsproduct-id)
 - [Ecommerce](#ecommerce)
-- [Login](#login)
   - [POST `/api/v1/ecommerce/login`](#post-apiv1ecommercelogin)
+  - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers)
+  - [PATCH `/api/v1/ecommerce/customers`](#patch-apiv1ecommercecustomers)
+  - [DELETE `/api/v1/ecommerce/customers`](#delete-apiv1ecommercecustomers)
+  - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers-1)
 
 ---
 
@@ -390,8 +388,8 @@ Authorization: Bearer <jwt>
       "id": "c00p6qup20000ckkzslahp5pn",
       "email": "john@doe.com",
       "password": "hashedpassword",
-      "createdAt": "1970-01-01-00:00:00",
-      "updatedAt": "1970-01-01-00:00:00",
+      "createdAt": "1970-01-01T00:00:00.000Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z",
       "firstName": "John",
       "lastName": "Doe",
       "billingAddressId": "ch72gsb320000udocl363eofy",
@@ -434,8 +432,8 @@ Authorization: Bearer <jwt>
     "id": "c00p6qup20000ckkzslahp5pn",
     "email":"john@doe.com",
     "password":"hashedpassword",
-    "createdAt":"1970-01-01-00:00:00",
-    "updatedAt":"1970-01-01-00:00:00",
+    "createdAt":"1970-01-01T00:00:00.000Z",
+    "updatedAt":"1970-01-01T00:00:00.000Z",
     "firstName":"John",
     "lastName":"Doe",
     "billingAddressId":"ch72gsb320000udocl363eofy",
@@ -477,8 +475,8 @@ Authorization: Bearer <jwt>
     "id": "c00p6qup20000ckkzslahp5pn",
     "email":"john@doe.com",
     "password":"hashedpassword",
-    "createdAt":"1970-01-01-00:00:00",
-    "updatedAt":"1970-01-01-00:00:00",
+    "createdAt":"1970-01-01T00:00:00.000Z",
+    "updatedAt":"1970-01-01T00:00:00.000Z",
     "firstName":"John",
     "lastName":"Doe",
     "billingAddressId":"ch72gsb320000udocl363eofy",
@@ -563,9 +561,9 @@ Authorization: Bearer <jwt>
     {
       "id": "c00p6qup20000ckkzslahp5pn",
       "status": "ORDERED",
-      "orderedAt": "1970-01-01-00:00:00",
-      "shippedAt": "1970-01-01-00:00:00",
-      "deliveredAt": "1970-01-01-00:00:00",
+      "orderedAt": "1970-01-01T00:00:00.000Z",
+      "shippedAt": "1970-01-01T00:00:00.000Z",
+      "deliveredAt": "1970-01-01T00:00:00.000Z",
       "customerId": "c00p6qup20000ckkzslahp5pn"
     }
   ]
@@ -840,264 +838,608 @@ Authorization: Bearer <jwt>
 
 #### Possible errors: <!-- omit in toc -->
 
-|               Error code | Description                          |
-| -----------------------: | :----------------------------------- |
-|        `400` Bad Request | The request body content is invalid  |
-|       `401` Unauthorized | Authentication credentials not valid |
-| `405` Method Not Allowed | The request method is not `PATCH`    |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+| `405` Method Not Allowed | The request method is not `PATCH`                 |
 
 ---
 
-## Product
+### DELETE `/api/v1/warehouse/employees/{employeeId}`
 
-### GET `/api/v1/warehouse/products`
+Delete a specific employee
 
-List all products
-
-#### Required Headers <!-- omit in toc -->
+#### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
-Authentication: Bearer <jwt>
+Authorization: Bearer <jwt>
 ```
 
-#### Return <!-- omit in toc -->
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id with ADMIN role
+
+#### Return: <!-- omit in toc -->
 
 ```json
 {
-  [
+  "id": "",
+  "email": "",
+  "password": "",
+  "createdAt": "",
+  "updatedAt": "",
+  "firstName": "",
+  "lastName": "",
+  "role": "ADMIN"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | Employee not found                                |
+| `405` Method Not Allowed | The request method is not `DELETE`                |
+
+---
+
+### GET `/api/v1/warehouse/orders`
+
+Retrieves the complete list of orders.
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "orders": [
+    "id": "cl4qrncms0334tcjj75gn06tv",
+    "status": "ORDERED",
+    "orderedAt": "1970-01-01T00:00:00.000Z",
+    "shippedAt": null,
+    "deliveredAt": null,
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "1970-01-01T00:00:00.000Z",
+          "updatedAt": "1970-01-01T00:00:00.000Z"
+        }
+      },
+    ]
+  ]
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+| `405` Method Not Allowed | The request method is not `DELETE`                |
+
+---
+
+### POST `/api/v1/warehouse/orders`
+
+Creates an order given the id of the customer and a list of product id with relative quantity
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "customerId": "cl5apl7c00037xhjjm5hela3m",
+  "products": [
     {
-      "model": "Watch",
-      "imageUrl": [
-        "/path/to/image",
-      ],
-      "description": "A cool watch",
-      "color": "Blue",
-      "size": "L",
-      "price": 199.99
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "quantity": 2
+    },
+    {
+      "productId": "cl5ar5z3y0051cujjz0cq3jo7",
+      "quantity": 1
     }
   ]
 }
 ```
 
-### POST `/api/v1/warehouse/products`
+> **Constraints:**
+>
+> - `customerId` must be a valid cuid
+> - `productId` must be a valid cuid
+> - `quantity` must be a positive number
 
-Create a new product given the necessary parameters.
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl4vfbh0u00009xjjvk2btxym",
+  "status": "ORDERED",
+  "orderedAt": "2022-06-26T14:45:56.334Z",
+  "shippedAt": null,
+  "deliveredAt": null,
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                                          |
+| -----------------------: | :------------------------------------------------------------------- |
+|        `400` Bad Request | The request body content is invalid or the `customerId` do not exist |
+|          `404` Not Found | The `productId`(s) provided do not exist                             |
+| `405` Method Not Allowed | The request method is not `POST`                                     |
+
+---
+
+### GET `/api/v1/warehouse/orders/{id}`
+
+Retrieves a single order
 
 #### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
-Authentication: Bearer <jwt>
+Authorization: Bearer <jwt>
 ```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "1970-01-01T00:00:00.000Z",
+  "status": "ORDERED",
+  "orderedAt": "1970-01-01T00:00:00.000Z",
+  "shippedAt": null,
+  "deliveredAt": null,
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+  "productInstances": [
+    {
+      "id": "cl52gilrq0059g4jjj50ffvdg",
+      "status": "SOLD",
+      "orderId": "cl5atk1nr002506jjot8atd5p",
+      "productId": "cl4zoemig0036l2jjv0efdted",
+      "product": {
+        "id": "cl4zoemig0036l2jjv0efdted",
+        "model": "Test Product",
+        "imageUrl": "/path/to/image",
+        "description": "Test Description",
+        "color": "Blue",
+        "size": "M",
+        "price": 19.99,
+        "createdAt": "1970-01-01T00:00:00.000Z",
+        "updatedAt": "1970-01-01T00:00:00.000Z"
+      }
+    },
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Order not found                      |
+| `405` Method Not Allowed | The request method is not `GET`      |
+
+---
+
+### PATCH `/api/v1/warehouse/orders/by-id`
+
+Update an order
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
 
 #### Required Body: <!-- omit in toc -->
 
 ```json
 {
-  "model": "Watch",
-  "imageUrl": ["/path/to/image"],
-  "description": "A cool watch",
-  "color": "Blue",
-  "size": "L",
-  "price": 199.99
+  "id": "cl5apl7c00037xhjjm5hela3m",
+  "status": "DELIVERED",
+  "shippedAt": "1970-01-01T00:00:00.000Z",
+  "deliveredAt": "1970-01-01T00:00:00.000Z"
 }
 ```
 
 > **Constraints:**
 >
-> - `price` must be greater than `0`
+> - `id` must be a valid cuid
+> - `status` must be a valid status
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "id": "cl4zoemig0036l2jjv0efdted",
-  "model": "Watch",
-  "imageUrl": ["/path/to/image"],
-  "description": "A cool watch",
-  "color": "Blue",
-  "size": "L",
-  "price": 199.99,
-  "createdAt": "2022-06-29T14:10:44.094Z",
-  "updatedAt": "2022-06-29T14:11:24.664Z",
-  "productInstances": {}
+  "id": "cl4vfbh0u00009xjjvk2btxym",
+  "status": "ORDERED",
+  "orderedAt": "1970-01-01T00:00:00.000Z",
+  "shippedAt": "1970-01-01T00:00:00.000Z",
+  "deliveredAt": "1970-01-01T00:00:00.000Z",
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
 }
 ```
 
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the product to update
-> - `price` must be greater than `0`
-> - `productInstances` can be empty
-
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                         |
-| ---------------------: | :---------------------------------- |
-|        400 Bad Request | The request body content is invalid |
-| 405 Method Not Allowed | The request method is not `POST`    |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | The order do not exist                            |
+| `405` Method Not Allowed | The request method is not `PATCH`                 |
 
 ---
 
-### GET `/api/v1/warehouse/products/{product-id}`
+### DELETE`/api/v1/warehouse/orders/by-id`
 
-Retrieve the product with the specified product id.
+Delete an order
 
 #### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
-Authentication: Bearer <jwt>
+Authorization: Bearer <jwt>
 ```
 
 > **Constraints:**
 >
-> - `id` must be a valid cuid and must be present in the `Product` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4zoemig0036l2jjv0efdted",
-  "model": "Watch",
-  "imageUrl": ["/path/to/image"],
-  "description": "A cool watch",
-  "color": "Blue",
-  "size": "L",
-  "price": 199.99,
-  "createdAt": "2022-06-29T14:10:44.094Z",
-  "updatedAt": "2022-06-29T14:11:24.664Z",
-  "productInstances": {}
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the product to update
-> - `price` must be greater than `0`
-> - `productInstances` can be empty
-
-#### Possible errors: <!-- omit in toc -->
-
-|    Error code | Description                    |
-| ------------: | :----------------------------- |
-| 404 Not Found | The id provided does not exist |
-
----
-
-### PATCH `/api/v1/warehouse/products/{product-id}`
-
-Update the fields of a specific product
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-Authentication: Bearer <jwt>
-```
-
-> **Constraints:**
->
-> - `id` must be a valid cuid and must be present in the `Product` Model
+> - The `jwt` must contain a valid employee
 
 #### Required Body: <!-- omit in toc -->
 
 ```json
 {
-  "model": "Watch",
-  "imageUrl": ["/path/to/image"],
-  "description": "A cool watch",
-  "color": "Black",
-  "size": "L",
-  "price": 189.99
+  "id": "cl5apl7c00037xhjjm5hela3m"
 }
 ```
 
 > **Constraints:**
 >
-> - `price` must be greater than `0`
+> - `id` must be a valid cuid
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "id": "cl4zoemig0036l2jjv0efdted",
-  "model": "Watch",
-  "imageUrl": ["/path/to/image"],
-  "description": "A cool watch",
-  "color": "Black",
-  "size": "L",
-  "price": 199.99,
-  "createdAt": "2022-06-29T14:10:44.094Z",
-  "updatedAt": "2022-06-30T15:02:55.335Z",
-  "productInstances": {}
+  "id": "cl4vfbh0u00009xjjvk2btxym",
+  "status": "ORDERED",
+  "orderedAt": "1970-01-01T00:00:00.000Z",
+  "shippedAt": "1970-01-01T00:00:00.000Z",
+  "deliveredAt": "1970-01-01T00:00:00.000Z",
+  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
 }
 ```
 
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the product to update
-> - `price` must be greater than `0`
-> - `productInstances` can be empty
-
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                                   |
-| ---------------------: | :-------------------------------------------- |
-|        400 Bad Request | The request body content is invalid           |
-|          404 Not Found | The id provided does not exist                |
-| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE` |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | The order do not exist                            |
+| `405` Method Not Allowed | The request method is not `DELETE`                |
 
 ---
 
-### DELETE `/api/v1/warehouse/products/{product-id}`
+### GET `/api/v1/warehouse/orders//by-status/{status}`
 
-Delete a specific product record
+Get a list of orders that match the given status
 
 #### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
 
 > **Constraints:**
 >
-> - `id` must be a valid cuid and must be present in the `Product` Model
+> - The `jwt` must contain a valid employee id and role
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "id": "cl4zoemig0036l2jjv0efdted",
-  "model": "Watch",
-  "imageUrl": ["/path/to/image"],
-  "description": "A cool watch",
-  "color": "Black",
-  "size": "L",
-  "price": 199.99,
-  "createdAt": "2022-06-29T14:10:44.094Z",
-  "updatedAt": "2022-06-30T15:02:55.335Z",
-  "productInstances": {}
+  "orders": [
+    "id": "cl4qrncms0334tcjj75gn06tv",
+    "status": "ORDERED",
+    "orderedAt": "1970-01-01T00:00:00.000Z",
+    "shippedAt": null,
+    "deliveredAt": null,
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "1970-01-01T00:00:00.000Z",
+          "updatedAt": "1970-01-01T00:00:00.000Z"
+        }
+      },
+    ]
+  ]
 }
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Order not found                      |
+| `405` Method Not Allowed | The request method is not `GET`      |
+
+---
+
+### POST `/api/v1/warehouse/orders/dates/within-delivered`
+
+Get a list of orders delivered within the given dates
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
 
 > **Constraints:**
 >
-> - The `id` field is readonly, used only to query the product to update
-> - `price` must be greater than `0`
-> - `productInstances` can be empty
+> - The `jwt` must contain a valid employee id and role
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "startDate": "1970-01-01T00:00:00.000Z",
+  "endDate": "1970-01-01T00:00:00.000Z"
+}
+```
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "orders": [
+    "id": "cl4qrncms0334tcjj75gn06tv",
+    "status": "ORDERED",
+    "orderedAt": "1970-01-01T00:00:00.000Z",
+    "shippedAt": null,
+    "deliveredAt": "1970-01-01T00:00:00.000Z",
+
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "1970-01-01T00:00:00.000Z",
+          "updatedAt": "1970-01-01T00:00:00.000Z"
+        }
+      },
+    ]
+  ]
+}
+```
 
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                                   |
-| ---------------------: | :-------------------------------------------- |
-|          404 Not Found | The id provided does not exist                |
-| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE` |
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Order not found                      |
+| `405` Method Not Allowed | The request method is not `GET`      |
 
 ---
 
-## ProductInstance
+### POST `/api/v1/warehouse/orders/dates/within-ordered`
+
+Get a list of orders ordered within the given dates
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "startDate": "1970-01-01T00:00:00.000Z",
+  "endDate": "1970-01-01T00:00:00.000Z"
+}
+```
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "orders": [
+    "id": "cl4qrncms0334tcjj75gn06tv",
+    "status": "ORDERED",
+    "orderedAt": "1970-01-01T00:00:00.000Z",
+    "shippedAt": null,
+    "deliveredAt": null,
+
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "1970-01-01T00:00:00.000Z",
+          "updatedAt": "1970-01-01T00:00:00.000Z"
+        }
+      },
+    ]
+  ]
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Order not found                      |
+| `405` Method Not Allowed | The request method is not `GET`      |
+
+---
+
+### POST `/api/v1/warehouse/orders/dates/within-shipped`
+
+Get a list of orders ordered within the given dates
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "startDate": "1970-01-01T00:00:00.000Z",
+  "endDate": "1970-01-01T00:00:00.000Z"
+}
+```
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "orders": [
+    "id": "cl4qrncms0334tcjj75gn06tv",
+    "status": "ORDERED",
+    "orderedAt": "1970-01-01T00:00:00.000Z",
+    "shippedAt": "1970-01-01T00:00:00.000Z",
+    "deliveredAt": null,
+
+    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
+    "productInstances": [
+      {
+        "id": "cl52gilrq0059g4jjj50ffvdg",
+        "status": "SOLD",
+        "orderId": "cl5atk1nr002506jjot8atd5p",
+        "productId": "cl4zoemig0036l2jjv0efdted",
+        "product": {
+          "id": "cl4zoemig0036l2jjv0efdted",
+          "model": "Test Product",
+          "imageUrl": "/path/to/image",
+          "description": "Test Description",
+          "color": "Blue",
+          "size": "M",
+          "price": 19.99,
+          "createdAt": "1970-01-01T00:00:00.000Z",
+          "updatedAt": "1970-01-01T00:00:00.000Z"
+        }
+      },
+    ]
+  ]
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Order not found                      |
+| `405` Method Not Allowed | The request method is not `GET`      |
+
+---
+
+## Product Instances
 
 ### GET `/api/v1/warehouse/productInstances`
 
@@ -1107,7 +1449,12 @@ Retrieve the complete list of product instances.
 
 ```
 Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
 
 #### Return: <!-- omit in toc -->
 
@@ -1127,13 +1474,14 @@ Content-Type: application/json
 }
 ```
 
-> **Constraints:**
->
-> - All the id fields must be a valid cuid
-> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
-> - `orderId` can be `null`
-> - `status` under `activeProductInstance` accepts only "ACTIVE", "REMOVED" or "DAMAGED" as valid values
-> - `activeProductInstance` can be `null`
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+| `405` Method Not Allowed | The request method is not `GET`                   |
 
 ---
 
@@ -1145,7 +1493,12 @@ Create a number of new product instances given the quantity and the type of prod
 
 ```
 Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id with ADMIN role
 
 #### Required Body: <!-- omit in toc -->
 
@@ -1171,10 +1524,12 @@ Content-Type: application/json
 
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                         |
-| ---------------------: | :---------------------------------- |
-|        400 Bad Request | The request body content is invalid |
-| 405 Method Not Allowed | The request method is not `POST`    |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+| `405` Method Not Allowed | The request method is not `POST`                  |
 
 ---
 
@@ -1186,7 +1541,12 @@ Update the fields of a specific product instance
 
 ```
 Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
 
 #### Required Body: <!-- omit in toc -->
 
@@ -1219,19 +1579,14 @@ Content-Type: application/json
 }
 ```
 
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the product instance to update
-> - All the id fields must be a valid cuid
-> - `status` accepts only "SOLD" and "IN_STOCK" as valid values
-> - `orderId` can be `null`
-
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                         |
-| ---------------------: | :---------------------------------- |
-|        400 Bad Request | The request body content is invalid |
-| 405 Method Not Allowed | The request method is not `PATCH`   |
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Product Instance not found           |
+| `405` Method Not Allowed | The request method is not `PATCH`    |
 
 ---
 
@@ -1243,7 +1598,12 @@ Delete a specific product instance record and its related active product instanc
 
 ```
 Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
 
 #### Required Body: <!-- omit in toc -->
 
@@ -1279,683 +1639,19 @@ Content-Type: application/json
 
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                         |
-| ---------------------: | :---------------------------------- |
-|        400 Bad Request | The request body content is invalid |
-| 405 Method Not Allowed | The request method is not `METHOD`  |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | Product Instance not found                        |
+| `405` Method Not Allowed | The request method is not `DELETE`                |
 
 ---
 
-## Orders
+### GET `/api/v1/warehouse/productInstances/{productInstanceId}`
 
-### GET `/api/v1/warehouse/orders`
-
-Retrieves the complete list of orders.
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    "id": "cl4qrncms0334tcjj75gn06tv",
-    "status": "ORDERED",
-    "orderedAt": "2022-06-23T08:32:15.028Z",
-    "shippedAt": null,
-    "deliveredAt": null,
-    "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-    "productInstances": [
-      {
-        "id": "cl52gilrq0059g4jjj50ffvdg",
-        "status": "SOLD",
-        "orderId": "cl5atk1nr002506jjot8atd5p",
-        "productId": "cl4zoemig0036l2jjv0efdted",
-        "product": {
-          "id": "cl4zoemig0036l2jjv0efdted",
-          "model": "Test Product",
-          "imageUrl": "/path/to/image",
-          "description": "Test Description",
-          "color": "Blue",
-          "size": "M",
-          "price": 19.99,
-          "createdAt": "2022-06-22T14:11:24.664Z",
-          "updatedAt": "2022-06-22T14:10:44.094Z"
-        }
-      },
-    ]
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
----
-
-### GET `/api/v1/warehouse/orders/{id}`
-
-Retrieves a single order.
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-> **Constraints:**
->
-> - `id` must be a valid cuid and must be present in the `Order` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4qrncms0334tcjj75gn06tv",
-  "status": "ORDERED",
-  "orderedAt": "2022-06-23T08:32:15.028Z",
-  "shippedAt": null,
-  "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-  "productInstances": [
-    {
-      "id": "cl52gilrq0059g4jjj50ffvdg",
-      "status": "SOLD",
-      "orderId": "cl5atk1nr002506jjot8atd5p",
-      "productId": "cl4zoemig0036l2jjv0efdted",
-      "product": {
-        "id": "cl4zoemig0036l2jjv0efdted",
-        "model": "Test Product",
-        "imageUrl": "/path/to/image",
-        "description": "Test Description",
-        "color": "Blue",
-        "size": "M",
-        "price": 19.99,
-        "createdAt": "2022-06-22T14:11:24.664Z",
-        "updatedAt": "2022-06-22T14:10:44.094Z"
-      }
-    },
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
----
-
-### POST `/api/v1/warehouse/orders/`
-
-Creates an order given the id of the customer associated to it
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "customerId": "cl5apl7c00037xhjjm5hela3m",
-  "products": [
-    {
-      "productId": "cl4zoemig0036l2jjv0efdted",
-      "quantity": 2
-    },
-    {
-      "productId": "cl5ar5z3y0051cujjz0cq3jo7",
-      "quantity": 1
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - `customerId` must be a valid cuid and must exist in the `Customer` Model
-> - `productId` must be a valid cuid and must exist in the `Product` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vfbh0u00009xjjvk2btxym",
-  "status": "ORDERED",
-  "orderedAt": "2022-06-26T14:45:56.334Z",
-  "shippedAt": null,
-  "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                                      |
-| ---------------------: | :--------------------------------------------------------------- |
-|        400 Bad Request | The `customerId` provided does not exist in the `Customer` Model |
-|          404 Not Found | The `productId`(s) provided do not exist in the `Product` Model  |
-| 405 Method Not Allowed | The request method is not `POST`                                 |
-
----
-
-### GET `/api/v1/warehouse/customers/{customer-id}/orders`
-
-Retrieves the list of orders of a specified customer.
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-> **Constraints:**
->
-> - The customer id must be a valid cuid and must be present in the `Customer` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    {
-      "id": "cl4qrncms0334tcjj75gn06tv",
-      "status": "ORDERED",
-      "orderedAt": "2022-06-23T08:32:15.028Z",
-      "shippedAt": "2022-06-23T08:32:15.028Z",
-      "deliveredAt": null,
-      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-      "productInstances": [
-        {
-          "id": "cl52gilrq0059g4jjj50ffvdg",
-          "status": "SOLD",
-          "orderId": "cl5atk1nr002506jjot8atd5p",
-          "productId": "cl4zoemig0036l2jjv0efdted",
-          "product": {
-            "id": "cl4zoemig0036l2jjv0efdted",
-            "model": "Test Product",
-            "imageUrl": "/path/to/image",
-            "description": "Test Description",
-            "color": "Blue",
-            "size": "M",
-            "price": 19.99,
-            "createdAt": "2022-06-22T14:11:24.664Z",
-            "updatedAt": "2022-06-22T14:10:44.094Z"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
----
-
-### PATCH `/api/v1/warehouse/orders/by-id/`
-
-Updates an order given the id the order
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vjlqfi0015x7jjjwxj5vyk",
-  "status": "SHIPPED",
-  "shippedAt": "2022-06-27T11:31:40.585Z",
-  "deliveredAt": null
-}
-```
-
-> **Constraints:**
->
-> - `id` must be a valid cuid and must be present in the `Order` Model
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt`, `deliveredAt` can be `null` or must be a valid date
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vfbh0u00009xjjvk2btxym",
-  "status": "ORDERED",
-  "orderedAt": "2022-06-26T14:45:56.334Z",
-  "shippedAt": "2022-06-27T11:31:40.585Z",
-  "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                           |
-| ---------------------: | :---------------------------------------------------- |
-|        400 Bad Request | The `id` provided does not exist in the `Order` Model |
-| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE`         |
-
----
-
-### DELETE `/api/v1/warehouse/orders/by-id/`
-
-Deletes an order given the id of the order
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vjlqfi0015x7jjjwxj5vyk"
-}
-```
-
-> **Constraints:**
->
-> - `id` must be a valid cuid and must be present in the `Order` Model
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl4vfbh0u00009xjjvk2btxym",
-  "status": "ORDERED",
-  "orderedAt": "2022-06-26T14:45:56.334Z",
-  "shippedAt": "2022-06-27T11:31:40.585Z",
-  "deliveredAt": null,
-  "customerId": "cl4qrmvvf0278tcjjl1zu8g6a"
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                           |
-| ---------------------: | :---------------------------------------------------- |
-|        400 Bad Request | The `id` provided does not exist in the `Order` Model |
-| 405 Method Not Allowed | The request method is not `PATCH` or `DELETE`         |
-
----
-
-### GET `/api/v1/warehouse/orders/by-status/{status}`
-
-Retrieves the list of orders with the specified status.
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-> **Constraints:**
->
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    {
-      "id": "cl4qrncms0334tcjj75gn06tv",
-      "status": "<provided status>",
-      "orderedAt": "2022-06-26T08:32:15.028Z",
-      "shippedAt": "2022-06-28T08:32:15.028Z",
-      "deliveredAt": null,
-      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-      "productInstances": [
-        {
-          "id": "cl52gilrq0059g4jjj50ffvdg",
-          "status": "SOLD",
-          "orderId": "cl5atk1nr002506jjot8atd5p",
-          "productId": "cl4zoemig0036l2jjv0efdted",
-          "product": {
-            "id": "cl4zoemig0036l2jjv0efdted",
-            "model": "Test Product",
-            "imageUrl": "/path/to/image",
-            "description": "Test Description",
-            "color": "Blue",
-            "size": "M",
-            "price": 19.99,
-            "createdAt": "2022-06-22T14:11:24.664Z",
-            "updatedAt": "2022-06-22T14:10:44.094Z"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                |
-| ---------------------: | :----------------------------------------- |
-|        400 Bad Request | The `status` provided is not a valid value |
-| 405 Method Not Allowed | The request method is not `GET`            |
-
----
-
-### POST `/api/v1/warehouse/orders/dates/within-ordered`
-
-Retrieves a list of orders within the two order dates specified
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "startDate": "2022-06-25T09:03:40.585Z",
-  "endDate": "2022-06-26T17:03:40.585Z"
-}
-```
-
-> **Constraints:**
->
-> - `startDate` and `endDate` must be valid date formats
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    {
-      "id": "cl4qrncms0334tcjj75gn06tv",
-      "status": "<provided status>",
-      "orderedAt": "2022-06-26T08:32:15.028Z",
-      "shippedAt": "2022-06-28T08:32:15.028Z",
-      "deliveredAt": null,
-      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-      "productInstances": [
-        {
-          "id": "cl52gilrq0059g4jjj50ffvdg",
-          "status": "SOLD",
-          "orderId": "cl5atk1nr002506jjot8atd5p",
-          "productId": "cl4zoemig0036l2jjv0efdted",
-          "product": {
-            "id": "cl4zoemig0036l2jjv0efdted",
-            "model": "Test Product",
-            "imageUrl": "/path/to/image",
-            "description": "Test Description",
-            "color": "Blue",
-            "size": "M",
-            "price": 19.99,
-            "createdAt": "2022-06-22T14:11:24.664Z",
-            "updatedAt": "2022-06-22T14:10:44.094Z"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                                                 |
-| ---------------------: | :-------------------------------------------------------------------------- |
-|        400 Bad Request | The `startDate` and/or `endDate` fields provided are not valid date formats |
-| 405 Method Not Allowed | The request method is not `POST`                                            |
-
----
-
-### POST `/api/v1/warehouse/orders/dates/within-shipped`
-
-Retrieves a list of orders within the two shipping dates specified
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "startDate": "2022-06-27T09:03:40.585Z",
-  "endDate": "2022-06-28T17:03:40.585Z"
-}
-```
-
-> **Constraints:**
->
-> - `startDate` and `endDate` must be valid date formats
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    {
-      "id": "cl4qrncms0334tcjj75gn06tv",
-      "status": "SHIPPED",
-      "orderedAt": "2022-06-26T08:32:15.028Z",
-      "shippedAt": "2022-06-28T08:32:15.028Z",
-      "deliveredAt": null,
-      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-      "productInstances": [
-        {
-          "id": "cl52gilrq0059g4jjj50ffvdg",
-          "status": "SOLD",
-          "orderId": "cl5atk1nr002506jjot8atd5p",
-          "productId": "cl4zoemig0036l2jjv0efdted",
-          "product": {
-            "id": "cl4zoemig0036l2jjv0efdted",
-            "model": "Test Product",
-            "imageUrl": "/path/to/image",
-            "description": "Test Description",
-            "color": "Blue",
-            "size": "M",
-            "price": 19.99,
-            "createdAt": "2022-06-22T14:11:24.664Z",
-            "updatedAt": "2022-06-22T14:10:44.094Z"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                                                 |
-| ---------------------: | :-------------------------------------------------------------------------- |
-|        400 Bad Request | The `startDate` and/or `endDate` fields provided are not valid date formats |
-| 405 Method Not Allowed | The request method is not `POST`                                            |
-
----
-
-### POST `/api/v1/warehouse/orders/dates/within-delivered`
-
-Retrieves a list of orders within the two deliver dates specified
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "startDate": "2022-07-03T09:03:40.585Z",
-  "endDate": "2022-07-04T17:03:40.585Z"
-}
-```
-
-> **Constraints:**
->
-> - `startDate` and `endDate` must be valid date formats
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "orders": [
-    {
-      "id": "cl4qrncms0334tcjj75gn06tv",
-      "status": "DELIVERED",
-      "orderedAt": "2022-06-26T08:32:15.028Z",
-      "shippedAt": "2022-06-28T08:32:15.028Z",
-      "deliveredAt": "2022-07-04T08:32:15.028Z",
-      "customerId": "cl4qrmvvf0278tcjjl1zu8g6a",
-      "productInstances": [
-        {
-          "id": "cl52gilrq0059g4jjj50ffvdg",
-          "status": "SOLD",
-          "orderId": "cl5atk1nr002506jjot8atd5p",
-          "productId": "cl4zoemig0036l2jjv0efdted",
-          "product": {
-            "id": "cl4zoemig0036l2jjv0efdted",
-            "model": "Test Product",
-            "imageUrl": "/path/to/image",
-            "description": "Test Description",
-            "color": "Blue",
-            "size": "M",
-            "price": 19.99,
-            "createdAt": "2022-06-22T14:11:24.664Z",
-            "updatedAt": "2022-06-22T14:10:44.094Z"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-> **Constraints:**
->
-> - The `id` field is readonly, used only to query the order to update
-> - All the id fields must be a valid cuid
-> - `status` accepts "ORDERED", "IN_PROGRESS", "SHIPPED", "IN_TRANSIT", "DELIVERING" and "DELIVERED" as valid values
-> - `shippedAt` and `deliveredAt` can be null
-
-#### Possible errors: <!-- omit in toc -->
-
-|             Error code | Description                                                                 |
-| ---------------------: | :-------------------------------------------------------------------------- |
-|        400 Bad Request | The `startDate` and/or `endDate` fields provided are not valid date formats |
-| 405 Method Not Allowed | The request method is not `POST`                                            |
-
----
-
-## Employee
-
-### GET `/api/v1/warehouse/employees`
-
-Get the list of all the employees
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "employees": [
-    {
-      "id":"ch72gsb320000udocl363eofy",
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "createdAt":"01-01-1970-00:00:00",
-      "updatedAt":"01-01-1970-00:00:00",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN"
-    },
-    ...
-  ]
-}
-```
-
-> **Constraints:**
->
-> - `role` can be only "ADMIN" or "WORKER"
-
----
-
-### GET `/api/v1/warehouse/employees/employee`
-
-Get an employee with the id written in the JWT
+Retrieve a specific product instance
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -1966,314 +1662,400 @@ Authorization: Bearer <jwt>
 
 > **Constraints:**
 >
-> - The jwt must be valid and contain the id of the employee
+> - The `jwt` must contain a valid employee id and role
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "employee": {
+  "productInstance": {
     "id": "ch72gsb320000udocl363eofy",
-    "email": "example@example.com",
-    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-    "createdAt": "01-01-1970-00:00:00",
-    "updatedAt": "01-01-1970-00:00:00",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "ADMIN"
+    "status": "SOLD",
+    "orderId": "c00p6qup20000ckkzslahp5pn",
+    "productId": "cl4rb193000002a66jmw17ri3"
   }
 }
 ```
 
 #### Possible errors: <!-- omit in toc -->
 
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-|       `401` Unauthorized | The JWT is not valid or not present |
-|          `404` Not Found | No matching employee were found     |
-| `405` Method Not Allowed | The request method is not `GET`     |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+| `405` Method Not Allowed | The request method is not `GET`                   |
 
 ---
 
-### POST `/api/v1/warehouse/employees/employee`
+### POST `/api/v1/warehouse/productInstances/productInstanceActivation`
 
-Create a new employee
+Activate a specific product instance
 
 #### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
+Authorization: Bearer <jwt>
 ```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
 
 #### Required Body: <!-- omit in toc -->
 
 ```json
 {
-  "email": "example@example.com",
-  "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-  "firstName": "John",
-  "lastName": "Doe",
-  "role": "ADMIN"
+  "customerId": "ch72gsb320000udocl363eofy",
+  "productInstanceId": "cl4zoemig0036l2jjv0efdted"
 }
 ```
 
 > **Constraints:**
 >
-> - `email` must have a valid email address syntax
-> - `password` must be already hashed
-> - `role` accepts only "ADMIN" and "WORKER" as valid values
+> - The `id` fields must be a valid cuid
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "employee": {
+  "productInstanceActivated": {
     "id": "ch72gsb320000udocl363eofy",
-    "email": "example@example.com",
-    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-    "createdAt": "01-01-1970-00:00:00",
-    "updatedAt": "01-01-1970-00:00:00",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "ADMIN"
+    "status": "SOLD",
+    "orderId": "c00p6qup20000ckkzslahp5pn",
+    "productId": "cl4rb193000002a66jmw17ri3"
   }
 }
 ```
 
-> **Constraints:**
->
-> - `role` can be only "ADMIN" or "WORKER"
-
 #### Possible errors: <!-- omit in toc -->
 
-|             Error code | Description                         |
-| ---------------------: | :---------------------------------- |
-|        400 Bad Request | The request body content is invalid |
-| 405 Method Not Allowed | The request method is not `POST`    |
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Product Instance not found           |
+| `405` Method Not Allowed | The request method is not `POST`     |
 
 ---
 
-### PATCH `/api/v1/warehouse/employees/employee`
+### GET `/api/v1/warehouse/productInstances/count/by-status/{productInstanceStatus}`
 
-Update the fields of an employee
+Retrieve a count of product instances by their status
 
 #### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "id": "ch72gsb320000udocl363eofy",
-  "employee": {
-    "email": "example@example.com",
-    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "ADMIN"
-  }
-}
+Authorization: Bearer <jwt>
 ```
 
 > **Constraints:**
 >
-> - The `id` field is readonly, used only to query the employee to update
-> - `email` must have a valid email address syntax
-> - `password` must be already hashed
-> - `role` accepts only "ADMIN" and "WORKER" as valid values
+> - The `jwt` must contain a valid employee id with ADMIN role
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "employee": {
-    "id": "ch72gsb320000udocl363eofy",
-    "email": "example@example.com",
-    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-    "createdAt": "01-01-1970-00:00:00",
-    "updatedAt": "01-01-1970-00:00:00",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "ADMIN"
-  }
+  "numberOfProductInstances": 3
 }
 ```
 
-> **Constraints:**
->
-> - `role` can be only "ADMIN" or "WORKER"
-
 #### Possible errors: <!-- omit in toc -->
 
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-| `405` Method Not Allowed | The request method is not `PATCH`   |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | Product Instances not found                       |
+| `405` Method Not Allowed | The request method is not `GET`                   |
 
 ---
 
-### DELETE `/api/v1/warehouse/employees/employee`
+### GET `/api/v1/warehouse/productInstances/count/by-type/{productId}`
 
-Delete a specific employee
+Retrieve a count of product instances by their product type
 
 #### Required Headers: <!-- omit in toc -->
 
 ```
 Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "id": "ch72gsb320000udocl363eofy"
-}
+Authorization: Bearer <jwt>
 ```
 
 > **Constraints:**
 >
-> - `id` must be a valid cuid
+> - The `jwt` must contain a valid employee id with ADMIN role
 
 #### Return: <!-- omit in toc -->
 
 ```json
 {
-  "employee": {
-    "id": "ch72gsb320000udocl363eofy",
-    "email": "example@example.com",
-    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-    "createdAt": "01-01-1970-00:00:00",
-    "updatedAt": "01-01-1970-00:00:00",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "ADMIN"
-  }
+  "numberOfProductInstances": 3
 }
 ```
-
-> **Constraints:**
->
-> - `role` can be only "ADMIN" or "WORKER"
 
 #### Possible errors: <!-- omit in toc -->
 
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-| `405` Method Not Allowed | The request method is not `DELETE`  |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | Product Instances not found                       |
+| `405` Method Not Allowed | The request method is not `GET`                   |
 
 ---
 
-### POST `/api/v1/warehouse/employees/employee/name`
+## Product
 
-Find an employee by its first name and last name
+### GET `/api/v1/warehouse/products`
 
-#### Required Headers: <!-- omit in toc -->
+List all products
 
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "firstName": "John",
-  "lastName": "Doe"
-}
-```
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "employee": {
-    "id": "ch72gsb320000udocl363eofy",
-    "email": "example@example.com",
-    "password": "988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-    "createdAt": "01-01-1970-00:00:00",
-    "updatedAt": "01-01-1970-00:00:00",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "ADMIN"
-  }
-}
-```
-
-> **Constraints:**
->
-> - `role` can be only "ADMIN" or "WORKER"
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-| `405` Method Not Allowed | The request method is not `POST`    |
-
----
-
-### GET `/api/v1/warehouse/employees/role/{role}`
-
-Find a list of employee filtered by role
-
-#### Required Headers: <!-- omit in toc -->
+#### Required Headers <!-- omit in toc -->
 
 ```
 Content-Type: application/json
+Authentication: Bearer <jwt>
 ```
 
-> **Constraints:**
->
-> - `role` only accepts `ADMIN` or `WORKER` as valid values
-
-#### Return: <!-- omit in toc -->
+#### Return <!-- omit in toc -->
 
 ```json
 {
-  "employees":[
+  "products": [
     {
-      "id":"ch72gsb320000udocl363eofy",
-      "email":"example@example.com",
-      "password":"988119d6cca702beb1748f4eb497e316467f69580ffa125aa8bcb6fb63dce237",
-      "createdAt":"01-01-1970-00:00:00",
-      "updatedAt":"01-01-1970-00:00:00",
-      "firstName":"John",
-      "lastName":"Doe",
-      "role":"ADMIN"
-    },
-    ...
+      "model": "Watch",
+      "imageUrl": ["/path/to/image"],
+      "description": "A cool watch",
+      "color": "Blue",
+      "size": "L",
+      "price": 199.99
+    }
   ]
 }
 ```
 
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+| `405` Method Not Allowed | The request method is not `GET`      |
+
+---
+
+### POST `/api/v1/warehouse/products`
+
+Create a new product given the necessary parameters.
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authentication: Bearer <jwt>
+```
+
 > **Constraints:**
 >
-> - `role` can be only "ADMIN" or "WORKER"
+> - The `jwt` must contain a valid employee id with ADMIN role
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "model": "Watch",
+  "imageUrl": ["/path/to/image"],
+  "description": "A cool watch",
+  "color": "Blue",
+  "size": "L",
+  "price": 199.99
+}
+```
+
+> **Constraints:**
+>
+> - `price` must be greater than `0`
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl4zoemig0036l2jjv0efdted",
+  "model": "Watch",
+  "imageUrl": ["/path/to/image"],
+  "description": "A cool watch",
+  "color": "Blue",
+  "size": "L",
+  "price": 199.99,
+  "createdAt": "2022-06-29T14:10:44.094Z",
+  "updatedAt": "2022-06-29T14:11:24.664Z"
+}
+```
 
 #### Possible errors: <!-- omit in toc -->
 
-|               Error code | Description                                        |
-| -----------------------: | :------------------------------------------------- |
-|        `400` Bad Request | The request body content or parameters are invalid |
-|          `404` Not Found | No employees found with the specified role         |
-| `405` Method Not Allowed | The request method is not `GET`                    |
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+| `405` Method Not Allowed | The request method is not `POST`                  |
 
 ---
+
+### GET `/api/v1/warehouse/products/{productId}`
+
+Get a specific product
+
+#### Required Headers <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authentication: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Return <!-- omit in toc -->
+
+```json
+{
+  "model": "Watch",
+  "imageUrl": ["/path/to/image"],
+  "description": "A cool watch",
+  "color": "Blue",
+  "size": "L",
+  "price": 199.99
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Product not found                    |
+| `405` Method Not Allowed | The request method is not `GET`      |
+
+---
+
+### PATCH `/api/v1/warehouse/products/{product-id}`
+
+Update the fields of a specific product
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authentication: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "model": "Watch",
+  "imageUrl": ["/path/to/image"],
+  "description": "A cool watch",
+  "color": "Black",
+  "size": "L",
+  "price": 189.99
+}
+```
+
+> **Constraints:**
+>
+> - `price` must be greater than `0`
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl4zoemig0036l2jjv0efdted",
+  "model": "Watch",
+  "imageUrl": ["/path/to/image"],
+  "description": "A cool watch",
+  "color": "Black",
+  "size": "L",
+  "price": 199.99,
+  "createdAt": "2022-06-29T14:10:44.094Z",
+  "updatedAt": "2022-06-30T15:02:55.335Z"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | Product not found                                 |
+| `405` Method Not Allowed | The request method is not `PATCH`                 |
+
+---
+
+### DELETE `/api/v1/warehouse/products/{product-id}`
+
+Delete a specific product record
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authentication: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid employee id and role
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl4zoemig0036l2jjv0efdted",
+  "model": "Watch",
+  "imageUrl": ["/path/to/image"],
+  "description": "A cool watch",
+  "color": "Black",
+  "size": "L",
+  "price": 199.99,
+  "createdAt": "2022-06-29T14:10:44.094Z",
+  "updatedAt": "2022-06-30T15:02:55.335Z"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                                       |
+| -----------------------: | :------------------------------------------------ |
+|        `400` Bad Request | The request body content is invalid               |
+|       `401` Unauthorized | Authentication credentials not valid              |
+|          `403` Forbidden | User has not enough rights to access the resource |
+|          `404` Not Found | Product not found                                 |
+| `405` Method Not Allowed | The request method is not `PATCH`                 |
 
 ---
 
 ## Ecommerce
 
-## Login
-
 ### POST `/api/v1/ecommerce/login`
 
-Generate a vaild access token for the requested user
+Get a valid jwt for a customer
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -2286,14 +2068,13 @@ Content-Type: application/json
 ```json
 {
   "email": "example@example.com",
-  "password": "ED928470A9D684C0EE566BD84C7449FE6C03413F3BB61F527F04473B38F4EFD0"
+  "password": "password"
 }
 ```
 
 > **Constraints:**
 >
 > - `email` must have a valid email address syntax
-> - `password` must be already hashed
 
 #### Return: <!-- omit in toc -->
 
@@ -2310,5 +2091,217 @@ Content-Type: application/json
 |        `400` Bad Request | The request body content is invalid |
 |          `404` Not found | User not found                      |
 | `405` Method Not Allowed | The request method is not `POST`    |
+
+---
+
+### POST `/api/v1/ecommerce/customers`
+
+Create a new customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "email": "example@example.com",
+  "password": "password",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+> - `password` must have at least 8 characters
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "",
+  "email": "example@example.com",
+  "password": "password",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+| `405` Method Not Allowed | The request method is not `POST`    |
+
+---
+
+### PATCH `/api/v1/ecommerce/customers`
+
+Update customer info
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid customer id
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "customer": {
+    "email": "example@example.com",
+    "password": "password",
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+> - `password` must have at least 8 characters
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "",
+  "email": "example@example.com",
+  "password": "password",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+|          `404` Not Found | Customer not found                  |
+| `405` Method Not Allowed | The request method is not `PATCH`   |
+
+---
+
+### DELETE `/api/v1/ecommerce/customers`
+
+Delete a customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid customer id
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "",
+  "email": "example@example.com",
+  "password": "password",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Customer not found                   |
+| `405` Method Not Allowed | The request method is not `PATCH`    |
+
+---
+
+### POST `/api/v1/ecommerce/customers`
+
+Create a customer credit card
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid customer id
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "creditCard": {
+    "number": 1234567887654321,
+    "expMonthDate": 1,
+    "expoYearDate": 1970,
+    "secretCode": 123
+  }
+}
+```
+
+> **Constraints:**
+>
+> - `number` must be positive
+> - `expMonthDate` must be between `1` and `12`
+> - `expYearDate` must be greater than `1970`
+> - `secretCode` must be positive
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl5atk1nr002506jjot8atd5p",
+  "number": 1234567887654321,
+  "expMonthDate": 1,
+  "expoYearDate": 1970,
+  "secretCode": 123
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Customer not found                   |
+| `405` Method Not Allowed | The request method is not `POST`     |
 
 ---
