@@ -92,61 +92,319 @@ In order to run the `prisma studio` utility, run:
 
 # API docs <!-- omit in toc -->
 
-- [Warehouse](#warehouse)
-- [Active Product](#active-product)
-  - [GET `/api/v1/warehouse/activeProducts`](#get-apiv1warehouseactiveproducts)
-  - [POST `/api/v1/warehouse/activeProducts`](#post-apiv1warehouseactiveproducts)
-  - [PATCH `/api/v1/warehouse/activeProducts`](#patch-apiv1warehouseactiveproducts)
-  - [DELETE `/api/v1/warehouse/activeProducts`](#delete-apiv1warehouseactiveproducts)
-  - [GET `/api/v1/warehouse/activeProducts/{activeProductInstanceId}`](#get-apiv1warehouseactiveproductsactiveproductinstanceid)
-- [Customers](#customers)
-  - [GET `/api/v1/warehouse/customers`](#get-apiv1warehousecustomers)
-  - [GET `/api/v1/warehouse/customers/{customerId}`](#get-apiv1warehousecustomerscustomerid)
-  - [DELETE `/api/v1/warehouse/customers/{customerId}`](#delete-apiv1warehousecustomerscustomerid)
-  - [GET `/api/v1/warehouse/customers/{customerId}/activeProducts`](#get-apiv1warehousecustomerscustomeridactiveproducts)
-  - [GET `/api/v1/warehouse/customers/{customerId}/orders`](#get-apiv1warehousecustomerscustomeridorders)
-- [Employees](#employees)
-  - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees)
-  - [POST `/api/v1/warehouse/employees`](#post-apiv1warehouseemployees)
-  - [POST `/api/v1/warehouse/employees/login`](#post-apiv1warehouseemployeeslogin)
-  - [GET `/api/v1/warehouse/employees/me`](#get-apiv1warehouseemployeesme)
-  - [GET `/api/v1/warehouse/employees/{employeeId}`](#get-apiv1warehouseemployeesemployeeid)
-  - [PATCH `/api/v1/warehouse/employees/{employeeId}`](#patch-apiv1warehouseemployeesemployeeid)
-  - [DELETE `/api/v1/warehouse/employees/{employeeId}`](#delete-apiv1warehouseemployeesemployeeid)
-  - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
-  - [POST `/api/v1/warehouse/orders`](#post-apiv1warehouseorders)
-  - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
-  - [PATCH `/api/v1/warehouse/orders/by-id`](#patch-apiv1warehouseordersby-id)
-  - [DELETE`/api/v1/warehouse/orders/by-id`](#deleteapiv1warehouseordersby-id)
-  - [GET `/api/v1/warehouse/orders//by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
-  - [POST `/api/v1/warehouse/orders/dates/within-delivered`](#post-apiv1warehouseordersdateswithin-delivered)
-  - [POST `/api/v1/warehouse/orders/dates/within-ordered`](#post-apiv1warehouseordersdateswithin-ordered)
-  - [POST `/api/v1/warehouse/orders/dates/within-shipped`](#post-apiv1warehouseordersdateswithin-shipped)
-- [Product Instances](#product-instances)
-  - [GET `/api/v1/warehouse/productInstances`](#get-apiv1warehouseproductinstances)
-  - [POST `/api/v1/warehouse/productInstances`](#post-apiv1warehouseproductinstances)
-  - [PATCH `/api/v1/warehouse/productInstances`](#patch-apiv1warehouseproductinstances)
-  - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
-  - [GET `/api/v1/warehouse/productInstances/{productInstanceId}`](#get-apiv1warehouseproductinstancesproductinstanceid)
-  - [POST `/api/v1/warehouse/productInstances/productInstanceActivation`](#post-apiv1warehouseproductinstancesproductinstanceactivation)
-  - [GET `/api/v1/warehouse/productInstances/count/by-status/{productInstanceStatus}`](#get-apiv1warehouseproductinstancescountby-statusproductinstancestatus)
-  - [GET `/api/v1/warehouse/productInstances/count/by-type/{productId}`](#get-apiv1warehouseproductinstancescountby-typeproductid)
-- [Product](#product)
-  - [GET `/api/v1/warehouse/products`](#get-apiv1warehouseproducts)
-  - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
-  - [GET `/api/v1/warehouse/products/{productId}`](#get-apiv1warehouseproductsproductid)
-  - [PATCH `/api/v1/warehouse/products/{product-id}`](#patch-apiv1warehouseproductsproduct-id)
-  - [DELETE `/api/v1/warehouse/products/{product-id}`](#delete-apiv1warehouseproductsproduct-id)
 - [Ecommerce](#ecommerce)
-  - [POST `/api/v1/ecommerce/login`](#post-apiv1ecommercelogin)
-  - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers)
-  - [PATCH `/api/v1/ecommerce/customers`](#patch-apiv1ecommercecustomers)
-  - [DELETE `/api/v1/ecommerce/customers`](#delete-apiv1ecommercecustomers)
-  - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers-1)
+    - [POST `/api/v1/ecommerce/login`](#post-apiv1ecommercelogin)
+  - [Customers](#customers)
+    - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers)
+    - [PATCH `/api/v1/ecommerce/customers`](#patch-apiv1ecommercecustomers)
+    - [DELETE `/api/v1/ecommerce/customers`](#delete-apiv1ecommercecustomers)
+    - [POST `/api/v1/ecommerce/customers`](#post-apiv1ecommercecustomers-1)
+- [Warehouse](#warehouse)
+  - [Active Product](#active-product)
+    - [GET `/api/v1/warehouse/activeProducts`](#get-apiv1warehouseactiveproducts)
+    - [POST `/api/v1/warehouse/activeProducts`](#post-apiv1warehouseactiveproducts)
+    - [PATCH `/api/v1/warehouse/activeProducts`](#patch-apiv1warehouseactiveproducts)
+    - [DELETE `/api/v1/warehouse/activeProducts`](#delete-apiv1warehouseactiveproducts)
+    - [GET `/api/v1/warehouse/activeProducts/{activeProductInstanceId}`](#get-apiv1warehouseactiveproductsactiveproductinstanceid)
+  - [Customers](#customers-1)
+    - [GET `/api/v1/warehouse/customers`](#get-apiv1warehousecustomers)
+    - [GET `/api/v1/warehouse/customers/{customerId}`](#get-apiv1warehousecustomerscustomerid)
+    - [DELETE `/api/v1/warehouse/customers/{customerId}`](#delete-apiv1warehousecustomerscustomerid)
+    - [GET `/api/v1/warehouse/customers/{customerId}/activeProducts`](#get-apiv1warehousecustomerscustomeridactiveproducts)
+    - [GET `/api/v1/warehouse/customers/{customerId}/orders`](#get-apiv1warehousecustomerscustomeridorders)
+  - [Employees](#employees)
+    - [GET `/api/v1/warehouse/employees`](#get-apiv1warehouseemployees)
+    - [POST `/api/v1/warehouse/employees`](#post-apiv1warehouseemployees)
+    - [POST `/api/v1/warehouse/employees/login`](#post-apiv1warehouseemployeeslogin)
+    - [GET `/api/v1/warehouse/employees/me`](#get-apiv1warehouseemployeesme)
+    - [GET `/api/v1/warehouse/employees/{employeeId}`](#get-apiv1warehouseemployeesemployeeid)
+    - [PATCH `/api/v1/warehouse/employees/{employeeId}`](#patch-apiv1warehouseemployeesemployeeid)
+    - [DELETE `/api/v1/warehouse/employees/{employeeId}`](#delete-apiv1warehouseemployeesemployeeid)
+    - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
+    - [POST `/api/v1/warehouse/orders`](#post-apiv1warehouseorders)
+    - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
+    - [PATCH `/api/v1/warehouse/orders/by-id`](#patch-apiv1warehouseordersby-id)
+    - [DELETE`/api/v1/warehouse/orders/by-id`](#deleteapiv1warehouseordersby-id)
+    - [GET `/api/v1/warehouse/orders//by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
+    - [POST `/api/v1/warehouse/orders/dates/within-delivered`](#post-apiv1warehouseordersdateswithin-delivered)
+    - [POST `/api/v1/warehouse/orders/dates/within-ordered`](#post-apiv1warehouseordersdateswithin-ordered)
+    - [POST `/api/v1/warehouse/orders/dates/within-shipped`](#post-apiv1warehouseordersdateswithin-shipped)
+  - [Product Instances](#product-instances)
+    - [GET `/api/v1/warehouse/productInstances`](#get-apiv1warehouseproductinstances)
+    - [POST `/api/v1/warehouse/productInstances`](#post-apiv1warehouseproductinstances)
+    - [PATCH `/api/v1/warehouse/productInstances`](#patch-apiv1warehouseproductinstances)
+    - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
+    - [GET `/api/v1/warehouse/productInstances/{productInstanceId}`](#get-apiv1warehouseproductinstancesproductinstanceid)
+    - [POST `/api/v1/warehouse/productInstances/productInstanceActivation`](#post-apiv1warehouseproductinstancesproductinstanceactivation)
+    - [GET `/api/v1/warehouse/productInstances/count/by-status/{productInstanceStatus}`](#get-apiv1warehouseproductinstancescountby-statusproductinstancestatus)
+    - [GET `/api/v1/warehouse/productInstances/count/by-type/{productId}`](#get-apiv1warehouseproductinstancescountby-typeproductid)
+  - [Product](#product)
+    - [GET `/api/v1/warehouse/products`](#get-apiv1warehouseproducts)
+    - [POST `/api/v1/warehouse/products`](#post-apiv1warehouseproducts)
+    - [GET `/api/v1/warehouse/products/{productId}`](#get-apiv1warehouseproductsproductid)
+    - [PATCH `/api/v1/warehouse/products/{product-id}`](#patch-apiv1warehouseproductsproduct-id)
+    - [DELETE `/api/v1/warehouse/products/{product-id}`](#delete-apiv1warehouseproductsproduct-id)
 
 ---
 
-## Warehouse
+# Ecommerce
+
+### POST `/api/v1/ecommerce/login`
+
+Get a valid jwt for a customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "email": "example@example.com",
+  "password": "password"
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+|          `404` Not found | User not found                      |
+| `405` Method Not Allowed | The request method is not `POST`    |
+
+---
+
+## Customers
+
+### POST `/api/v1/ecommerce/customers`
+
+Create a new customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+```
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "email": "example@example.com",
+  "password": "password",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+> - `password` must have at least 8 characters
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "",
+  "email": "example@example.com",
+  "password": "password",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+| `405` Method Not Allowed | The request method is not `POST`    |
+
+---
+
+### PATCH `/api/v1/ecommerce/customers`
+
+Update customer info
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid customer id
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "customer": {
+    "email": "example@example.com",
+    "password": "password",
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+}
+```
+
+> **Constraints:**
+>
+> - `email` must have a valid email address syntax
+> - `password` must have at least 8 characters
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "",
+  "email": "example@example.com",
+  "password": "password",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                         |
+| -----------------------: | :---------------------------------- |
+|        `400` Bad Request | The request body content is invalid |
+|          `404` Not Found | Customer not found                  |
+| `405` Method Not Allowed | The request method is not `PATCH`   |
+
+---
+
+### DELETE `/api/v1/ecommerce/customers`
+
+Delete a customer
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid customer id
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "",
+  "email": "example@example.com",
+  "password": "password",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "firstName": "John",
+  "lastName": "Doe",
+  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
+  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Customer not found                   |
+| `405` Method Not Allowed | The request method is not `PATCH`    |
+
+---
+
+### POST `/api/v1/ecommerce/customers`
+
+Create a customer credit card
+
+#### Required Headers: <!-- omit in toc -->
+
+```
+Content-Type: application/json
+Authorization: Bearer <jwt>
+```
+
+> **Constraints:**
+>
+> - The `jwt` must contain a valid customer id
+
+#### Required Body: <!-- omit in toc -->
+
+```json
+{
+  "creditCard": {
+    "number": 1234567887654321,
+    "expMonthDate": 1,
+    "expoYearDate": 1970,
+    "secretCode": 123
+  }
+}
+```
+
+> **Constraints:**
+>
+> - `number` must be positive
+> - `expMonthDate` must be between `1` and `12`
+> - `expYearDate` must be greater than `1970`
+> - `secretCode` must be positive
+
+#### Return: <!-- omit in toc -->
+
+```json
+{
+  "id": "cl5atk1nr002506jjot8atd5p",
+  "number": 1234567887654321,
+  "expMonthDate": 1,
+  "expoYearDate": 1970,
+  "secretCode": 123
+}
+```
+
+#### Possible errors: <!-- omit in toc -->
+
+|               Error code | Description                          |
+| -----------------------: | :----------------------------------- |
+|        `400` Bad Request | The request body content is invalid  |
+|       `401` Unauthorized | Authentication credentials not valid |
+|          `404` Not Found | Customer not found                   |
+| `405` Method Not Allowed | The request method is not `POST`     |
+
+---
+
+# Warehouse
 
 ## Active Product
 
@@ -2048,260 +2306,5 @@ Authentication: Bearer <jwt>
 |          `403` Forbidden | User has not enough rights to access the resource |
 |          `404` Not Found | Product not found                                 |
 | `405` Method Not Allowed | The request method is not `PATCH`                 |
-
----
-
-## Ecommerce
-
-### POST `/api/v1/ecommerce/login`
-
-Get a valid jwt for a customer
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "email": "example@example.com",
-  "password": "password"
-}
-```
-
-> **Constraints:**
->
-> - `email` must have a valid email address syntax
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-|          `404` Not found | User not found                      |
-| `405` Method Not Allowed | The request method is not `POST`    |
-
----
-
-### POST `/api/v1/ecommerce/customers`
-
-Create a new customer
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-```
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "email": "example@example.com",
-  "password": "password",
-  "firstName": "John",
-  "lastName": "Doe",
-  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
-  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
-}
-```
-
-> **Constraints:**
->
-> - `email` must have a valid email address syntax
-> - `password` must have at least 8 characters
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "",
-  "email": "example@example.com",
-  "password": "password",
-  "createdAt": "1970-01-01T00:00:00.000Z",
-  "updatedAt": "1970-01-01T00:00:00.000Z",
-  "firstName": "John",
-  "lastName": "Doe",
-  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
-  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-| `405` Method Not Allowed | The request method is not `POST`    |
-
----
-
-### PATCH `/api/v1/ecommerce/customers`
-
-Update customer info
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-Authorization: Bearer <jwt>
-```
-
-> **Constraints:**
->
-> - The `jwt` must contain a valid customer id
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "customer": {
-    "email": "example@example.com",
-    "password": "password",
-    "firstName": "John",
-    "lastName": "Doe"
-  }
-}
-```
-
-> **Constraints:**
->
-> - `email` must have a valid email address syntax
-> - `password` must have at least 8 characters
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "",
-  "email": "example@example.com",
-  "password": "password",
-  "createdAt": "1970-01-01T00:00:00.000Z",
-  "updatedAt": "1970-01-01T00:00:00.000Z",
-  "firstName": "John",
-  "lastName": "Doe",
-  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
-  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                         |
-| -----------------------: | :---------------------------------- |
-|        `400` Bad Request | The request body content is invalid |
-|          `404` Not Found | Customer not found                  |
-| `405` Method Not Allowed | The request method is not `PATCH`   |
-
----
-
-### DELETE `/api/v1/ecommerce/customers`
-
-Delete a customer
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-Authorization: Bearer <jwt>
-```
-
-> **Constraints:**
->
-> - The `jwt` must contain a valid customer id
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "",
-  "email": "example@example.com",
-  "password": "password",
-  "createdAt": "1970-01-01T00:00:00.000Z",
-  "updatedAt": "1970-01-01T00:00:00.000Z",
-  "firstName": "John",
-  "lastName": "Doe",
-  "billingAddressId": "cl52gilrq0059g4jjj50ffvdg",
-  "shippingAddressId": "cl4zoemig0036l2jjv0efdted"
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                          |
-| -----------------------: | :----------------------------------- |
-|        `400` Bad Request | The request body content is invalid  |
-|       `401` Unauthorized | Authentication credentials not valid |
-|          `404` Not Found | Customer not found                   |
-| `405` Method Not Allowed | The request method is not `PATCH`    |
-
----
-
-### POST `/api/v1/ecommerce/customers`
-
-Create a customer credit card
-
-#### Required Headers: <!-- omit in toc -->
-
-```
-Content-Type: application/json
-Authorization: Bearer <jwt>
-```
-
-> **Constraints:**
->
-> - The `jwt` must contain a valid customer id
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "creditCard": {
-    "number": 1234567887654321,
-    "expMonthDate": 1,
-    "expoYearDate": 1970,
-    "secretCode": 123
-  }
-}
-```
-
-> **Constraints:**
->
-> - `number` must be positive
-> - `expMonthDate` must be between `1` and `12`
-> - `expYearDate` must be greater than `1970`
-> - `secretCode` must be positive
-
-#### Return: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl5atk1nr002506jjot8atd5p",
-  "number": 1234567887654321,
-  "expMonthDate": 1,
-  "expoYearDate": 1970,
-  "secretCode": 123
-}
-```
-
-#### Possible errors: <!-- omit in toc -->
-
-|               Error code | Description                          |
-| -----------------------: | :----------------------------------- |
-|        `400` Bad Request | The request body content is invalid  |
-|       `401` Unauthorized | Authentication credentials not valid |
-|          `404` Not Found | Customer not found                   |
-| `405` Method Not Allowed | The request method is not `POST`     |
 
 ---
