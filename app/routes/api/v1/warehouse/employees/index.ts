@@ -33,7 +33,10 @@ export const action: ActionFunction = async ({
   if (request.method.toLowerCase() !== "post") {
     throw methodNotAllowedResponse();
   }
-  await verifyEmployeeRequest(request);
+  let jwtContent = await verifyEmployeeRequest(request);
+  if (jwtContent.role !== "ADMIN") {
+    throw forbiddenResponse();
+  }
 
   const schema = z.object({
     email: z.string().email(),
