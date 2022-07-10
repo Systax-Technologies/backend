@@ -1385,7 +1385,7 @@ Authorization: Bearer <jwt>
 
 ### DELETE`/api/v1/warehouse/orders/by-id`
 
-Delete an order
+Set an order status to `CANCELLED`.
 
 #### Required Headers: <!-- omit in toc -->
 
@@ -1415,7 +1415,7 @@ Authorization: Bearer <jwt>
 ```json
 {
   "id": "cl4vfbh0u00009xjjvk2btxym",
-  "status": "ORDERED",
+  "status": "CANCELLED",
   "orderedAt": "1970-01-01T00:00:00.000Z",
   "shippedAt": "1970-01-01T00:00:00.000Z",
   "deliveredAt": "1970-01-01T00:00:00.000Z",
