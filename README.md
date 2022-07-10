@@ -125,8 +125,8 @@ In order to run the `prisma studio` utility, run:
   - [Orders](#orders-1)
     - [GET `/api/v1/warehouse/orders`](#get-apiv1warehouseorders)
     - [GET `/api/v1/warehouse/orders/{id}`](#get-apiv1warehouseordersid)
-    - [PATCH `/api/v1/warehouse/orders/by-id`](#patch-apiv1warehouseordersby-id)
-    - [DELETE`/api/v1/warehouse/orders/by-id`](#deleteapiv1warehouseordersby-id)
+    - [PATCH `/api/v1/warehouse/orders/{id}`](#patch-apiv1warehouseordersid)
+    - [DELETE`/api/v1/warehouse/orders/{id}`](#deleteapiv1warehouseordersid)
     - [GET `/api/v1/warehouse/orders//by-status/{status}`](#get-apiv1warehouseordersby-statusstatus)
     - [POST `/api/v1/warehouse/orders/dates/within-delivered`](#post-apiv1warehouseordersdateswithin-delivered)
     - [POST `/api/v1/warehouse/orders/dates/within-ordered`](#post-apiv1warehouseordersdateswithin-ordered)
@@ -134,8 +134,8 @@ In order to run the `prisma studio` utility, run:
   - [Product Instances](#product-instances)
     - [GET `/api/v1/warehouse/productInstances`](#get-apiv1warehouseproductinstances)
     - [POST `/api/v1/warehouse/productInstances`](#post-apiv1warehouseproductinstances)
-    - [PATCH `/api/v1/warehouse/productInstances`](#patch-apiv1warehouseproductinstances)
-    - [DELETE `/api/v1/warehouse/productInstances`](#delete-apiv1warehouseproductinstances)
+    - [PATCH `/api/v1/warehouse/productInstances/{productInstanceId}`](#patch-apiv1warehouseproductinstancesproductinstanceid)
+    - [DELETE `/api/v1/warehouse/productInstanceso/{productInstanceId}`](#delete-apiv1warehouseproductinstancesoproductinstanceid)
     - [GET `/api/v1/warehouse/productInstances/{productInstanceId}`](#get-apiv1warehouseproductinstancesproductinstanceid)
     - [POST `/api/v1/warehouse/productInstances/productInstanceActivation`](#post-apiv1warehouseproductinstancesproductinstanceactivation)
     - [GET `/api/v1/warehouse/productInstances/count/by-status/{productInstanceStatus}`](#get-apiv1warehouseproductinstancescountby-statusproductinstancestatus)
@@ -1328,7 +1328,7 @@ Authorization: Bearer <jwt>
 
 ---
 
-### PATCH `/api/v1/warehouse/orders/by-id`
+### PATCH `/api/v1/warehouse/orders/{id}`
 
 Update an order
 
@@ -1347,7 +1347,6 @@ Authorization: Bearer <jwt>
 
 ```json
 {
-  "id": "cl5apl7c00037xhjjm5hela3m",
   "status": "DELIVERED",
   "shippedAt": "1970-01-01T00:00:00.000Z",
   "deliveredAt": "1970-01-01T00:00:00.000Z"
@@ -1383,7 +1382,7 @@ Authorization: Bearer <jwt>
 
 ---
 
-### DELETE`/api/v1/warehouse/orders/by-id`
+### DELETE`/api/v1/warehouse/orders/{id}`
 
 Set an order status to `CANCELLED`.
 
@@ -1397,18 +1396,6 @@ Authorization: Bearer <jwt>
 > **Constraints:**
 >
 > - The `jwt` must contain a valid employee
-
-#### Required Body: <!-- omit in toc -->
-
-```json
-{
-  "id": "cl5apl7c00037xhjjm5hela3m"
-}
-```
-
-> **Constraints:**
->
-> - `id` must be a valid cuid
 
 #### Return: <!-- omit in toc -->
 
@@ -1798,7 +1785,7 @@ Authorization: Bearer <jwt>
 
 ---
 
-### PATCH `/api/v1/warehouse/productInstances`
+### PATCH `/api/v1/warehouse/productInstances/{productInstanceId}`
 
 Update the fields of a specific product instance
 
@@ -1855,7 +1842,7 @@ Authorization: Bearer <jwt>
 
 ---
 
-### DELETE `/api/v1/warehouse/productInstances`
+### DELETE `/api/v1/warehouse/productInstanceso/{productInstanceId}`
 
 Delete a specific product instance record and its related active product instance record (if present)
 
