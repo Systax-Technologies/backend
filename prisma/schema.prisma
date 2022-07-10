@@ -73,6 +73,7 @@ enum OrderStatus {
   IN_TRANSIT
   DELIVERING
   DELIVERED
+  CANCELLED
 }
 
 model Order {
