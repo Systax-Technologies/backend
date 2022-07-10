@@ -1,4 +1,4 @@
-import type { Order, OrderStatus } from "@prisma/client";
+import { Order, OrderStatus } from "@prisma/client";
 import { database } from "~/helpers/db-helper.server";
 import type { OrderInput, OrderUpdateInput } from "../dto";
 
@@ -49,10 +49,13 @@ export const updateOrder = async (
 
 export const deleteOrder = async (id: string): Promise<Order | null> => {
   try {
-    return database.order.delete({
+    return database.order.update({
       where: {
         id,
       },
+      data: {
+        status: OrderStatus.CANCELLED,
+      }
     });
   } catch (_) {
     return null;
