@@ -7,41 +7,41 @@ async function seed() {
   await Promise.all(
     getCustomers().map((customer) => {
       return db.customer.create({ data: customer });
-    })
+    }),
   );
 
   await Promise.all(
     getEmployees().map((employee) => {
       return db.employee.create({ data: employee });
-    })
+    }),
   );
 
   await Promise.all(
     getProducts().map((product) => {
       return db.product.create({ data: product });
-    })
+    }),
   );
   await Promise.all(
     (
       await getOrders()
     ).map((order) => {
       return db.order.create({ data: order });
-    })
+    }),
   );
   await Promise.all(
     (
       await getProductInstances()
     ).map((productInstance) => {
       return db.productInstance.create({ data: productInstance });
-    })
+    }),
   );
-  await Promise.all(
-    (
-      await getActiveProductInstances()
-    ).map((activeProductInstance) => {
-      return db.activeProductInstance.create({ data: activeProductInstance });
-    })
-  );
+  // await Promise.all(
+  //   (
+  //     await getActiveProductInstances()
+  //   ).map((activeProductInstance) => {
+  //     return db.activeProductInstance.create({ data: activeProductInstance });
+  //   })
+  // );
 }
 
 seed();
@@ -244,7 +244,7 @@ async function getOrders() {
           shippedAt: new Date(),
           deliveredAt: new Date(),
         },
-      ]
+      ],
     );
   }
 
@@ -264,7 +264,7 @@ async function getProductInstances() {
         {
           productId: product.id,
         },
-      ]
+      ],
     );
   }
   return productInstances;
@@ -283,7 +283,7 @@ async function getActiveProductInstances() {
         {
           customerId: customer.id,
         },
-      ]
+      ],
     );
   }
   return activeProductInstances;
