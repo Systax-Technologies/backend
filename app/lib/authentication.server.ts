@@ -28,7 +28,7 @@ export const postAuthenticationHandler = async <
 
   const loginSchema = z.object({
     email: z.string().email(),
-    password: z.string().min(8),
+    password: z.string().min(1),
   });
 
   const parsedData = loginSchema.safeParse(body);
