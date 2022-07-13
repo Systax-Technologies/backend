@@ -14,10 +14,10 @@ type AccessToken = {
 
 export const postAuthenticationHandler = async <
   ReturnHandlerLogin extends Employee | Customer | null,
-  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>
+  HandlerLogin extends (loginDto: LoginDto) => Promise<ReturnHandlerLogin>,
 >(
   request: Request,
-  handlerLogin: HandlerLogin
+  handlerLogin: HandlerLogin,
 ): Promise<AccessToken> => {
   let body: any;
   try {
@@ -28,7 +28,7 @@ export const postAuthenticationHandler = async <
 
   const loginSchema = z.object({
     email: z.string().email(),
-    password: z.string().min(8),
+    password: z.string().min(1),
   });
 
   const parsedData = loginSchema.safeParse(body);
