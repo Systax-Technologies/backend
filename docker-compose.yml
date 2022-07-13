@@ -10,16 +10,14 @@ services:
       - "database:/var/lib/postgresql/data"
     env_file:
       - .env
-    restart: always
-
-  # backend:
-  #   build: ./
-  #   container_name: backend
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - database
-  #   restart: always
+  backend:
+    build: ./
+    hostname: backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
 
 volumes:
   database:
