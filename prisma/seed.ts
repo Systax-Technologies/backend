@@ -1,4 +1,5 @@
 import { PrismaClient, Role } from "@prisma/client";
+import { database } from "~/helpers/db-helper.server";
 
 const db = new PrismaClient();
 
@@ -16,10 +17,31 @@ async function seed() {
   );
 
   await Promise.all(
-    getProduct().map((product) => {
+    getProducts().map((product) => {
       return db.product.create({ data: product });
     }),
   );
+  await Promise.all(
+    (
+      await getOrders()
+    ).map((order) => {
+      return db.order.create({ data: order });
+    }),
+  );
+  await Promise.all(
+    (
+      await getProductInstances()
+    ).map((productInstance) => {
+      return db.productInstance.create({ data: productInstance });
+    }),
+  );
+  // await Promise.all(
+  //   (
+  //     await getActiveProductInstances()
+  //   ).map((activeProductInstance) => {
+  //     return db.activeProductInstance.create({ data: activeProductInstance });
+  //   })
+  // );
 }
 
 seed();
@@ -27,46 +49,68 @@ seed();
 function getCustomers() {
   return [
     {
+      id: "cl5ceonfr000009mp8f2pgwvh",
       email: "mariorossi@systax.it",
       password:
-        "59195c6c541c8307f1da2d1e768d6f2280c984df217ad5f4c64c3542b04111a4",
+        "6e4d54eb30c28f2bd9d93b6c81e499a29fc279a51000ce66c42e8bfcf0d65a9d",
       firstName: "Mario",
       lastName: "Rossi",
     },
     {
+      id: "cl5ceoss8000109mp6i1j6e7s",
       email: "lucaverdi@systax.it",
       password:
-        "d70f47790f689414789eeff231703429c7f88a10210775906460edbf38589d90",
+        "7ca66a519f171456d5ed159002c30b5b5f73f920010289e97048dfd4fa08c83f",
       firstName: "Luca",
       lastName: "Verdi",
     },
     {
+      id: "cl5cep5v1000409mphs2pfowu",
       email: "giorgiogialli@systax.it",
       password:
-        "8a2e7ca933fb2f760a71226f9f861b6776ab86bf50321193832afb3dbb42de6a",
+        "428f814c4771007675fad3aa4b92a54b2344adc3b8ecbcc2a1fd288a049dd121",
       firstName: "Giorgio",
       lastName: "Gialli",
     },
     {
+      id: "cl5ceprha000509mp2fjr8vs7",
       email: "lombardidiamante@systax.it",
       password:
-        "2f5fdf5963abd2053b6a2a6bc364fd28eb1b56a488ff73967a7e637b66d912f0",
+        "6358e2c2dcc974142c59dad65561b9bd14b6fce40113b70715e6f0a6790206af",
       firstName: "Lombardi",
       lastName: "Diamante",
     },
     {
+      id: "cl5ceq1fc000609mp2bvi6y8h",
       email: "gandolfococci@systax.it",
       password:
-        "6e50f674dbf9d866ba814f866f38790645b6e35a9430cf8eeceadcb0c0a20575",
+        "b240b09a047ecd879567bd5ab5014414ae3ed518f2abb779475def05018cedf2",
       firstName: "Gandolfo",
       lastName: "Cocci",
     },
     {
+      id: "cl5ceqh8z000709mpcp0m5g75",
       email: "alvisiopisani@systax.it",
       password:
-        "eff427210e0db6efb34c72689c9336f6978fc3e01a4e3157c5b67afcdc905f23",
+        "75e2e93f13fd11784e9cf6286da825b57ced32ad8d7a150df1fcee99370e1189",
       firstName: "Alvisio",
       lastName: "Pisani",
+    },
+    {
+      id: "cl5ceqwav000809mp3zcjgfjv",
+      email: "cristofororomani@systax.it",
+      password:
+        "f3dd5b2c4951f1e895eaa5177bf1413b6dc4bb3b293d5022ffbb1d2c33b496bd",
+      firstName: "Cristoforo",
+      lastName: "Romani",
+    },
+    {
+      id: "cl5cevtwe000909mp83p39703",
+      email: "albertinotrentini@systax.it",
+      password:
+        "3e3c1494401d3275ee967f95bc5160ceb54d12c9811f2ef9afa6f7cf77930196",
+      firstName: "albertino",
+      lastName: "trentini",
     },
   ];
 }
@@ -74,53 +118,75 @@ function getCustomers() {
 function getEmployees() {
   return [
     {
+      id: "cl5ceonfr000009mp8f2pgwvh",
       email: "mariorossi@systax.it",
       password:
-        "59195c6c541c8307f1da2d1e768d6f2280c984df217ad5f4c64c3542b04111a4",
+        "6e4d54eb30c28f2bd9d93b6c81e499a29fc279a51000ce66c42e8bfcf0d65a9d",
       firstName: "Mario",
       lastName: "Rossi",
       role: Role.ADMIN,
     },
     {
+      id: "cl5ceoss8000109mp6i1j6e7s",
       email: "lucaverdi@systax.it",
       password:
-        "d70f47790f689414789eeff231703429c7f88a10210775906460edbf38589d90",
+        "7ca66a519f171456d5ed159002c30b5b5f73f920010289e97048dfd4fa08c83f",
       firstName: "Luca",
       lastName: "Verdi",
       role: Role.ADMIN,
     },
     {
+      id: "cl5cep5v1000409mphs2pfowu",
       email: "giorgiogialli@systax.it",
       password:
-        "8a2e7ca933fb2f760a71226f9f861b6776ab86bf50321193832afb3dbb42de6a",
+        "428f814c4771007675fad3aa4b92a54b2344adc3b8ecbcc2a1fd288a049dd121",
       firstName: "Giorgio",
       lastName: "Gialli",
     },
     {
+      id: "cl5ceprha000509mp2fjr8vs7",
       email: "lombardidiamante@systax.it",
       password:
-        "2f5fdf5963abd2053b6a2a6bc364fd28eb1b56a488ff73967a7e637b66d912f0",
+        "6358e2c2dcc974142c59dad65561b9bd14b6fce40113b70715e6f0a6790206af",
       firstName: "Lombardi",
       lastName: "Diamante",
     },
     {
+      id: "cl5ceq1fc000609mp2bvi6y8h",
       email: "gandolfococci@systax.it",
       password:
-        "6e50f674dbf9d866ba814f866f38790645b6e35a9430cf8eeceadcb0c0a20575",
+        "b240b09a047ecd879567bd5ab5014414ae3ed518f2abb779475def05018cedf2",
       firstName: "Gandolfo",
       lastName: "Cocci",
     },
     {
+      id: "cl5ceqh8z000709mpcp0m5g75",
       email: "alvisiopisani@systax.it",
       password:
-        "eff427210e0db6efb34c72689c9336f6978fc3e01a4e3157c5b67afcdc905f23",
+        "75e2e93f13fd11784e9cf6286da825b57ced32ad8d7a150df1fcee99370e1189",
       firstName: "Alvisio",
       lastName: "Pisani",
+    },
+    {
+      id: "cl5ceqwav000809mp3zcjgfjv",
+      email: "cristofororomani@systax.it",
+      password:
+        "f3dd5b2c4951f1e895eaa5177bf1413b6dc4bb3b293d5022ffbb1d2c33b496bd",
+      firstName: "Cristoforo",
+      lastName: "Romani",
+    },
+    {
+      id: "cl5cevtwe000909mp83p39703",
+      email: "albertinotrentini@systax.it",
+      password:
+        "3e3c1494401d3275ee967f95bc5160ceb54d12c9811f2ef9afa6f7cf77930196",
+      firstName: "Albertino",
+      lastName: "Trentini",
     },
   ];
 }
 
-function getProduct() {
+function getProducts() {
   return [
     {
       model: "SerenUp 7",
@@ -159,4 +225,66 @@ function getProduct() {
       price: 75,
     },
   ];
+}
+
+async function getOrders() {
+  const customers = await database.customer.findMany();
+
+  const orders: {
+    customerId: string;
+    shippedAt: Date;
+    deliveredAt: Date;
+  }[] = [];
+
+  for (const customer of customers) {
+    orders.push(
+      ...[
+        {
+          customerId: customer.id,
+          shippedAt: new Date(),
+          deliveredAt: new Date(),
+        },
+      ],
+    );
+  }
+
+  return orders;
+}
+
+async function getProductInstances() {
+  const products = await database.product.findMany();
+
+  const productInstances: {
+    productId: string;
+  }[] = [];
+
+  for (const product of products) {
+    productInstances.push(
+      ...[
+        {
+          productId: product.id,
+        },
+      ],
+    );
+  }
+  return productInstances;
+}
+
+async function getActiveProductInstances() {
+  const customers = await database.customer.findMany();
+
+  const activeProductInstances: {
+    customerId: string;
+  }[] = [];
+
+  for (const customer of customers) {
+    activeProductInstances.push(
+      ...[
+        {
+          customerId: customer.id,
+        },
+      ],
+    );
+  }
+  return activeProductInstances;
 }
