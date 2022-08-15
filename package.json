@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@prisma/client": "^4.0.0",
-    "@remix-run/node": "^1.6.2",
+    "@remix-run/node": "^1.6.8",
     "@remix-run/react": "^1.6.4",
     "@remix-run/serve": "^1.6.4",
     "jsonwebtoken": "^8.5.1",
